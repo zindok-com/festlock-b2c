@@ -12,6 +12,8 @@ npm run build
 
 `VITE_FACE_BASE`를 비워 두면 얼굴 사진 없이 이니셜 아이콘으로 나옵니다.
 
+> 새 페스티벌을 추가하는 단계별 안내는 **[docs/ADD-FESTIVAL.md](docs/ADD-FESTIVAL.md)** 를 먼저 보세요.
+
 ## 페스티벌 추가 · 수정 (FestLock)
 
 여러 페스티벌을 `/{slug}` 주소로 보여 줍니다. 목록·주소·미리보기 문구는 **`src/festivals.json` 한 파일**이 기준입니다.
