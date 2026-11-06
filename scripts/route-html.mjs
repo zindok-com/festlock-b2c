@@ -18,6 +18,10 @@ const PAGES = [
     img: "/og/home.jpg",
   },
   ...festivals.map((f) => ({ file: f.slug + ".html", path: "/" + f.slug, title: f.og.title, desc: f.og.desc, img: f.og.img })),
+  // 별칭 주소(/edc 등)도 같은 내용의 파일을 만든다. 미리보기 주소(og:url)는 대표 slug로 둔다.
+  ...festivals.flatMap((f) =>
+    (f.aliases ?? []).map((al) => ({ file: al + ".html", path: "/" + f.slug, title: f.og.title, desc: f.og.desc, img: f.og.img })),
+  ),
 ];
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
