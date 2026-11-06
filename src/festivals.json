@@ -1,0 +1,85 @@
+[
+  {
+    "slug": "edc-orlando-2026",
+    "page": "orl",
+    "titleKey": "f.doc.orl",
+    "name": { "ko": "EDC 올랜도 2026", "en": "EDC Orlando 2026", "ja": "EDC オーランド 2026", "zh": "EDC 奥兰多 2026" },
+    "dates": "2026.11.6 – 11.8",
+    "start": "2026-11-06",
+    "end": "2026-11-08",
+    "venue": { "ko": "미국 올랜도 · 팅커 필드", "en": "Tinker Field, Orlando", "ja": "オーランド · ティンカー・フィールド", "zh": "奥兰多 · Tinker Field" },
+    "ready": true,
+    "color": "#ffc933",
+    "color2": "#ff5fa8",
+    "thumb": "/poster/orl-key.webp",
+    "posters": [{ "src": "/poster/orl-lineup.webp", "key": "f.posterLineup" }],
+    "utc": -5,
+    "og": {
+      "title": "EDC Orlando 2026 타임테이블 | FestLock",
+      "desc": "Kinetic Field · Circuit Grounds · Neon Garden · Stereo Bloom · Casa Bacardí 5개 무대 타임테이블과 장르. 보고 싶은 아티스트를 골라 잠금화면 배경화면으로 저장하세요. 11.6–11.8 Tinker Field (현지 시간)",
+      "img": "/og/orl.jpg"
+    }
+  },
+  {
+    "slug": "nol-festival",
+    "page": "nol",
+    "titleKey": "f.doc.nol",
+    "name": { "ko": "NOL 페스티벌", "en": "NOL Festival", "ja": "NOLフェスティバル", "zh": "NOL 音乐节" },
+    "dates": "2026.10.17 – 10.18",
+    "start": "2026-10-17",
+    "end": "2026-10-18",
+    "venue": { "ko": "킨텍스 제2전시장", "en": "KINTEX Hall 2", "ja": "KINTEX 第2展示場", "zh": "KINTEX 第二展厅" },
+    "ready": true,
+    "thumb": "/poster/nol-lineup.webp",
+    "posters": [{ "src": "/poster/nol-lineup.webp", "key": "f.posterLineup" }],
+    "color": "#3443ee",
+    "color2": "#d6f43c",
+    "og": {
+      "title": "NOL 페스티벌 2026 타임테이블 | FestLock",
+      "desc": "SUPER LIVE · K-POP · EDM 스테이지별 타임테이블. 보고 싶은 아티스트를 골라 잠금화면 배경화면으로 저장하세요. 10.17–10.18 KINTEX",
+      "img": "/og/nol.jpg"
+    }
+  },
+  {
+    "slug": "grand-mint-festival",
+    "page": "gmf",
+    "titleKey": "f.doc.gmf",
+    "name": { "ko": "그랜드 민트 페스티벌 2026", "en": "Grand Mint Festival 2026", "ja": "グランドミントフェスティバル 2026", "zh": "Grand Mint Festival 2026" },
+    "dates": "2026.10.17 – 10.18",
+    "start": "2026-10-17",
+    "end": "2026-10-18",
+    "venue": { "ko": "올림픽공원", "en": "Olympic Park", "ja": "オリンピック公園", "zh": "奥林匹克公园" },
+    "ready": true,
+    "thumb": "/poster/gmf-key.webp",
+    "posters": [
+      { "src": "/poster/gmf-lineup.webp", "key": "f.posterLineup" },
+      { "src": "/poster/gmf-key.webp", "key": "f.posterKey" }
+    ],
+    "color": "#f07aa9",
+    "color2": "#2e9c87",
+    "og": {
+      "title": "그랜드 민트 페스티벌 2026 타임테이블 | FestLock",
+      "desc": "4개 무대 타임테이블을 한눈에. 보고 싶은 공연을 골라 인스타 스토리·폰 배경화면으로 저장하세요. 10.17–10.18 올림픽공원",
+      "img": "/og/gmf.jpg"
+    }
+  },
+  {
+    "slug": "edc-korea-2026",
+    "aliases": ["edc"],
+    "page": "edc",
+    "titleKey": "doc.title",
+    "name": { "ko": "EDC KOREA 2026", "en": "EDC KOREA 2026", "ja": "EDC KOREA 2026", "zh": "EDC KOREA 2026" },
+    "dates": "2026.10.3 – 10.4",
+    "start": "2026-10-03",
+    "end": "2026-10-04",
+    "venue": { "ko": "인천", "en": "Incheon", "ja": "仁川", "zh": "仁川" },
+    "ready": true,
+    "color": "#ffb800",
+    "color2": "#a86bff",
+    "og": {
+      "title": "EDC KOREA 2026 · 내 타임테이블 | FestLock",
+      "desc": "EDC KOREA 2026 타임테이블 다시 보기. 내 라인업을 골라 배경화면으로 저장할 수 있어요.",
+      "img": "/og/edc.jpg"
+    }
+  }
+]

@@ -1,0 +1,2311 @@
+{
+  "version": 1,
+  "exportedAt": "2026-11-02T13:20:56.987Z",
+  "festivals": {
+    "edc-korea-2026": {
+      "kream": {
+        "videoId": "kM7iuhXXaZg",
+        "start": 1262.8,
+        "end": 1292.8,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "jessica-audiffred": {
+        "videoId": "q9Wi4O9Xf98",
+        "start": 0,
+        "end": 176,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alleycvt": {
+        "videoId": "oEkQ6gU3VFs",
+        "start": 0,
+        "end": 4428,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "idemi": {
+        "videoId": "24rkTQth9bU",
+        "start": 4089.1,
+        "end": 4119.1,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "ayybo": {
+        "videoId": "Ey-a2xkJyBA",
+        "start": 0,
+        "end": 4210,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alok": {
+        "videoId": "zHAUZ02aCwo",
+        "start": 0,
+        "end": 3650,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "level-up": {
+        "videoId": "uYLk84L1-Cs",
+        "start": 2241.3,
+        "end": 2271.3,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "troyboi": {
+        "videoId": "0Ahjqyo876s",
+        "start": 0,
+        "end": 4245,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "nico-moreno": {
+        "videoId": "UyqBSncE7LQ",
+        "start": 0,
+        "end": 3509,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "wooli": {
+        "videoId": "PaBcY8VTZZI",
+        "start": 4023,
+        "end": 4055.2,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      }
+    },
+    "edc-orlando-2026": {
+      "zack-martino": {
+        "videoId": "HM2E_TDxcr8",
+        "start": 0,
+        "end": 55.1,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "joa": {
+        "videoId": "axAR6fJqAg0",
+        "start": 1987.6,
+        "end": 2017.6,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "hayla": {
+        "videoId": "IIquvML5M4M",
+        "start": 1466.5,
+        "end": 1496.5,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "pegassi": {
+        "videoId": "7FKQ6Kk5bOI",
+        "start": 2339.4,
+        "end": 2369.4,
+        "kind": "mv",
+        "label": "drop",
+        "source": "artist"
+      },
+      "alesso": {
+        "videoId": "TidwOi0NMI0",
+        "start": 2961.7,
+        "end": 2997.5,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "kream": {
+        "videoId": "kM7iuhXXaZg",
+        "start": 1262.8,
+        "end": 1292.8,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "afrojack": {
+        "videoId": "fLyb8KvtSzw",
+        "start": 2957.3,
+        "end": 2989.4,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "mau-p": {
+        "videoId": "wxKkaBoEWCk",
+        "start": 1932.7,
+        "end": 1962.7,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "david-guetta": {
+        "videoId": "GSnPwle4FOE",
+        "start": 3803.4,
+        "end": 3833.4,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "trackTitle": "David Guetta & Marten Hørger, Men Machine - Engage (feat. Vitalic)"
+      },
+      "sloth": {
+        "videoId": "HYonXqZKjDQ",
+        "start": 495.8,
+        "end": 525.8,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "benda-b2b-vastive": {
+        "videoId": "TOExg4pSceM",
+        "start": 1532.4,
+        "end": 1562.4,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "big-florida": {
+        "videoId": "EbaOw94INtk",
+        "start": 1757.1,
+        "end": 1787.1,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "kompany": {
+        "videoId": "AhaquH-1Bmc",
+        "start": 2239,
+        "end": 2269,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "adventure-club": {
+        "videoId": "-SoGOUE9Yug",
+        "start": 2486,
+        "end": 2516,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "bou-b2b-kanine": {
+        "videoId": "ubnIR93S_9Y",
+        "start": 1901.1,
+        "end": 1931.1,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "level-up": {
+        "videoId": "uYLk84L1-Cs",
+        "start": 2241.3,
+        "end": 2271.3,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "whethan": {
+        "videoId": "1Q-j11Nlm4k",
+        "start": 2529.8,
+        "end": 2559.8,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "levity": {
+        "videoId": "LXVYTEqFarM",
+        "start": 2442.5,
+        "end": 2472.5,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "wooli": {
+        "videoId": "PaBcY8VTZZI",
+        "start": 4023,
+        "end": 4055.2,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "matthias": {
+        "videoId": "66wUW6AiC8E",
+        "start": 1653,
+        "end": 1683,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "inbal": {
+        "videoId": "0i0v8_v8i9U",
+        "start": 977.8,
+        "end": 1007.8,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "azzecca": {
+        "videoId": "aN557RglaxM",
+        "start": 3175.3,
+        "end": 3205.3,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "obskur": {
+        "videoId": "xMAV75v0QR8",
+        "start": 4401.3,
+        "end": 4431.3,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "omar-plus": {
+        "videoId": "KUd92CHa_VU",
+        "start": 3688,
+        "end": 3718,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "brunello": {
+        "videoId": "ndvf_Q-Yz0A",
+        "start": 4926.6,
+        "end": 4956.6,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "josh-baker": {
+        "videoId": "wY6CC4I49lM",
+        "start": 2644,
+        "end": 2674,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "raje": {
+        "videoId": "Qd_fKj2EPBk",
+        "start": 887.8,
+        "end": 917.8,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "aat": {
+        "videoId": "zKMK_c9rTI0",
+        "start": 1732.8,
+        "end": 1762.8,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "idemi": {
+        "videoId": "24rkTQth9bU",
+        "start": 4089.1,
+        "end": 4119.1,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "joshwa": {
+        "videoId": "R9FrJhff-uM",
+        "start": 2364.2,
+        "end": 2394.2,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "malugi": {
+        "videoId": "hUXc70shuF0",
+        "start": 3007.5,
+        "end": 3049.4,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist"
+      },
+      "bullet-tooth-b2b-sidney-charles": {
+        "videoId": "DTZ48SxmM6s",
+        "start": 0,
+        "end": 5339,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "interplanetary-criminal": {
+        "videoId": "qVzW8WpOpvw",
+        "start": 0,
+        "end": 3510,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "mph": {
+        "videoId": "CZc5Fz54dXc",
+        "start": 1047.9,
+        "end": 1077.9,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "chris-lorenzo": {
+        "videoId": "ZFyvcZq7iqQ",
+        "start": 0,
+        "end": 7117,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "2ar": {
+        "videoId": "hQ06_k0GWzk",
+        "start": 0,
+        "end": 216,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "seeing-double": {
+        "videoId": "YaWzpNmIYSA",
+        "start": 0,
+        "end": 5461,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "night-tales": {
+        "videoId": "aVYW3bVWdBo",
+        "start": 0,
+        "end": 3540,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "me-n-u-casa": {
+        "videoId": "z-YtXDgSh0o",
+        "start": 0,
+        "end": 2995,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "eve-lauren": {
+        "videoId": "rBfaXRO2nDY",
+        "start": 0,
+        "end": 287,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "kashovski": {
+        "videoId": "FIJRp5E1wr0",
+        "start": 0,
+        "end": 3734,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "chantel-jeffries": {
+        "videoId": "C3oYAkenwww",
+        "start": 0,
+        "end": 135,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "monoky": {
+        "videoId": "vdDuPSUNf1A",
+        "start": 0,
+        "end": 4559,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "twinsick": {
+        "videoId": "fRA-VJOoCEc",
+        "start": 0,
+        "end": 7200,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "aaron-hibell": {
+        "videoId": "BJBoKVf3dWQ",
+        "start": 0,
+        "end": 3577,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "acraze-b2b-cid": {
+        "videoId": "yioFLRJNHYQ",
+        "start": 0,
+        "end": 7281,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alan-walker": {
+        "videoId": "wuwPiyvPqLA",
+        "start": 0,
+        "end": 3566,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "nico-moreno": {
+        "videoId": "UyqBSncE7LQ",
+        "start": 0,
+        "end": 3509,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "steve-aoki": {
+        "videoId": "xHzAj_DqZWc",
+        "start": 0,
+        "end": 3644,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "disco-lines": {
+        "videoId": "uB8TzYJkY1U",
+        "start": 0,
+        "end": 4416,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "kaskade": {
+        "videoId": "l5wro3bMZWc",
+        "start": 0,
+        "end": 4065,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "fury-with-mc-dino": {
+        "videoId": "6t2bnhv_saU",
+        "start": 0,
+        "end": 3274,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "subsonic": {
+        "videoId": "LLJAxnwT5IU",
+        "start": 0,
+        "end": 4408,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "avello": {
+        "videoId": "jnfsy2OnKmo",
+        "start": 0,
+        "end": 3506,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true,
+        "trackTitle": "AVELLO & ROSSY – Rage"
+      },
+      "jkyl-and-hyde": {
+        "videoId": "kmaK2QP1O9o",
+        "start": 0,
+        "end": 3050,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true,
+        "trackTitle": "Jkyl & Hyde - ID(\"Let's Begin\" Intro)"
+      },
+      "layz": {
+        "videoId": "tifOB17nUAA",
+        "start": 0,
+        "end": 3546,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alleycvt": {
+        "videoId": "oEkQ6gU3VFs",
+        "start": 0,
+        "end": 4428,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ray-volpe": {
+        "videoId": "VJnaOWW57u4",
+        "start": 0,
+        "end": 5446,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "skull-machine": {
+        "videoId": "RKzIDaS7yIQ",
+        "start": 0,
+        "end": 3273,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alison-wonderland": {
+        "videoId": "qtmgGEKcS8E",
+        "start": 0,
+        "end": 3576,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "mai-iachetti": {
+        "videoId": "tnpTY-IvYVE",
+        "start": 0,
+        "end": 4027,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "kinahau": {
+        "videoId": "Wo8Gxt-hetE",
+        "start": 0,
+        "end": 5231,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "miguelle-and-tons": {
+        "videoId": "cygP03RDglE",
+        "start": 0,
+        "end": 12191,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "luke-dean-b2b-george-smeddles": {
+        "videoId": "g6y-gfyCUUs",
+        "start": 0,
+        "end": 10831,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "rossi": {
+        "videoId": "PrTjyNLJIkI",
+        "start": 0,
+        "end": 4396,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "dennis-cruz": {
+        "videoId": "c-ZznapYW7I",
+        "start": 0,
+        "end": 5341,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "franky-rizardo": {
+        "videoId": "l_JUBJ673mU",
+        "start": 0,
+        "end": 5260,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alves": {
+        "videoId": "j1PFNCA1gyg",
+        "start": 0,
+        "end": 5121,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "gabbs": {
+        "videoId": "pPDXExvAtg8",
+        "start": 0,
+        "end": 3741,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "greg-99": {
+        "videoId": "JjkfofWcfec",
+        "start": 0,
+        "end": 5468,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "fallon": {
+        "videoId": "EFBwIW0y5mQ",
+        "start": 0,
+        "end": 4949,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "devault": {
+        "videoId": "h6PvAp66s_c",
+        "start": 0,
+        "end": 7255,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "discip": {
+        "videoId": "vP6FJVisY0I",
+        "start": 0,
+        "end": 6741,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "roddy-lima": {
+        "videoId": "6o89iRTVKeE",
+        "start": 0,
+        "end": 7069,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ayybo": {
+        "videoId": "Ey-a2xkJyBA",
+        "start": 0,
+        "end": 4210,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "chasewest": {
+        "videoId": "ARbPItIGmEc",
+        "start": 0,
+        "end": 5111,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "jfuse": {
+        "videoId": "xz-N3aYolxM",
+        "start": 0,
+        "end": 3581,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "landis": {
+        "videoId": "2Ypys6RueFA",
+        "start": 0,
+        "end": 152,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "allnightkev": {
+        "videoId": "rLBvEDsEVMw",
+        "start": 0,
+        "end": 5273,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "cc-love": {
+        "videoId": "A-k1IwtF8cI",
+        "start": 0,
+        "end": 313,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "juos": {
+        "videoId": "cmd5pNLtUgM",
+        "start": 0,
+        "end": 3944,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "rommii": {
+        "videoId": "fGM4njo0qcs",
+        "start": 0,
+        "end": 4420,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "esse": {
+        "videoId": "2LalfVlU5dI",
+        "start": 0,
+        "end": 2059,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ar-co": {
+        "videoId": "Sc8ohmCAwwk",
+        "start": 0,
+        "end": 3629,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "jessica-audiffred": {
+        "videoId": "q9Wi4O9Xf98",
+        "start": 0,
+        "end": 176,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ian-asher": {
+        "videoId": "zyMHoAZBg3Q",
+        "start": 0,
+        "end": 7523,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "slander": {
+        "videoId": "wXxI560L5R4",
+        "start": 0,
+        "end": 216,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "i-hate-models": {
+        "videoId": "zMW5SQPS1cY",
+        "start": 0,
+        "end": 5426,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alok": {
+        "videoId": "zHAUZ02aCwo",
+        "start": 0,
+        "end": 3650,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "hardwell": {
+        "videoId": "Py-GG74lLU8",
+        "start": 0,
+        "end": 3551,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "martin-garrix": {
+        "videoId": "sqxFW3RXGdo",
+        "start": 0,
+        "end": 3541,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "a-little-sound": {
+        "videoId": "9B22izzvIe4",
+        "start": 0,
+        "end": 3610,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "kaivon": {
+        "videoId": "bfDoWCzFcBE",
+        "start": 0,
+        "end": 247,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "san-holo": {
+        "videoId": "JGbl-zSWxJw",
+        "start": 0,
+        "end": 3454,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "of-the-trees": {
+        "videoId": "b3E9eB6Uw_E",
+        "start": 0,
+        "end": 3616,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "meduza": {
+        "videoId": "Y7Yzpqmq2ak",
+        "start": 0,
+        "end": 3128,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "maddix": {
+        "videoId": "JE-3q2ouoFQ",
+        "start": 0,
+        "end": 19711,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true,
+        "trackTitle": "0:29:32 Maddix b2b Bassjackers"
+      },
+      "deorro-b2b-dj-diesel": {
+        "videoId": "N3YWZxr0QpU",
+        "start": 0,
+        "end": 4084,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "atliens": {
+        "videoId": "wdOe276EGz8",
+        "start": 0,
+        "end": 2219,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "holy-priest": {
+        "videoId": "MVd9veFGBgQ",
+        "start": 0,
+        "end": 3372,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ultrathem": {
+        "videoId": "LvsjjPW7sbc",
+        "start": 0,
+        "end": 3241,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "shdw": {
+        "videoId": "6eDyXiQrPYA",
+        "start": 0,
+        "end": 3583,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "adrian-mills": {
+        "videoId": "RGrEsHNnUHE",
+        "start": 0,
+        "end": 5271,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "marlon-hoffstadt": {
+        "videoId": "rG1DvjvXCls",
+        "start": 0,
+        "end": 3635,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "boys-noize-b2b-brutalismus-3000": {
+        "videoId": "VaE5DSKkdm4",
+        "start": 0,
+        "end": 4054,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true,
+        "trackTitle": "01. UNTITLED unreleased"
+      },
+      "ki-ki": {
+        "videoId": "S3lL68DA7eY",
+        "start": 0,
+        "end": 3559,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "klangkuenstler": {
+        "videoId": "z16Yq4X87Hs",
+        "start": 0,
+        "end": 3754,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "m81": {
+        "videoId": "dAcmqHMuuOc",
+        "start": 0,
+        "end": 141,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "contra": {
+        "videoId": "4XpIXFLJlEk",
+        "start": 0,
+        "end": 3569,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "chef-boyarbeatz": {
+        "videoId": "SijqYLBuBwM",
+        "start": 0,
+        "end": 3501,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "phrva": {
+        "videoId": "ZfIErMwVfrE",
+        "start": 0,
+        "end": 1951,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "sippy": {
+        "videoId": "CM80hrwF6io",
+        "start": 0,
+        "end": 2935,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "know-good": {
+        "videoId": "OTFSi3ZLUU4",
+        "start": 0,
+        "end": 3780,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "taiki-nulight": {
+        "videoId": "SrPfRgitY_w",
+        "start": 0,
+        "end": 3503,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "ravenscoon": {
+        "videoId": "44TjcO4fHX0",
+        "start": 0,
+        "end": 3555,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "boogie-t": {
+        "videoId": "KMUW2qwKTsc",
+        "start": 0,
+        "end": 4551,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "troyboi": {
+        "videoId": "0Ahjqyo876s",
+        "start": 0,
+        "end": 4245,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "bryan-softwell-b2b-chini": {
+        "videoId": "n-13fdEbP0E",
+        "start": 0,
+        "end": 9029,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "marian-br": {
+        "videoId": "eOdfZ63JeMM",
+        "start": 0,
+        "end": 6823,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "joe-vanditti": {
+        "videoId": "1Q_dckQkZLs",
+        "start": 0,
+        "end": 7249,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "andrea-quintero": {
+        "videoId": "wmi8I2xNPW8",
+        "start": 0,
+        "end": 3917,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "kofla": {
+        "videoId": "IInvsVUk010",
+        "start": 0,
+        "end": 3672,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "william-kiss": {
+        "videoId": "dAezWnVu76c",
+        "start": 0,
+        "end": 3182,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      }
+    },
+    "grand-mint-festival": {
+      "yeonjeong": {
+        "videoId": "p44H-tMOJ-Q",
+        "start": 141.3,
+        "end": 171.3,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist"
+      },
+      "10cm-x-soran": {
+        "videoId": "GttpCcqBr9k",
+        "start": 0,
+        "end": 30,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist"
+      }
+    },
+    "nol-festival": {
+      "10cm-x-soran": {
+        "videoId": "GttpCcqBr9k",
+        "start": 0,
+        "end": 30,
+        "kind": "topic",
+        "label": "drop",
+        "source": "artist"
+      },
+      "alan-walker": {
+        "videoId": "wuwPiyvPqLA",
+        "start": 0,
+        "end": 3566,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      }
+    }
+  },
+  "artists": {
+    "10cm-x-soran": {
+      "videoId": "GttpCcqBr9k",
+      "start": 0,
+      "end": 30,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist"
+    },
+    "2ar": {
+      "videoId": "hQ06_k0GWzk",
+      "start": 0,
+      "end": 216,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "a-little-sound": {
+      "videoId": "9B22izzvIe4",
+      "start": 0,
+      "end": 3610,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "aaron-hibell": {
+      "videoId": "BJBoKVf3dWQ",
+      "start": 0,
+      "end": 3577,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "aat": {
+      "videoId": "zKMK_c9rTI0",
+      "start": 1732.8,
+      "end": 1762.8,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "acraze-b2b-cid": {
+      "videoId": "yioFLRJNHYQ",
+      "start": 0,
+      "end": 7281,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "adrian-mills": {
+      "videoId": "RGrEsHNnUHE",
+      "start": 0,
+      "end": 5271,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "adventure-club": {
+      "videoId": "-SoGOUE9Yug",
+      "start": 2486,
+      "end": 2516,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "afrojack": {
+      "videoId": "fLyb8KvtSzw",
+      "start": 2957.3,
+      "end": 2989.4,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "alan-walker": {
+      "videoId": "wuwPiyvPqLA",
+      "start": 0,
+      "end": 3566,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "alesso": {
+      "videoId": "TidwOi0NMI0",
+      "start": 2961.7,
+      "end": 2997.5,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "alison-wonderland": {
+      "videoId": "qtmgGEKcS8E",
+      "start": 0,
+      "end": 3576,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "alleycvt": {
+      "videoId": "oEkQ6gU3VFs",
+      "start": 0,
+      "end": 4428,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "allnightkev": {
+      "videoId": "rLBvEDsEVMw",
+      "start": 0,
+      "end": 5273,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "alok": {
+      "videoId": "zHAUZ02aCwo",
+      "start": 0,
+      "end": 3650,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "alves": {
+      "videoId": "j1PFNCA1gyg",
+      "start": 0,
+      "end": 5121,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "andrea-quintero": {
+      "videoId": "wmi8I2xNPW8",
+      "start": 0,
+      "end": 3917,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "ar-co": {
+      "videoId": "Sc8ohmCAwwk",
+      "start": 0,
+      "end": 3629,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "atliens": {
+      "videoId": "wdOe276EGz8",
+      "start": 0,
+      "end": 2219,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "avello": {
+      "videoId": "jnfsy2OnKmo",
+      "start": 0,
+      "end": 3506,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true,
+      "trackTitle": "AVELLO & ROSSY – Rage"
+    },
+    "ayybo": {
+      "videoId": "Ey-a2xkJyBA",
+      "start": 0,
+      "end": 4210,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "azzecca": {
+      "videoId": "aN557RglaxM",
+      "start": 3175.3,
+      "end": 3205.3,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "benda-b2b-vastive": {
+      "videoId": "TOExg4pSceM",
+      "start": 1532.4,
+      "end": 1562.4,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "big-florida": {
+      "videoId": "EbaOw94INtk",
+      "start": 1757.1,
+      "end": 1787.1,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "boogie-t": {
+      "videoId": "KMUW2qwKTsc",
+      "start": 0,
+      "end": 4551,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "bou-b2b-kanine": {
+      "videoId": "ubnIR93S_9Y",
+      "start": 1901.1,
+      "end": 1931.1,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "boys-noize-b2b-brutalismus-3000": {
+      "videoId": "VaE5DSKkdm4",
+      "start": 0,
+      "end": 4054,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true,
+      "trackTitle": "01. UNTITLED unreleased"
+    },
+    "brunello": {
+      "videoId": "ndvf_Q-Yz0A",
+      "start": 4926.6,
+      "end": 4956.6,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "bryan-softwell-b2b-chini": {
+      "videoId": "n-13fdEbP0E",
+      "start": 0,
+      "end": 9029,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "bullet-tooth-b2b-sidney-charles": {
+      "videoId": "DTZ48SxmM6s",
+      "start": 0,
+      "end": 5339,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "cc-love": {
+      "videoId": "A-k1IwtF8cI",
+      "start": 0,
+      "end": 313,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "chantel-jeffries": {
+      "videoId": "C3oYAkenwww",
+      "start": 0,
+      "end": 135,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "chasewest": {
+      "videoId": "ARbPItIGmEc",
+      "start": 0,
+      "end": 5111,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "chef-boyarbeatz": {
+      "videoId": "SijqYLBuBwM",
+      "start": 0,
+      "end": 3501,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "chris-lorenzo": {
+      "videoId": "ZFyvcZq7iqQ",
+      "start": 0,
+      "end": 7117,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "contra": {
+      "videoId": "4XpIXFLJlEk",
+      "start": 0,
+      "end": 3569,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "david-guetta": {
+      "videoId": "GSnPwle4FOE",
+      "start": 3803.4,
+      "end": 3833.4,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "trackTitle": "David Guetta & Marten Hørger, Men Machine - Engage (feat. Vitalic)"
+    },
+    "dennis-cruz": {
+      "videoId": "c-ZznapYW7I",
+      "start": 0,
+      "end": 5341,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "deorro-b2b-dj-diesel": {
+      "videoId": "N3YWZxr0QpU",
+      "start": 0,
+      "end": 4084,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "devault": {
+      "videoId": "h6PvAp66s_c",
+      "start": 0,
+      "end": 7255,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "discip": {
+      "videoId": "vP6FJVisY0I",
+      "start": 0,
+      "end": 6741,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "disco-lines": {
+      "videoId": "uB8TzYJkY1U",
+      "start": 0,
+      "end": 4416,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "esse": {
+      "videoId": "2LalfVlU5dI",
+      "start": 0,
+      "end": 2059,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "eve-lauren": {
+      "videoId": "rBfaXRO2nDY",
+      "start": 0,
+      "end": 287,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "fallon": {
+      "videoId": "EFBwIW0y5mQ",
+      "start": 0,
+      "end": 4949,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "franky-rizardo": {
+      "videoId": "l_JUBJ673mU",
+      "start": 0,
+      "end": 5260,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "fury-with-mc-dino": {
+      "videoId": "6t2bnhv_saU",
+      "start": 0,
+      "end": 3274,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "gabbs": {
+      "videoId": "pPDXExvAtg8",
+      "start": 0,
+      "end": 3741,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "greg-99": {
+      "videoId": "JjkfofWcfec",
+      "start": 0,
+      "end": 5468,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "hardwell": {
+      "videoId": "Py-GG74lLU8",
+      "start": 0,
+      "end": 3551,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "hayla": {
+      "videoId": "IIquvML5M4M",
+      "start": 1466.5,
+      "end": 1496.5,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "holy-priest": {
+      "videoId": "MVd9veFGBgQ",
+      "start": 0,
+      "end": 3372,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "i-hate-models": {
+      "videoId": "zMW5SQPS1cY",
+      "start": 0,
+      "end": 5426,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "ian-asher": {
+      "videoId": "zyMHoAZBg3Q",
+      "start": 0,
+      "end": 7523,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "idemi": {
+      "videoId": "24rkTQth9bU",
+      "start": 4089.1,
+      "end": 4119.1,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "inbal": {
+      "videoId": "0i0v8_v8i9U",
+      "start": 977.8,
+      "end": 1007.8,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "interplanetary-criminal": {
+      "videoId": "qVzW8WpOpvw",
+      "start": 0,
+      "end": 3510,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "jessica-audiffred": {
+      "videoId": "q9Wi4O9Xf98",
+      "start": 0,
+      "end": 176,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "jfuse": {
+      "videoId": "xz-N3aYolxM",
+      "start": 0,
+      "end": 3581,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "jkyl-and-hyde": {
+      "videoId": "kmaK2QP1O9o",
+      "start": 0,
+      "end": 3050,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true,
+      "trackTitle": "Jkyl & Hyde - ID(\"Let's Begin\" Intro)"
+    },
+    "joa": {
+      "videoId": "axAR6fJqAg0",
+      "start": 1987.6,
+      "end": 2017.6,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "joe-vanditti": {
+      "videoId": "1Q_dckQkZLs",
+      "start": 0,
+      "end": 7249,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "josh-baker": {
+      "videoId": "wY6CC4I49lM",
+      "start": 2644,
+      "end": 2674,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "joshwa": {
+      "videoId": "R9FrJhff-uM",
+      "start": 2364.2,
+      "end": 2394.2,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "juos": {
+      "videoId": "cmd5pNLtUgM",
+      "start": 0,
+      "end": 3944,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kaivon": {
+      "videoId": "bfDoWCzFcBE",
+      "start": 0,
+      "end": 247,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kashovski": {
+      "videoId": "FIJRp5E1wr0",
+      "start": 0,
+      "end": 3734,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kaskade": {
+      "videoId": "l5wro3bMZWc",
+      "start": 0,
+      "end": 4065,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "ki-ki": {
+      "videoId": "S3lL68DA7eY",
+      "start": 0,
+      "end": 3559,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kinahau": {
+      "videoId": "Wo8Gxt-hetE",
+      "start": 0,
+      "end": 5231,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "klangkuenstler": {
+      "videoId": "z16Yq4X87Hs",
+      "start": 0,
+      "end": 3754,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "know-good": {
+      "videoId": "OTFSi3ZLUU4",
+      "start": 0,
+      "end": 3780,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kofla": {
+      "videoId": "IInvsVUk010",
+      "start": 0,
+      "end": 3672,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "kompany": {
+      "videoId": "AhaquH-1Bmc",
+      "start": 2239,
+      "end": 2269,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "kream": {
+      "videoId": "kM7iuhXXaZg",
+      "start": 1262.8,
+      "end": 1292.8,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "landis": {
+      "videoId": "2Ypys6RueFA",
+      "start": 0,
+      "end": 152,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "layz": {
+      "videoId": "tifOB17nUAA",
+      "start": 0,
+      "end": 3546,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "level-up": {
+      "videoId": "uYLk84L1-Cs",
+      "start": 2241.3,
+      "end": 2271.3,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "levity": {
+      "videoId": "LXVYTEqFarM",
+      "start": 2442.5,
+      "end": 2472.5,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "luke-dean-b2b-george-smeddles": {
+      "videoId": "g6y-gfyCUUs",
+      "start": 0,
+      "end": 10831,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "m81": {
+      "videoId": "dAcmqHMuuOc",
+      "start": 0,
+      "end": 141,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "maddix": {
+      "videoId": "JE-3q2ouoFQ",
+      "start": 0,
+      "end": 19711,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true,
+      "trackTitle": "0:29:32 Maddix b2b Bassjackers"
+    },
+    "mai-iachetti": {
+      "videoId": "tnpTY-IvYVE",
+      "start": 0,
+      "end": 4027,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "malugi": {
+      "videoId": "hUXc70shuF0",
+      "start": 3007.5,
+      "end": 3049.4,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "marian-br": {
+      "videoId": "eOdfZ63JeMM",
+      "start": 0,
+      "end": 6823,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "marlon-hoffstadt": {
+      "videoId": "rG1DvjvXCls",
+      "start": 0,
+      "end": 3635,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "martin-garrix": {
+      "videoId": "sqxFW3RXGdo",
+      "start": 0,
+      "end": 3541,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "matthias": {
+      "videoId": "66wUW6AiC8E",
+      "start": 1653,
+      "end": 1683,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "mau-p": {
+      "videoId": "wxKkaBoEWCk",
+      "start": 1932.7,
+      "end": 1962.7,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "me-n-u-casa": {
+      "videoId": "z-YtXDgSh0o",
+      "start": 0,
+      "end": 2995,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "meduza": {
+      "videoId": "Y7Yzpqmq2ak",
+      "start": 0,
+      "end": 3128,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "miguelle-and-tons": {
+      "videoId": "cygP03RDglE",
+      "start": 0,
+      "end": 12191,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "monoky": {
+      "videoId": "vdDuPSUNf1A",
+      "start": 0,
+      "end": 4559,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "mph": {
+      "videoId": "CZc5Fz54dXc",
+      "start": 1047.9,
+      "end": 1077.9,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "nico-moreno": {
+      "videoId": "UyqBSncE7LQ",
+      "start": 0,
+      "end": 3509,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "night-tales": {
+      "videoId": "aVYW3bVWdBo",
+      "start": 0,
+      "end": 3540,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "obskur": {
+      "videoId": "xMAV75v0QR8",
+      "start": 4401.3,
+      "end": 4431.3,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "of-the-trees": {
+      "videoId": "b3E9eB6Uw_E",
+      "start": 0,
+      "end": 3616,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "omar-plus": {
+      "videoId": "KUd92CHa_VU",
+      "start": 3688,
+      "end": 3718,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "pegassi": {
+      "videoId": "7FKQ6Kk5bOI",
+      "start": 2339.4,
+      "end": 2369.4,
+      "kind": "mv",
+      "label": "drop",
+      "source": "artist"
+    },
+    "phrva": {
+      "videoId": "ZfIErMwVfrE",
+      "start": 0,
+      "end": 1951,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "raje": {
+      "videoId": "Qd_fKj2EPBk",
+      "start": 887.8,
+      "end": 917.8,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    },
+    "ravenscoon": {
+      "videoId": "44TjcO4fHX0",
+      "start": 0,
+      "end": 3555,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "ray-volpe": {
+      "videoId": "VJnaOWW57u4",
+      "start": 0,
+      "end": 5446,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "roddy-lima": {
+      "videoId": "6o89iRTVKeE",
+      "start": 0,
+      "end": 7069,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "rommii": {
+      "videoId": "fGM4njo0qcs",
+      "start": 0,
+      "end": 4420,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "rossi": {
+      "videoId": "PrTjyNLJIkI",
+      "start": 0,
+      "end": 4396,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "san-holo": {
+      "videoId": "JGbl-zSWxJw",
+      "start": 0,
+      "end": 3454,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "seeing-double": {
+      "videoId": "YaWzpNmIYSA",
+      "start": 0,
+      "end": 5461,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "shdw": {
+      "videoId": "6eDyXiQrPYA",
+      "start": 0,
+      "end": 3583,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "sippy": {
+      "videoId": "CM80hrwF6io",
+      "start": 0,
+      "end": 2935,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "skull-machine": {
+      "videoId": "RKzIDaS7yIQ",
+      "start": 0,
+      "end": 3273,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "slander": {
+      "videoId": "wXxI560L5R4",
+      "start": 0,
+      "end": 216,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "sloth": {
+      "videoId": "HYonXqZKjDQ",
+      "start": 495.8,
+      "end": 525.8,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "steve-aoki": {
+      "videoId": "xHzAj_DqZWc",
+      "start": 0,
+      "end": 3644,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "subsonic": {
+      "videoId": "LLJAxnwT5IU",
+      "start": 0,
+      "end": 4408,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "taiki-nulight": {
+      "videoId": "SrPfRgitY_w",
+      "start": 0,
+      "end": 3503,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "troyboi": {
+      "videoId": "0Ahjqyo876s",
+      "start": 0,
+      "end": 4245,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "twinsick": {
+      "videoId": "fRA-VJOoCEc",
+      "start": 0,
+      "end": 7200,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "ultrathem": {
+      "videoId": "LvsjjPW7sbc",
+      "start": 0,
+      "end": 3241,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "whethan": {
+      "videoId": "1Q-j11Nlm4k",
+      "start": 2529.8,
+      "end": 2559.8,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "william-kiss": {
+      "videoId": "dAezWnVu76c",
+      "start": 0,
+      "end": 3182,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "wooli": {
+      "videoId": "PaBcY8VTZZI",
+      "start": 4023,
+      "end": 4055.2,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist"
+    },
+    "yeonjeong": {
+      "videoId": "p44H-tMOJ-Q",
+      "start": 141.3,
+      "end": 171.3,
+      "kind": "topic",
+      "label": "drop",
+      "source": "artist"
+    },
+    "zack-martino": {
+      "videoId": "HM2E_TDxcr8",
+      "start": 0,
+      "end": 55.1,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist"
+    }
+  }
+}

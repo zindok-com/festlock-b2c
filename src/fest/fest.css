@@ -1,0 +1,253 @@
+/* ===== 새 페스티벌 페이지 공통 ===== */
+.fx{padding-top:12px}
+.fx-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 4px}
+.fx-top .brand{order:0;margin:0}
+.fx-top .lang{order:1}
+.fx h1{background:none;-webkit-background-clip:border-box;background-clip:border-box}
+.fx-thumb{flex:none;border:0;padding:0;background:none;cursor:zoom-in;line-height:0;overflow:hidden}
+.fx-thumb img{width:112px;height:auto;display:block}
+.fx-thumb:focus-visible,.fx-pbtn:focus-visible,.nol-stage:focus-visible,.nol-day:focus-visible,.nr-hit:focus-visible,.gb-hit:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.fx-pbtn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 14px;font:800 13px "Noto Sans KR",sans-serif;cursor:pointer}
+.fx-intro{margin:14px 8px 0;font-size:13.5px;line-height:1.6}
+.fx-legend{margin:6px 8px 0;font-size:11.5px;line-height:1.6}
+.fx-live{position:absolute;right:4px;top:4px;width:10px;height:10px;border-radius:50%;background:#ff2d55;animation:fxPulse 1.6s ease-out infinite;pointer-events:none}
+@keyframes fxPulse{0%{box-shadow:0 0 0 0 rgba(255,45,85,.7)}100%{box-shadow:0 0 0 10px rgba(255,45,85,0)}}
+@keyframes fxBlink{50%{opacity:.55}}
+.fx-art-ph{width:180px;height:180px;border-radius:24px;object-fit:cover;object-position:50% 25%;display:block;background:var(--off-bg)}
+.fx-tag,.fx-kind{margin-top:10px;padding:3px 10px;border-radius:999px;font:800 11.5px "Rubik",sans-serif;background:var(--c);color:#2c2a3d}
+.fx-kind + h2,.fx-tag + h2{margin-top:8px}
+.link.ml{background:#00cd3c;color:#062b12}
+/* 포스터 보기 */
+.fx-poster .v-top{gap:12px}
+.fx-pseg{margin:0;flex:1;max-width:280px}
+.fx-pseg button{background:rgba(255,255,255,.1);color:#f3efff;box-shadow:none}
+.fx-pseg button[aria-pressed="true"]{background:#f3efff;color:#07030f}
+.fx-pbody{flex:1;min-height:0;overflow:auto;padding:4px 12px calc(16px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}
+.fx-pbody img{display:block;width:100%;max-width:760px;height:auto;margin:0 auto;border-radius:12px;-webkit-touch-callout:default}
+@media (prefers-reduced-motion:reduce){.fx-live,.nr-live{animation:none}}
+
+/* ===== 그랜드 민트 페스티벌: 분홍 종이 + 진한 테두리 + 레트로 그림자 ===== */
+html:root[data-fest="gmf"]{
+  --bg:#f6dcea;--panel:#fffaf4;--line:rgba(58,37,51,.15);
+  --tx:#3a2533;--tx2:#7b6271;--off-bg:#f3e6ee;--off-tx:#a08a98;
+  --ink:#3a2533;--accent:#e8559a;--bar:rgba(255,246,251,.95);
+  color-scheme:light;
+}
+html[data-fest="gmf"] body{background:#efc0dc linear-gradient(180deg,#efc0dc 0%,#ebc9e0 55%,#e6f0c6 100%) fixed}
+html[data-fest="gmf"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .15 0 0 0 0 .3 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[data-fest="gmf"] .btn.main{background:#e8559a;color:#fff;box-shadow:inset 0 0 0 2px #3a2533}
+html[data-fest="gmf"] .seg button[aria-pressed="true"]{background:#3a2533;color:#fff3a8}
+html[data-fest="gmf"] .seg.opts button[aria-pressed="true"]{background:#e8559a;color:#fff}
+.gmf .brand b{color:#e8559a}
+.gmf-hero{display:flex;gap:16px;align-items:center;padding:16px 8px 4px}
+.gmf-hero .fx-thumb{border:2.5px solid #3a2533;border-radius:12px;box-shadow:4px 5px 0 #3a2533;transform:rotate(-3deg)}
+.gmf-hero-txt{min-width:0}
+.gmf-when{margin:0;font:800 12.5px "Rubik",sans-serif;letter-spacing:.05em;color:#3a2533}
+.gmf-title{
+  margin:6px 0 4px;font:400 clamp(29px,8.6vw,42px)/1.02 "Bagel Fat One","Noto Sans KR",sans-serif;letter-spacing:0;
+  color:#f07aa9;-webkit-text-stroke:1.6px #3a2533;text-shadow:3px 3px 0 #3a2533;
+}
+.gmf-where{margin:0 0 10px;font:700 12.5px "Rubik","Noto Sans KR",sans-serif;color:var(--tx2)}
+.gmf .fx-pbtn{background:#fff3a8;color:#3a2533;box-shadow:inset 0 0 0 2px #3a2533,2px 3px 0 #3a2533}
+.gmf .fx-intro{color:#3a2533}
+.gmf .fx-legend{color:var(--tx2)}
+.gmf-sticky{background:rgba(242,205,227,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);margin:12px -6px 0;padding:0 6px}
+.gmf .tab{background:#fffaf4;color:#3a2533;box-shadow:inset 0 0 0 2px #3a2533}
+.gmf .tab[aria-selected="true"]{background:#3a2533;color:#fff3a8;box-shadow:2px 3px 0 rgba(58,37,51,.35)}
+.gmf .cnt{background:#e8559a}
+.gmf-heads,.gmf-grid{display:grid;grid-template-columns:30px repeat(4,minmax(0,1fr));gap:4px}
+.gmf-heads{padding-bottom:6px}
+.gmf-head{text-align:center;min-width:0;padding:2px 0 0}
+.gmf-head .p{font:700 8.5px/1.2 "Noto Sans KR",sans-serif;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmf-head .n{margin-top:3px;font:400 clamp(10px,3vw,14.5px)/1.05 "Bagel Fat One","Rubik",sans-serif;color:var(--c);-webkit-text-stroke:.7px #3a2533;overflow-wrap:anywhere}
+.gmf-head .d{margin-top:3px;font:700 8.5px "Rubik","Noto Sans KR",sans-serif;color:var(--tx2);min-height:10px}
+.gmf-grid{margin:8px 0 10px}
+.gmf-axis{position:relative}
+.gmf-axis span{position:absolute;right:3px;transform:translateY(-50%);font:700 10px "Rubik",sans-serif;color:var(--tx2)}
+.gmf-col{position:relative;border-radius:8px;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(58,37,51,.14) calc(var(--ppm) * 60 - 1px),rgba(58,37,51,.14) calc(var(--ppm) * 60))}
+.gb{--capc:rgba(255,248,252,.96);position:absolute;left:1px;right:3px;border-radius:9px;overflow:hidden;background:rgba(255,250,252,.55);box-shadow:inset 0 0 0 1.5px rgba(58,37,51,.28);color:rgba(58,37,51,.6);transition:background-color .15s,box-shadow .15s,transform .12s}
+.gb.on{--capc:var(--c);background:var(--c);color:var(--k);box-shadow:inset 0 0 0 2px #3a2533,2px 3px 0 #3a2533}
+.gb.ev.on{color:#2c2a3d}
+.gb-hit{position:absolute;inset:0;width:100%;border:0;margin:0;padding:4px 4px 3px;background:transparent;color:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;font-family:"Noto Sans KR","Rubik",sans-serif;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.gb-hit:active{transform:scale(.97)}
+.gb-cap{display:flex;flex-direction:column;gap:1px;flex:1;min-height:0}
+.gb-nm{font-weight:900;font-size:clamp(9px,2.75vw,13px);line-height:1.12;letter-spacing:-.03em;word-break:keep-all;overflow-wrap:anywhere}
+.gb-tm{font:600 clamp(7.5px,2.1vw,9.5px) "Rubik",sans-serif;opacity:.85;margin-top:auto;line-height:1.1}
+.gb-kind{font:800 7.5px "Rubik",sans-serif;letter-spacing:.05em;opacity:.75}
+.gb-with{font-weight:600;font-size:clamp(7.5px,2.1vw,9px);line-height:1.2;opacity:.85;overflow-wrap:anywhere}
+.gb.ph .gb-hit{padding:0}
+.gb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1);opacity:.45;pointer-events:none;transition:filter .15s,opacity .15s}
+.gb.on .gb-img{filter:none;opacity:1}
+.gb.ph .gb-cap{position:absolute;left:0;right:0;bottom:0;flex:none;padding:20px 4px 4px;background:linear-gradient(to top,var(--capc) 0%,var(--capc) 52%,transparent 100%)}
+.gb.ph .gb-tm.top{position:absolute;top:3px;left:3px;margin:0;padding:1px 4px;border-radius:5px;background:rgba(58,37,51,.72);color:#fff;opacity:1}
+.gb .warn{position:absolute;right:2px;bottom:2px;font-size:10px;line-height:1;padding:2px;border-radius:5px;background:rgba(58,37,51,.6);pointer-events:none}
+.gmf .foot{color:var(--tx2)}
+
+/* ===== NOL 페스티벌: 스테이지 색으로 바뀌는 배경 + 흰 카드 + 검은 태그 ===== */
+html:root[data-fest="nol"]{
+  --bg:#eef0ff;--panel:#ffffff;--line:rgba(16,18,58,.1);
+  --tx:#10123a;--tx2:#5d6290;--off-bg:#e4e6f5;--off-tx:#8a8fb5;
+  --ink:#10123a;--accent:#3443ee;--bar:rgba(255,255,255,.96);
+  color-scheme:light;
+}
+html[data-fest="nol"] body{background:var(--nb,#3443ee);transition:background-color .35s}
+html[data-fest="nol"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(28deg,transparent 62%,rgba(255,255,255,.07) 62%,rgba(255,255,255,.07) 78%,transparent 78%),
+    linear-gradient(-18deg,transparent 18%,rgba(255,255,255,.06) 18%,rgba(255,255,255,.06) 30%,transparent 30%),
+    linear-gradient(105deg,transparent 70%,rgba(0,0,0,.06) 70%,rgba(0,0,0,.06) 84%,transparent 84%);
+}
+html[data-fest="nol"] .btn.main{background:#0b0b14;color:#fff}
+html[data-fest="nol"] .seg.opts button[aria-pressed="true"]{background:#3443ee;color:#fff}
+.nol{color:#fff}
+.nol .brand{color:#fff}
+.nol .brand b{color:var(--nh,#d6f43c)}
+.nol-hero{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:16px 8px 0}
+.nol-hero-txt{min-width:0}
+.nol-when{margin:0;font:800 12.5px "Rubik",sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.85)}
+.nol-title{margin:6px 0 12px;font:900 clamp(38px,11.5vw,58px)/.92 "Rubik",sans-serif;letter-spacing:-.035em;color:var(--nh,#d6f43c)}
+.nol .fx-thumb{border-radius:10px;transform:rotate(3deg);box-shadow:0 10px 24px rgba(0,0,0,.3)}
+.nol .fx-pbtn{background:#0b0b14;color:#fff}
+.nol .fx-intro{color:rgba(255,255,255,.9)}
+.nol .fx-intro b{color:var(--nh)}
+.nol-sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin:14px -6px 0;padding:10px 6px 10px;background:var(--nb,#3443ee);transition:background-color .35s;box-shadow:0 10px 14px -12px rgba(0,0,0,.4)}
+.nol-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.nol-stage{position:relative;border:0;border-radius:14px;padding:10px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--sb);color:rgba(255,255,255,.82);opacity:.62;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35);transition:opacity .2s,transform .12s}
+.nol-stage:active{transform:scale(.97)}
+.nol-stage b{font:900 clamp(13px,3.9vw,17px) "Rubik",sans-serif;letter-spacing:-.01em;white-space:nowrap}
+.nol-stage span{font:700 10.5px "Rubik",sans-serif;opacity:.8}
+.nol-stage[aria-selected="true"]{opacity:1;color:var(--sh);box-shadow:inset 0 0 0 3px var(--sh),0 6px 16px rgba(0,0,0,.28)}
+.nol-cnt{position:absolute;top:-6px;right:-3px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#0b0b14;color:#fff;font:800 11px "Rubik",sans-serif;font-style:normal;display:grid;place-items:center}
+.nol-days{display:flex;gap:8px;margin-top:10px}
+.nol-day{flex:1;min-width:0;border:0;cursor:pointer;padding:10px 8px;display:flex;justify-content:center;align-items:center;gap:6px;font:800 clamp(11.5px,3.4vw,13.5px) "Rubik","Noto Sans KR",sans-serif;color:rgba(255,255,255,.72);background:rgba(11,11,20,.28);clip-path:polygon(3% 0,100% 4%,97% 100%,0 92%);white-space:nowrap}
+.nol-day[aria-selected="true"]{background:#0b0b14;color:#fff}
+.nol-day i{font-style:normal;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--nh);color:#0b0b14;font-size:10.5px;display:grid;place-items:center}
+.nol-stage-h{margin:18px 6px 10px;font:900 clamp(18px,5.4vw,24px) "Rubik",sans-serif;letter-spacing:-.01em;color:var(--nh)}
+.nol-stage-h span{font-weight:800;opacity:.85}
+.nol-note{margin:0 6px 12px;padding:9px 11px;border-radius:10px;background:rgba(0,0,0,.22);font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.9)}
+.nol-line{list-style:none;margin:0;padding:0 2px;display:flex;flex-direction:column;gap:8px}
+.nr{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px}
+.nr-time{display:flex;flex-direction:column;padding-top:5px;color:#fff;font-family:"Rubik",sans-serif}
+.nr-time b{font-size:15px;font-weight:800}
+.nr-time span{font-size:11px;font-weight:600;opacity:.6;margin-top:2px}
+.nr-card{position:relative;height:var(--h);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.13);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);transition:background-color .15s,box-shadow .15s}
+.nr.on .nr-card{background:#fff;box-shadow:0 0 0 3px var(--nh),0 8px 20px rgba(0,0,0,.22)}
+.nr.live .nr-card{box-shadow:0 0 0 3px #ff2d55,0 8px 20px rgba(0,0,0,.22)}
+.nr-hit{position:absolute;inset:0;width:100%;display:flex;align-items:stretch;border:0;margin:0;padding:0;background:transparent;color:#fff;text-align:left;cursor:pointer;font:inherit;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:transform .12s}
+.nr-hit:active{transform:scale(.985)}
+.nr.on .nr-hit{color:#10123a}
+.nr-ph{position:relative;flex:none;width:min(var(--h),84px);overflow:hidden;background:rgba(0,0,0,.14)}
+.nr-img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block;filter:grayscale(1);opacity:.55;transition:filter .15s,opacity .15s;-webkit-touch-callout:none}
+.nr.on .nr-img{filter:none;opacity:1}
+.nr-init{width:100%;height:100%;display:grid;place-items:center;font:900 20px "Rubik",sans-serif;color:rgba(255,255,255,.6)}
+.nr.on .nr-init{background:var(--nb);color:var(--nh)}
+.nr-check{position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:900 13px "Rubik",sans-serif;color:transparent;background:rgba(0,0,0,.3);box-shadow:inset 0 0 0 2px rgba(255,255,255,.75)}
+.nr.on .nr-check{background:var(--nh);color:#0b0b14;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.nr-txt{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:2px;padding:9px 10px 9px 12px}
+.nr-top{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nr-nm{font:800 clamp(14.5px,4.3vw,19px)/1.15 "Rubik","Noto Sans KR",sans-serif;letter-spacing:-.01em;overflow-wrap:break-word;word-break:keep-all}
+.nr-sub{font:600 12px/1.3 "Noto Sans KR",sans-serif;opacity:.7;overflow-wrap:anywhere}
+.nr-live{align-self:flex-start;padding:2px 6px;border-radius:6px;background:#ff2d55;color:#fff;font:800 10.5px "Noto Sans KR","Rubik",sans-serif;animation:fxBlink 1.4s ease-in-out infinite}
+.nr-dur{font:700 11.5px/26px "Rubik",sans-serif;opacity:.75;white-space:nowrap}
+.nol-gap{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;height:var(--g)}
+.nol-gap span{grid-column:2;display:flex;align-items:center;justify-content:center;border-radius:10px;border:1.5px dashed rgba(255,255,255,.32);font:700 10.5px "Rubik","Noto Sans KR",sans-serif;letter-spacing:.06em;color:rgba(255,255,255,.65)}
+.nol .foot{color:rgba(255,255,255,.78)}
+.nol-sum-stage{display:inline-block;padding:1px 7px;border-radius:6px;background:var(--nb);color:var(--nh);font:800 11px "Rubik",sans-serif;vertical-align:1px}
+
+/* 다운로드 수 · 랭킹 버튼 */
+.fx-stats{margin:12px 8px 0}
+.gmf .dl-count{color:var(--tx2)}
+.gmf .top-btn{background:#e8559a;box-shadow:inset 0 0 0 2px #3a2533,2px 3px 0 #3a2533}
+.nol .dl-count{color:rgba(255,255,255,.85)}
+.nol .dl-count b{color:#fff}
+.nol .top-btn{background:#0b0b14;color:#fff;box-shadow:inset 0 0 0 2px var(--nh)}
+.fx-demo{padding:3px 8px;border-radius:6px;background:#ffe14d;color:#3a1606;font:800 11px "Rubik","Noto Sans KR",sans-serif}
+
+/* NOL 듣기 로고 (카드 아래 오른쪽 가로 한 줄) */
+.nr-links{position:absolute;right:9px;bottom:9px;display:flex;gap:5px}
+.nr-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.92);box-shadow:0 1px 3px rgba(0,0,0,.18);-webkit-touch-callout:none;transition:transform .12s}
+.nr-ic:active{transform:scale(.9)}
+.nr-ic:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.nr.on .nr-ic{background:#f1f2f8;box-shadow:none}
+.nr.flash .nr-card{animation:nrFlash 2.2s ease-out}
+@keyframes nrFlash{0%,45%{box-shadow:0 0 0 4px #fff,0 0 24px 6px var(--nh)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.nr.flash .nr-card{animation:none}}
+
+/* 배경화면: 입장 시간부터 */
+.fx-from{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:-2px 2px 8px;font-size:13px;color:var(--tx2)}
+.fx-from select{font:700 14px "Rubik",sans-serif;padding:6px 10px;border-radius:10px;border:0;background:var(--bg);color:var(--tx);box-shadow:inset 0 0 0 1px var(--line)}
+/* 배경화면 옵션 버튼 3개: 한 줄에 들어가게 글자를 줄이고 줄바꿈 없이 */
+.fx-card .seg.opts{gap:5px}
+.fx-card .seg.opts button{flex:1 1 auto;padding:9px 6px;font-size:clamp(10.5px,2.8vw,13px);letter-spacing:-.02em;white-space:nowrap}
+
+/* ===== EDC Orlando 2026: 공식 포스터 테마 (검은 우주 · 궤도 고리 · 붉은 성운 · 초록 크롬 글자 · 형광 연두 이름 · 날짜 색 테두리) ===== */
+html:root[data-fest="orl"]{
+  --bg:#04050b;--panel:#0f1222;--line:rgba(160,190,255,.14);
+  --tx:#f4f6ff;--tx2:#a3acd0;--off-bg:rgba(6,10,24,.84);--off-tx:#e2f55c;
+  --ink:#0b0d18;--accent:#e2f55c;--bar:rgba(6,8,18,.95);
+  color-scheme:dark;
+}
+html[data-fest="orl"] body{background:#04050b}
+html[data-fest="orl"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(55% 22% at 0% 6%,rgba(214,58,38,.5),transparent 72%),
+    radial-gradient(45% 20% at 100% 14%,rgba(214,58,38,.38),transparent 72%),
+    radial-gradient(120% 34% at 50% 108%,rgba(230,110,40,.42),transparent 70%),
+    radial-gradient(70% 30% at 50% 30%,rgba(60,110,200,.16),transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='520' viewBox='0 0 900 520'%3E%3Cg fill='none' stroke='%2396b4ff' stroke-opacity='.16' stroke-width='1.5'%3E%3Cellipse cx='450' cy='260' rx='110' ry='34'/%3E%3Cellipse cx='450' cy='260' rx='200' ry='62'/%3E%3Cellipse cx='450' cy='260' rx='290' ry='90'/%3E%3Cellipse cx='450' cy='260' rx='380' ry='118'/%3E%3Cellipse cx='450' cy='260' rx='446' ry='146'/%3E%3C/g%3E%3C/svg%3E") 50% 120px/1100px auto no-repeat,
+    radial-gradient(1.2px 1.2px at 12% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 72% 9%,#fff 60%,transparent),
+    radial-gradient(1.4px 1.4px at 88% 33%,#fff 60%,transparent),radial-gradient(1px 1px at 33% 41%,#fff 60%,transparent),
+    radial-gradient(1px 1px at 56% 62%,#fff 60%,transparent),radial-gradient(1.3px 1.3px at 8% 74%,#fff 60%,transparent),
+    radial-gradient(1px 1px at 93% 81%,#fff 60%,transparent),radial-gradient(1.2px 1.2px at 47% 88%,#fff 60%,transparent),
+    #04050b;
+}
+html[data-fest="orl"] .btn.main{background:#e2f55c;color:#0b0d18}
+html[data-fest="orl"] .seg button[aria-pressed="true"]{background:#e2f55c;color:#0b0d18}
+html[data-fest="orl"] .seg.opts button[aria-pressed="true"]{background:#e2f55c;color:#0b0d18}
+.orl .brand b{color:#ff4fa0}
+.orl-hero{position:relative;overflow:hidden;padding-bottom:6px}
+.orl-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:-1}
+.orl-orb.o1{width:30px;height:30px;right:6px;top:150px;background:radial-gradient(circle at 32% 28%,#fff 0 8%,#ffe08a 18%,#b07a12 72%,#120a00)}
+.orl-orb.o2{width:16px;height:16px;left:16%;top:58px;background:radial-gradient(circle at 32% 28%,#fff 0 8%,#9fd8ff 18%,#2b5fb8 72%,#020818)}
+.orl .hero h1.orl-logo{
+  margin:16px 0 4px;display:flex;align-items:flex-end;gap:12px;
+  background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit;
+  font:400 clamp(58px,17vw,84px)/.82 "Righteous","Rubik",sans-serif;letter-spacing:0;
+}
+.orl-logo .e{background:linear-gradient(180deg,#e9ffb0 0%,#7bea6a 35%,#1f9e57 70%,#0c5a35 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px #062414;filter:drop-shadow(0 3px 0 rgba(0,0,0,.6))}
+.orl-logo .t{font-size:.4em;line-height:1;color:#f4f6ff;-webkit-text-stroke:1px #0b0d18;text-shadow:0 3px 0 #0b0d18;padding-bottom:4px}
+.orl-badges{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
+.orl-badges span{font:400 14px "Righteous","Rubik",sans-serif;letter-spacing:.08em;padding:5px 12px 4px;border-radius:5px;background:#c8362a;color:#ffe9c7;box-shadow:inset 0 0 0 2px #ffe9c7,0 0 0 2px #c8362a}
+.orl .orl-where{color:#e2f55c}
+.orl .sticky{background:rgba(4,5,11,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.orl .tab{background:rgba(12,16,34,.9);color:#f4f6ff;box-shadow:inset 0 0 0 1.5px rgba(160,190,255,.28)}
+.orl .tab[aria-selected="true"]{background:#e2f55c;color:#0b0d18;box-shadow:0 0 14px rgba(226,245,92,.35)}
+.orl .cnt{background:#c8362a}
+.orl .chip{background:rgba(12,16,34,.9);color:#cfd6f5}
+.orl .chip[aria-pressed="true"]{background:#e2f55c;color:#0b0d18}
+.orl .head{border-bottom-color:var(--c)}
+.orl .head .a{color:rgba(244,246,255,.65)}
+.orl .head .b{color:#f4f6ff}
+.orl .head .h{color:var(--c)}
+.orl .axis span{color:rgba(236,240,255,.7)}
+.orl .col{background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(160,190,255,.12) calc(var(--ppm) * 60 - 1px),rgba(160,190,255,.12) calc(var(--ppm) * 60))}
+/* 고르기 전: 무색 바탕 + 회색 이름 + 옅은 회색 테두리. 고른 칸: 글씨 뒤를 무대 브랜드 색(--c)으로, 글자 --ci */
+.orl .blk{--bgc:rgba(6,10,24,.86);color:#b8bdd0;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(170,180,210,.2)}
+.orl .blk .nm{font-weight:800;text-transform:uppercase}
+.orl .blk .tm{color:#f4f6ff}
+.orl .blk .gn{color:rgba(244,246,255,.58)}
+.orl .blk.on{--bgc:var(--c);color:var(--ci);box-shadow:inset 0 0 0 2px #fff,0 0 12px var(--c)}
+.orl .blk.on .tm,.orl .blk.on .gn{color:var(--ci)}
+.orl .blk.ph .tm-top{background:rgba(4,6,14,.75);color:#fff}
+.orl .blk.ph:not(.on) .ph-img{opacity:.55}
+.orl .foot{color:var(--tx2)}
+.orl .tab{padding-left:10px;padding-right:10px;white-space:nowrap}
+.orl .tab span{white-space:nowrap}
+.orl-where{margin:6px 2px 0;font:700 12.5px "Rubik","Noto Sans KR",sans-serif;letter-spacing:.02em}
+.orl .head .b{font-size:clamp(9.5px,2.9vw,12.5px);overflow-wrap:anywhere}
+.orl .head .a{font-size:clamp(8px,2.4vw,10px)}

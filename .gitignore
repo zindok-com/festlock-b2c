@@ -1,0 +1,8 @@
+node_modules/
+dist/
+_inbox/
+faces-src/
+.env
+.env.*
+*.log
+.vercel
