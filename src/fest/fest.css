@@ -311,13 +311,14 @@ html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
 .zon-seg i{position:absolute;top:-5px;right:-2px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--c);color:var(--ci);font:800 10px/16px "Rubik",sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0b0706;z-index:1}
 .zon-seg:active{transform:scale(.95)}
 .zon-seg:focus-visible{outline:2px solid #fff;outline-offset:1px}
-.zon-view{position:absolute;top:-3px;bottom:-3px;left:var(--vl,0%);width:var(--vw,60%);border-radius:10px;box-shadow:0 0 0 2px #f6e3c0;pointer-events:none;transition:left .08s linear}
+.zon-view{position:absolute;top:-3px;bottom:-3px;left:var(--vl,0%);width:var(--vw,60%);border-radius:10px;box-shadow:0 0 0 2px #f6e3c0;pointer-events:none}
 .zon .chip.help{min-width:38px;background:rgba(246,227,192,.1);color:#f6e3c0}
 /* 가로 밀기: 칸 너비 고정(한 화면에 약 4.3칸), 시간축은 왼쪽에 고정 */
 .zon{--cw:clamp(72px,calc((min(100vw,560px) - 57px) / 4.3),132px)}
 .zon-bar .chip.help{margin-left:auto}
 .zon .zon-track{position:relative;grid-template-columns:30px repeat(var(--n),var(--cw));width:max-content;min-width:100%}
-.zon-heads{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.zon-heads{overflow:hidden;clip-path:inset(0 0 0 30px)}
+.zon-heads .zon-track{will-change:transform}
 .zon-heads::-webkit-scrollbar,.zon-scroll::-webkit-scrollbar{display:none}
 .zon-corner{position:sticky;left:0;z-index:2;background:#0b0706}
 .zon-wrap{position:relative}
@@ -325,8 +326,8 @@ html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
 .zon-wrap::after{right:0;background:linear-gradient(to right,transparent,rgba(11,7,6,.92))}
 .zon-wrap::before{left:30px;background:linear-gradient(to left,transparent,rgba(11,7,6,.75))}
 .zon-wrap.at-end::after,.zon-wrap.at-start::before{opacity:0}
-.zon-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x proximity;scroll-padding-left:33px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
-.zon .col{scroll-snap-align:start;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60))}
+.zon-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.zon .col{background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60))}
 .zon .axis{position:sticky;left:0;z-index:3;background:#0b0706}
 .zon .axis span{color:rgba(246,227,192,.72)}
 .zon .head{border-bottom-color:var(--c);padding-top:2px}
@@ -345,7 +346,6 @@ html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
 /* 지금 시각 줄 */
 .zon-now{position:absolute;left:30px;right:0;height:0;border-top:2px solid #ff2d55;z-index:2;pointer-events:none}
 .zon-now span{position:sticky;left:32px;display:inline-block;transform:translateY(-50%);margin-top:-1px;padding:1px 6px;border-radius:6px;background:#ff2d55;color:#fff;font:800 9.5px "Noto Sans KR","Rubik",sans-serif}
-@media (prefers-reduced-motion:reduce){.zon-view{transition:none}}
 
 /* 두 명이서 하는 공연: 아티스트 창에서 사진 두 장 */
 .fx-duo{display:flex;gap:12px;justify-content:center;align-items:flex-start;max-width:100%}

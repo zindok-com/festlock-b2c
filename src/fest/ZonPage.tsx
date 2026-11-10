@@ -159,23 +159,33 @@ export function ZonPage() {
   const heads = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
-  const sync = useCallback((from: "grid" | "heads") => {
+  const raf = useRef(0);
+  // 한 방향 동기화: 시간표(scroller)만 실제로 스크롤하고, 무대 이름 줄은 transform 으로 따라가게 한다
+  // (예전엔 두 스크롤러가 서로 scrollLeft 를 덮어써서 천천히 밀 때 어긋나고 버벅였다)
+  const apply = useCallback(() => {
+    raf.current = 0;
     const g = scroller.current, h = heads.current;
-    if (!g || !h) return;
-    const src = from === "grid" ? g : h, dst = from === "grid" ? h : g;
-    if (Math.abs(dst.scrollLeft - src.scrollLeft) > 0.5) dst.scrollLeft = src.scrollLeft;
+    if (!g) return;
+    const x = g.scrollLeft;
+    if (h) h.style.transform = `translate3d(${-x}px,0,0)`;
     // 보이는 범위 = 시간축(30px) 오른쪽부터
     const track = g.scrollWidth - 30, view = g.clientWidth - 30;
     if (track > 0 && map.current) {
-      map.current.style.setProperty("--vl", ((g.scrollLeft / track) * 100).toFixed(2) + "%");
+      map.current.style.setProperty("--vl", ((x / track) * 100).toFixed(2) + "%");
       map.current.style.setProperty("--vw", (Math.min(1, view / track) * 100).toFixed(2) + "%");
     }
-    wrap.current?.classList.toggle("at-end", g.scrollLeft + g.clientWidth >= g.scrollWidth - 4);
-    wrap.current?.classList.toggle("at-start", g.scrollLeft <= 4);
+    wrap.current?.classList.toggle("at-end", x + g.clientWidth >= g.scrollWidth - 4);
+    wrap.current?.classList.toggle("at-start", x <= 4);
   }, []);
+  const sync = useCallback(() => {
+    // 이름 줄은 즉시(같은 프레임) 옮기고, 나머지(지도 테두리 등)는 프레임당 한 번만
+    const g = scroller.current, h = heads.current;
+    if (g && h) h.style.transform = `translate3d(${-g.scrollLeft}px,0,0)`;
+    if (!raf.current) raf.current = requestAnimationFrame(apply);
+  }, [apply]);
   useEffect(() => {
-    sync("grid");
-    const on = () => sync("grid");
+    sync();
+    const on = () => sync();
     window.addEventListener("resize", on);
     return () => window.removeEventListener("resize", on);
   }, [sync]);
@@ -303,7 +313,7 @@ export function ZonPage() {
               ?
             </button>
           </div>
-          <div className="zon-heads" ref={heads} onScroll={() => sync("heads")}>
+          <div className="zon-heads" ref={heads} >
             <div className="heads zon-track" style={{ "--n": ZON_STAGES.length } as CSSProperties}>
               <div className="zon-corner" />
               {ZON_STAGES.map((st) => (
@@ -317,7 +327,7 @@ export function ZonPage() {
         </div>
 
         <div className="zon-wrap at-start" ref={wrap}>
-          <div className="zon-scroll" ref={scroller} onScroll={() => sync("grid")}>
+          <div className="zon-scroll" ref={scroller} onScroll={sync}>
             <div className="grid zon-track" style={{ "--ppm": PPM + "px", "--n": ZON_STAGES.length } as CSSProperties}>
               <div className="axis" style={colStyle}>
                 {hours.map((m) => (
