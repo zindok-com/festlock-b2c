@@ -160,35 +160,75 @@ export function ZonPage() {
   const map = useRef<HTMLDivElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const raf = useRef(0);
-  // 한 방향 동기화: 시간표(scroller)만 실제로 스크롤하고, 무대 이름 줄은 transform 으로 따라가게 한다
+  const root = useRef<HTMLDivElement>(null);
+  /** 시간표 크기 (크기가 바뀔 때만 다시 잰다. 스크롤마다 scrollWidth 를 읽으면 매 프레임 강제 레이아웃이 일어난다) */
+  const dims = useRef({ track: 0, view: 0, range: 0, vw: 1 });
+  /**
+   * 무대 이름 줄이 시간표를 따라가는 방법:
+   *  - 스크롤 연동 애니메이션(CSS `animation-timeline`)을 쓸 수 있는 브라우저(안드로이드 크롬 등)에서는 CSS 가 직접 따라간다.
+   *    스크롤은 컴포지터 스레드에서 처리되는데 자바스크립트로 옮기면 한 프레임 늦게 따라가서, 천천히 밀 때 이름 줄과 열이 미세하게
+   *    어긋나며 떨린다. CSS 연동은 같은 프레임에 움직이므로 어긋나지 않는다 (`--range` 만 JS 가 크기가 바뀔 때 알려 준다).
+   *  - 쓸 수 없는 브라우저(아이폰 사파리 등)는 예전처럼 JS 가 transform 으로 옮긴다.
+   */
+  const cssSync = useMemo(() => {
+    try {
+      return typeof CSS !== "undefined" && CSS.supports("animation-timeline", "scroll()") && CSS.supports("timeline-scope", "--zs");
+    } catch {
+      return false;
+    }
+  }, []);
+  const measure = useCallback(() => {
+    const g = scroller.current;
+    if (!g) return;
+    // 보이는 범위 = 시간축(30px) 오른쪽부터
+    const track = g.scrollWidth - 30, view = g.clientWidth - 30;
+    const d = dims.current;
+    d.track = track;
+    d.view = view;
+    d.range = Math.max(0, g.scrollWidth - g.clientWidth);
+    d.vw = track > 0 ? Math.min(1, view / track) : 1;
+    root.current?.style.setProperty("--range", d.range + "px");
+    map.current?.style.setProperty("--vw", (d.vw * 100).toFixed(2) + "%");
+  }, []);
+  // 한 방향 동기화: 시간표(scroller)만 실제로 스크롤하고, 무대 이름 줄은 따라가게 한다
   // (예전엔 두 스크롤러가 서로 scrollLeft 를 덮어써서 천천히 밀 때 어긋나고 버벅였다)
   const apply = useCallback(() => {
     raf.current = 0;
     const g = scroller.current, h = heads.current;
     if (!g) return;
     const x = g.scrollLeft;
-    if (h) h.style.transform = `translate3d(${-x}px,0,0)`;
-    // 보이는 범위 = 시간축(30px) 오른쪽부터
-    const track = g.scrollWidth - 30, view = g.clientWidth - 30;
-    if (track > 0 && map.current) {
-      map.current.style.setProperty("--vl", ((x / track) * 100).toFixed(2) + "%");
-      map.current.style.setProperty("--vw", (Math.min(1, view / track) * 100).toFixed(2) + "%");
-    }
+    if (h && !cssSync) h.style.transform = `translate3d(${-x}px,0,0)`;
+    const d = dims.current;
+    if (d.track > 0 && map.current) map.current.style.setProperty("--vl", ((x / d.track) * 100).toFixed(2) + "%");
     wrap.current?.classList.toggle("at-end", x + g.clientWidth >= g.scrollWidth - 4);
     wrap.current?.classList.toggle("at-start", x <= 4);
-  }, []);
+  }, [cssSync]);
   const sync = useCallback(() => {
-    // 이름 줄은 즉시(같은 프레임) 옮기고, 나머지(지도 테두리 등)는 프레임당 한 번만
+    // JS 방식일 때 이름 줄은 즉시(같은 프레임) 옮기고, 나머지(지도 테두리 등)는 프레임당 한 번만
     const g = scroller.current, h = heads.current;
-    if (g && h) h.style.transform = `translate3d(${-g.scrollLeft}px,0,0)`;
+    if (g && h && !cssSync) h.style.transform = `translate3d(${-g.scrollLeft}px,0,0)`;
     if (!raf.current) raf.current = requestAnimationFrame(apply);
-  }, [apply]);
+  }, [apply, cssSync]);
   useEffect(() => {
+    measure();
     sync();
-    const on = () => sync();
+    const on = () => {
+      measure();
+      sync();
+    };
     window.addEventListener("resize", on);
-    return () => window.removeEventListener("resize", on);
-  }, [sync]);
+    // 칸 크기·글꼴이 바뀌어 시간표 폭이 달라질 때도 다시 잰다
+    const g = scroller.current;
+    const ro = typeof ResizeObserver !== "undefined" && g ? new ResizeObserver(on) : null;
+    if (g && ro) {
+      ro.observe(g);
+      if (g.firstElementChild) ro.observe(g.firstElementChild);
+    }
+    return () => {
+      window.removeEventListener("resize", on);
+      ro?.disconnect();
+    };
+  }, [measure, sync]);
   /** 무대 지도에서 고른 무대가 시간축 바로 옆에 오게 민다 */
   const goStage = useCallback((key: string) => {
     const g = scroller.current;
@@ -248,7 +288,7 @@ export function ZonPage() {
   const colStyle = { height: (END - START) * PPM } as CSSProperties;
   return (
     <>
-      <div className="wrap zon" style={FIT_STYLE}>
+      <div className={"wrap zon" + (cssSync && MANY ? " css-sync" : "")} style={FIT_STYLE} ref={root}>
         <header className="hero zon-hero">
           <div className="hero-top">
             <a className="fx-back" href="/" aria-label="FestLock">

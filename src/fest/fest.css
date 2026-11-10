@@ -319,6 +319,13 @@ html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
 .zon .zon-track{position:relative;grid-template-columns:30px repeat(var(--n),var(--cw));width:max-content;min-width:100%}
 .zon-heads{overflow:hidden;clip-path:inset(0 0 0 30px)}
 .zon-heads .zon-track{will-change:transform}
+/* 스크롤 연동 애니메이션을 쓸 수 있는 브라우저: 무대 이름 줄이 시간표와 같은 프레임에 움직인다 (JS 는 --range 만 알려 준다) */
+@keyframes zon-head-follow{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(var(--range,0px) * -1),0,0)}}
+@supports (animation-timeline:scroll()) and (timeline-scope:--zs){
+  .zon.css-sync{timeline-scope:--zs}
+  .zon.css-sync .zon-scroll{scroll-timeline:--zs x}
+  .zon.css-sync .zon-heads .zon-track{animation:zon-head-follow linear both;animation-timeline:--zs}
+}
 .zon-heads::-webkit-scrollbar,.zon-scroll::-webkit-scrollbar{display:none}
 .zon-corner{position:sticky;left:0;z-index:2;background:#0b0706}
 .zon-wrap{position:relative}
