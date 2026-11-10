@@ -18,7 +18,7 @@ function ids(file) {
   return [...new Set(out)];
 }
 
-const lists = { gmf: ids("src/fest/gmf.ts"), nol: ids("src/fest/nol.ts"), orl: ids("src/fest/orl.ts") };
+const lists = { gmf: ids("src/fest/gmf.ts"), nol: ids("src/fest/nol.ts"), orl: ids("src/fest/orl.ts"), zon: ids("src/fest/zon.ts") };
 const block =
   START +
   "\n// scripts/sync-lineup.mjs가 src/fest/gmf.ts·nol.ts에서 자동으로 만든 목록. 손으로 고치지 말 것\n" +
@@ -40,8 +40,8 @@ if (process.argv.includes("--check")) {
     console.error("집계 서버의 라인업 목록이 화면 데이터와 달라요. node scripts/sync-lineup.mjs 를 실행하세요.");
     process.exit(1);
   }
-  console.log(`lineup ok (gmf ${lists.gmf.length}, nol ${lists.nol.length}, orl ${lists.orl.length})`);
+  console.log("lineup ok (" + Object.entries(lists).map(([k, v]) => k + " " + v.length).join(", ") + ")");
 } else {
   fs.writeFileSync(API, api.slice(0, a) + block + api.slice(b + END.length));
-  console.log(`updated (gmf ${lists.gmf.length}, nol ${lists.nol.length}, orl ${lists.orl.length})`);
+  console.log("updated (" + Object.entries(lists).map(([k, v]) => k + " " + v.length).join(", ") + ")");
 }

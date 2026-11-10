@@ -44,6 +44,8 @@ export interface FItem {
   desc?: string;
   /** 토크·이벤트에 나오는 아티스트 id (첫 번째 사진을 쓴다) */
   with?: string[];
+  /** 두 명이서 하는 공연: 아티스트 창에서 사진 두 장을 따로 보여 준다 (사진 id 두 개). 시간표·배경화면에는 id 의 합친 사진을 쓴다 */
+  duo?: [string, string];
   /** 장르 (EDC처럼 장르를 보여 주는 페스티벌만). verified = 확인, inferred = 무대 등으로 추정 */
   genre?: string;
   genreConf?: "verified" | "inferred";

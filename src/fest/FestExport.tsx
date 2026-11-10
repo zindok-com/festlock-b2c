@@ -4,7 +4,7 @@ import { IN_APP } from "../inApp";
 import { Rich, useI18n } from "../i18n";
 import { useBackClose } from "../backClose";
 import type { Ratio } from "./festCanvas";
-import type { ReportResult } from "./festStats";
+import { readVote, reportVote, type FestKey, type ReportResult, type VoteCtx } from "./festStats";
 import { fmt } from "./types";
 
 /** 이미지 옵션 */
@@ -16,7 +16,14 @@ export interface RenderOpt {
   from: number | null;
   /** 토+일 한 장일 때: 위아래로 / 좌우로 */
   layout: "stack" | "side";
+  /** DJ 사진 빼기 (무대가 많은 페스티벌의 글자만 배치) */
+  noPhoto: boolean;
+  /** 보기 탭에서 고른 것 (views 를 주지 않았으면 "") */
+  view: string;
 }
+
+/** 옵션 버튼 종류. 한 줄에 3개까지 들어간다 */
+export type ExportOpt = "lock" | "from" | "compact" | "noPhoto";
 
 export interface Seg {
   id: string;
@@ -42,7 +49,15 @@ interface Props {
   report?: (ids: string[]) => Promise<ReportResult[]>;
   /** 새로 집계되면 (숫자 새로고침) */
   onCounted?: () => void;
+  /** 보여 줄 옵션 버튼 (기본: 시계 자리 · 입장 시간부터 · 상단 축소) */
+  opts?: ExportOpt[];
+  /** 보기 탭 (예: AI 추천 / 전체 스테이지). 주면 탭 줄이 생기고 render 에 고른 id 가 view 로 넘어간다 */
+  views?: { id: string; label: string }[];
+  /** 투표를 받을 페스티벌. 주면 미리보기 아래에 "이 배경화면 어때요? 👍 👎"가 생긴다. render 가 돌려준 캔버스의 dataset(layout·view·picks…)을 함께 기록한다 */
+  voteFest?: FestKey;
 }
+
+const DEFAULT_OPTS: ExportOpt[] = ["lock", "from", "compact"];
 
 const PAIR = "__pair";
 
@@ -55,12 +70,18 @@ function externalUrl(): string | null {
   return null; // 아이폰 인스타 안 브라우저는 오른쪽 위 ⋯ 메뉴로만 열 수 있다
 }
 
-export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, render, hoursFor, firstPick, fileName, onClose, toast, report, onCounted }: Props) {
-  const { t } = useI18n();
+export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, render, hoursFor, firstPick, fileName, onClose, toast, report, onCounted, opts = DEFAULT_OPTS, views, voteFest }: Props) {
+  const { t, lang } = useI18n();
   const [seg, setSeg] = useState(initial);
   const [ratio, setRatio] = useState<Ratio>("story");
   const [lock, setLock] = useState(false);
   const [compact, setCompact] = useState(false);
+  const [noPhoto, setNoPhoto] = useState(false);
+  const [tab, setTab] = useState(views?.[0]?.id ?? "");
+  /** 마지막으로 그린 그림의 정보 (모양·고른 수 등). 투표 기록에 쓴다 */
+  const [meta, setMeta] = useState<Record<string, string>>({});
+  /** 이 기기가 이 모양에 던진 표 */
+  const [myVote, setMyVote] = useState<1 | -1 | 0>(0);
   const [layout, setLayout] = useState<"stack" | "side">("stack");
   // 입장 시간부터 (켜면 시각을 고른다)
   const [fromOn, setFromOn] = useState(false);
@@ -79,7 +100,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
   const idKey = ids.join("+");
   const hours = hoursFor(ids);
   // 고른 날짜가 바뀌어 목록에 없는 시각이면 첫 공연 시각으로
-  const fromNow = fromOn ? (fromVal != null && hours.includes(fromVal) ? fromVal : defaultFrom()) : null;
+  const fromNow = fromOn && opts.includes("from") ? (fromVal != null && hours.includes(fromVal) ? fromVal : defaultFrom()) : null;
   function defaultFrom(): number | null {
     const f = firstPick(ids);
     if (f == null) return hours[0] ?? null;
@@ -95,9 +116,10 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
       setSrc(null);
       return;
     }
-    render(ids, { ratio, lock, compact, from: fromNow, layout }).then((cv) => {
+    render(ids, { ratio, lock, compact, from: fromNow, layout, noPhoto, view: tab }).then((cv) => {
       if (!alive) return;
       cvRef.current = cv;
+      setMeta({ ...cv.dataset } as Record<string, string>);
       blobRef.current = null;
       setSrc(cv.toDataURL("image/png"));
       cv.toBlob((b) => {
@@ -109,7 +131,38 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
     };
     // ids는 idKey로 대신 비교
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idKey, ratio, lock, compact, fromNow, layout, empty, render]);
+  }, [idKey, ratio, lock, compact, fromNow, layout, noPhoto, tab, empty, render]);
+
+  // 모양이 바뀌면 그 모양에 내가 던진 표를 다시 읽는다
+  useEffect(() => {
+    setMyVote(voteFest && meta.layout ? readVote(voteFest, meta.view || tab, meta.layout) : 0);
+  }, [voteFest, meta.layout, meta.view, tab]);
+
+  /** 고른 보기 탭의 그림이 다 그려졌는지 (탭을 막 바꾸면 새 그림이 나올 때까지는 이전 그림이 보인다 → 그동안은 설명·투표를 숨긴다) */
+  const settled = !views || !meta.view || meta.view === tab;
+
+  async function castVote(v: 1 | -1) {
+    if (!voteFest || !meta.layout || !settled) return;
+    const prev = myVote;
+    setMyVote(v);
+    const ctx: VoteCtx = {
+      view: meta.view || tab,
+      layout: meta.layout,
+      picks: Number(meta.picks) || 0,
+      stages: Number(meta.stages) || 0,
+      busiest: Number(meta.busiest) || 0,
+      ratio,
+      lock,
+      compact,
+      noPhoto,
+      lang,
+    };
+    const r = await reportVote(voteFest, v, ctx);
+    if (r !== "ok") {
+      setMyVote(prev);
+      toast(t(r === "limited" ? "f.vote.limited" : "f.vote.fail"));
+    }
+  }
 
   useBackClose(true, onClose);
   useBackClose(viewer, () => setViewer(false));
@@ -202,6 +255,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
               ✕
             </button>
           </div>
+          {(segs.length > 1 || pairLabel) && (
           <div className="seg">
             {segs.map((s) => (
               <button key={s.id} type="button" aria-pressed={s.id === seg} onClick={() => setSeg(s.id)}>
@@ -214,6 +268,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
               </button>
             )}
           </div>
+          )}
           {seg === PAIR && (
             <div className="seg">
               <button type="button" aria-pressed={layout === "stack"} onClick={() => setLayout("stack")}>
@@ -232,21 +287,45 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
               {t("exp.phone")}
             </button>
           </div>
+          {views && (
+            <>
+              <div className="seg fx-views" role="group" aria-label={t("f.exp.viewAria")}>
+                {views.map((v) => (
+                  <button key={v.id} type="button" aria-pressed={v.id === tab} onClick={() => setTab(v.id)}>
+                    {v.label}
+                  </button>
+                ))}
+              </div>
+              {settled && meta.layout && meta.layout !== "empty" && <p className="fx-note">{t("f.exp.note." + meta.layout)}</p>}
+            </>
+          )}
           <div className="seg opts">
-            <button type="button" aria-pressed={lock} onClick={() => setLock((v) => !v)}>
-              {lock && <span aria-hidden="true">✓ </span>}
-              {t("f.exp.lock")}
-            </button>
-            <button type="button" aria-pressed={fromOn} onClick={() => setFromOn((v) => !v)}>
-              {fromOn && <span aria-hidden="true">✓ </span>}
-              {t("f.exp.from")}
-            </button>
-            <button type="button" aria-pressed={compact} onClick={() => setCompact((v) => !v)}>
-              {compact && <span aria-hidden="true">✓ </span>}
-              {t("exp.compact")}
-            </button>
+            {opts.includes("lock") && (
+              <button type="button" aria-pressed={lock} onClick={() => setLock((v) => !v)}>
+                {lock && <span aria-hidden="true">✓ </span>}
+                {t("f.exp.lock")}
+              </button>
+            )}
+            {opts.includes("from") && (
+              <button type="button" aria-pressed={fromOn} onClick={() => setFromOn((v) => !v)}>
+                {fromOn && <span aria-hidden="true">✓ </span>}
+                {t("f.exp.from")}
+              </button>
+            )}
+            {opts.includes("compact") && (
+              <button type="button" aria-pressed={compact} onClick={() => setCompact((v) => !v)}>
+                {compact && <span aria-hidden="true">✓ </span>}
+                {t("exp.compact")}
+              </button>
+            )}
+            {opts.includes("noPhoto") && (
+              <button type="button" aria-pressed={noPhoto} onClick={() => setNoPhoto((v) => !v)}>
+                {noPhoto && <span aria-hidden="true">✓ </span>}
+                {t("f.exp.noPhoto")}
+              </button>
+            )}
           </div>
-          {fromOn && hours.length > 0 && (
+          {fromOn && opts.includes("from") && hours.length > 0 && (
             <label className="fx-from">
               <span>{t("f.exp.fromLabel")}</span>
               <select value={fromNow ?? ""} onChange={(e) => setFromVal(Number(e.target.value))}>
@@ -266,6 +345,22 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
               src && <img src={src} alt={t("exp.pvAlt")} style={{ aspectRatio: ratio === "story" ? "1080/1920" : "1080/2280" }} onClick={view} />
             )}
           </div>
+          {voteFest && !empty && src && settled && meta.layout && meta.layout !== "empty" && (
+            <div className="fx-vote" role="group" aria-label={t("f.vote.q")}>
+              <span className="fx-vote-q">{t("f.vote.q")}</span>
+              <button type="button" className="fx-vote-btn" aria-pressed={myVote === 1} onClick={() => castVote(1)}>
+                <span aria-hidden="true">👍</span> {t("f.vote.up")}
+              </button>
+              <button type="button" className="fx-vote-btn" aria-pressed={myVote === -1} onClick={() => castVote(-1)}>
+                <span aria-hidden="true">👎</span> {t("f.vote.down")}
+              </button>
+              {myVote !== 0 && (
+                <p className="fx-vote-thanks" role="status">
+                  {t("f.vote.thanks")}
+                </p>
+              )}
+            </div>
+          )}
           <div className="acts">
             <button className="btn main" type="button" disabled={empty || !src} onClick={save}>
               {t("exp.save")}

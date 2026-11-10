@@ -1,5 +1,29 @@
 [
   {
+    "slug": "zonnafe-2026",
+    "aliases": ["zonnafe"],
+    "page": "zon",
+    "titleKey": "f.doc.zon",
+    "name": { "ko": "ZONNAFE 2026", "en": "ZONNAFE 2026", "ja": "ZONNAFE 2026", "zh": "ZONNAFE 2026" },
+    "dates": "2026.11.14",
+    "start": "2026-11-14",
+    "end": "2026-11-15",
+    "venue": { "ko": "이태원 JACKS BAR 일대", "en": "JACKS BAR area, Itaewon", "ja": "梨泰院 JACKS BAR 周辺", "zh": "梨泰院 JACKS BAR 一带" },
+    "ready": true,
+    "color": "#ff7a2e",
+    "color2": "#e2361c",
+    "thumb": "/poster/zon-key.webp",
+    "posters": [
+      { "src": "/poster/zon-key.webp", "key": "f.posterKey" },
+      { "src": "/poster/zon-timetable.webp", "key": "f.posterTimetable" }
+    ],
+    "og": {
+      "title": "ZONNAFE 2026 타임테이블 | FestLock",
+      "desc": "무대 7곳 · 100여 팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고, 아티스트가 보낸 영상도 미리 보세요. 11.14 토 15:00 – 05:00 이태원",
+      "img": "/og/zon.jpg"
+    }
+  },
+  {
     "slug": "edc-orlando-2026",
     "page": "orl",
     "titleKey": "f.doc.orl",

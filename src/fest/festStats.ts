@@ -3,17 +3,19 @@ import { useCallback, useEffect, useState } from "react";
 import { GMF_ITEMS } from "./gmf";
 import { NOL_ITEMS } from "./nol";
 import { ORL_ITEMS } from "./orl";
+import { ZON_ITEMS } from "./zon";
 
-export type FestKey = "gmf" | "nol" | "orl";
+export type FestKey = "gmf" | "nol" | "orl" | "zon";
 
 /** 페스티벌별 집계 날짜 (서버 api/fest-download.ts·fest-stats.ts와 같게) */
-export const FEST_DAYS: Record<FestKey, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"] };
+export const FEST_DAYS: Record<FestKey, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"] };
 
 /** 로컬 더미 데이터용 페스티벌별 값 (실제 사이트에서는 쓰이지 않음). 새 페스티벌은 여기에 한 줄 추가 */
 const DEMO_META: Record<FestKey, { items: () => { id: string; s: number }[]; seed: number; downloads: Record<string, number> }> = {
   gmf: { items: () => GMF_ITEMS.filter((i) => !i.kind || i.kind === "act"), seed: 11, downloads: { sat: 1284, sun: 1102 } },
   nol: { items: () => NOL_ITEMS, seed: 29, downloads: { sat: 1531, sun: 1206 } },
   orl: { items: () => ORL_ITEMS, seed: 41, downloads: { fri: 642, sat: 811, sun: 733 } },
+  zon: { items: () => ZON_ITEMS, seed: 53, downloads: { sat: 418 } },
 };
 
 export interface FestStats {
@@ -204,4 +206,64 @@ export function useFestStats(fest: FestKey) {
   }, [fest]);
   useEffect(reload, [reload]);
   return { stats, reload };
+}
+
+// ---------------------------------------------------------------------
+// 배경화면 "이 배경화면 어때요? 👍 👎" 투표 (서버: /api/fest-vote. 결과를 읽는 주소는 없다 — DB에서만 확인)
+// ---------------------------------------------------------------------
+export interface VoteCtx {
+  /** ai = AI 추천, all = 전체 스테이지 */
+  view: string;
+  /** 실제로 그려진 모양: packed · grid · text · all */
+  layout: string;
+  picks: number;
+  stages: number;
+  busiest: number;
+  ratio: string;
+  lock: boolean;
+  compact: boolean;
+  noPhoto: boolean;
+  lang: string;
+}
+export type VoteResult = "ok" | "limited" | "error";
+
+const voteLocalKey = (fest: FestKey, view: string, layout: string) => `fl:${fest}:vote:${view}:${layout}`;
+
+/** 이 기기가 이 모양에 이미 던진 표 (1 = 좋아요, -1 = 별로예요, 0 = 아직) */
+export function readVote(fest: FestKey, view: string, layout: string): 1 | -1 | 0 {
+  try {
+    const v = localStorage.getItem(voteLocalKey(fest, view, layout));
+    return v === "1" ? 1 : v === "-1" ? -1 : 0;
+  } catch {
+    return 0;
+  }
+}
+
+export async function reportVote(fest: FestKey, vote: 1 | -1, ctx: VoteCtx): Promise<VoteResult> {
+  const remember = () => {
+    try {
+      localStorage.setItem(voteLocalKey(fest, ctx.view, ctx.layout), String(vote));
+    } catch {
+      /* 저장소 없음: 서버가 중복을 막는다 */
+    }
+  };
+  // 이 컴퓨터(localhost)에서는 서버가 없으니 내 표만 기억한다
+  if (DEMO) {
+    remember();
+    return "ok";
+  }
+  try {
+    const res = await fetch("/api/fest-vote", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ fest, device: deviceId(), vote, ...ctx }),
+      keepalive: true,
+    });
+    if (res.status === 429) return "limited";
+    if (!res.ok) return "error";
+    remember();
+    return "ok";
+  } catch {
+    return "error";
+  }
 }

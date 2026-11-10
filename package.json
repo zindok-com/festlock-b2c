@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/sync-lineup.mjs --check && node scripts/check-drops.mjs && tsc --noEmit && tsc -p tsconfig.api.json && vite build && node scripts/route-html.mjs",
+    "build": "node scripts/sync-lineup.mjs --check && node scripts/check-drops.mjs && node scripts/check-clips.mjs && tsc --noEmit && tsc -p tsconfig.api.json && vite build && node scripts/route-html.mjs",
     "preview": "vite preview",
     "faces": "node scripts/make-faces.mjs",
-    "upload-faces": "node scripts/upload-faces.mjs"
+    "upload-faces": "node scripts/upload-faces.mjs",
+    "clips": "node scripts/make-clips.mjs",
+    "upload-clips": "node scripts/upload-clips.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.39.0",

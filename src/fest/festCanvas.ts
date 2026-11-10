@@ -5,7 +5,7 @@ import { fmt, timeText, type FDay, type FItem, type FStage } from "./types";
 export type Ratio = "story" | "phone";
 export const RATIO_H: Record<Ratio, number> = { story: 1920, phone: 2280 };
 const W = 1080;
-const SANS = '"Rubik","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif';
+export const SANS = '"Rubik","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif';
 const KR = '"Noto Sans KR","Rubik","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif';
 const BAGEL = '"Bagel Fat One","Noto Sans KR",system-ui,sans-serif';
 
@@ -89,7 +89,7 @@ function hookText(): string {
  * center가 null이면 후킹 문구와 로고를 가운데에 나란히 놓는다.
  * dark = 밝은 배경(그랜드 민트)
  */
-function tagRow(ctx: CanvasRenderingContext2D, cy: number, center: string | null, dark: boolean, size = 26, color?: string) {
+export function tagRow(ctx: CanvasRenderingContext2D, cy: number, center: string | null, dark: boolean, size = 26, color?: string) {
   const ink = dark ? "#3a2533" : "#ffffff";
   ctx.save();
   ctx.textBaseline = "middle";
@@ -161,7 +161,7 @@ export function ensureFonts(extra: string[] = []): Promise<void> {
     .catch(() => undefined);
 }
 
-function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+export function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   r = Math.max(0, Math.min(r, w / 2, h / 2));
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -172,7 +172,7 @@ function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: n
   ctx.closePath();
 }
 
-function fitFont(ctx: CanvasRenderingContext2D, text: string, maxW: number, size: number, weight: string, family = SANS): number {
+export function fitFont(ctx: CanvasRenderingContext2D, text: string, maxW: number, size: number, weight: string, family = SANS): number {
   for (; size > 10; size--) {
     ctx.font = weight + " " + size + "px " + family;
     if (ctx.measureText(text).width <= maxW) break;
@@ -181,7 +181,7 @@ function fitFont(ctx: CanvasRenderingContext2D, text: string, maxW: number, size
 }
 
 /** 단어 단위 줄바꿈 (한글은 글자 단위로도 자른다) */
-function wrap(ctx: CanvasRenderingContext2D, text: string, maxW: number, maxLines: number): string[] | null {
+export function wrap(ctx: CanvasRenderingContext2D, text: string, maxW: number, maxLines: number): string[] | null {
   const words = text.split(" "), lines: string[] = [];
   let cur = "";
   for (const w of words) {
@@ -205,17 +205,17 @@ function wrap(ctx: CanvasRenderingContext2D, text: string, maxW: number, maxLine
 }
 
 /** 사진을 칸에 꽉 채워 그린다 (얼굴이 위쪽이라 위 25% 기준) */
-function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: number, y: number, w: number, h: number) {
+export function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: number, y: number, w: number, h: number) {
   const s = Math.max(w / img.w, h / img.h), sw = w / s, sh = h / s;
   ctx.drawImage(on ? img.color : img.gray, (img.w - sw) / 2, (img.h - sh) * 0.25, sw, sh, x, y, w, h);
 }
 
-function hexA(hex: string, a: number): string {
+export function hexA(hex: string, a: number): string {
   const n = parseInt(hex.slice(1), 16);
   return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`;
 }
 
-function canvas(H: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
+export function canvas(H: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
   const cv = document.createElement("canvas");
   cv.width = W;
   cv.height = H;
@@ -223,7 +223,7 @@ function canvas(H: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
 }
 
 /** 잠금화면 시계 자리를 비울 때 위·아래 여백 */
-function margins(H: number, lock: boolean, top: number, bottom: number): [number, number] {
+export function margins(H: number, lock: boolean, top: number, bottom: number): [number, number] {
   return lock ? [Math.round(H * 0.245), Math.round(H * 0.135)] : [top, bottom];
 }
 
@@ -331,7 +331,7 @@ function entryFrom(from: number | null | undefined, picked: FItem[]): number | n
 }
 
 /** 한 줄 머리글: 오른쪽 글자 + 밑줄 (왼쪽 제목은 페스티벌마다 따로 그린다) */
-function compactRight(ctx: CanvasRenderingContext2D, text: string, top: number, maxW: number, color: string) {
+export function compactRight(ctx: CanvasRenderingContext2D, text: string, top: number, maxW: number, color: string) {
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = color;
@@ -1062,7 +1062,7 @@ function orlTitle(ctx: CanvasRenderingContext2D, logo: string, title: string, x:
   ctx.restore();
 }
 
-function orlTable(ctx: CanvasRenderingContext2D, o: EdcOpt, list: FItem[], y0: number, y1: number, range: [number, number]) {
+export function orlTable(ctx: CanvasRenderingContext2D, o: EdcOpt, list: FItem[], y0: number, y1: number, range: [number, number]) {
   const [a, b] = range;
   const x0 = 104, x1 = 1040, n = o.stages.length, gap = 8;
   const colW = (x1 - x0 - gap * (n - 1)) / n;

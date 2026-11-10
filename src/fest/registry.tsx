@@ -5,10 +5,12 @@ import App from "../App";
 import { GmfPage } from "./GmfPage";
 import { NolPage } from "./NolPage";
 import { OrlPage } from "./OrlPage";
+import { ZonPage } from "./ZonPage";
 
 export const PAGES: Record<string, ComponentType> = {
   edc: App,
   nol: NolPage,
   gmf: GmfPage,
   orl: OrlPage,
+  zon: ZonPage,
 };

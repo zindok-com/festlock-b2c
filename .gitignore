@@ -2,6 +2,7 @@ node_modules/
 dist/
 _inbox/
 faces-src/
+clips-src/
 .env
 .env.*
 *.log

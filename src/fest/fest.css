@@ -251,3 +251,121 @@ html[data-fest="orl"] .seg.opts button[aria-pressed="true"]{background:#e2f55c;c
 .orl-where{margin:6px 2px 0;font:700 12.5px "Rubik","Noto Sans KR",sans-serif;letter-spacing:.02em}
 .orl .head .b{font-size:clamp(9.5px,2.9vw,12.5px);overflow-wrap:anywhere}
 .orl .head .a{font-size:clamp(8px,2.4vw,10px)}
+
+/* ===== 미리보기 영상 (mp4, ClipPlayer). 자리·움직임은 유튜브 드랍(.drop-*)과 같다 ===== */
+.clip-box{position:relative;width:100%;max-height:min(58vh,440px);margin:0 auto;border-radius:14px;overflow:hidden;background:#000}
+.clip-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.clip-cover{position:absolute;inset:0;width:100%;border:0;margin:0;padding:0;cursor:pointer;display:grid;place-items:center;background:#0b0706;color:#fff;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.clip-cover.again{background:rgba(0,0,0,.35)}
+.clip-bg{position:absolute;inset:-12%;width:124%;height:124%;object-fit:cover;filter:blur(14px) brightness(.55);pointer-events:none}
+.clip-play{position:relative;width:72px;height:72px;border-radius:50%;display:grid;place-items:center;padding-left:5px;font-size:28px;background:var(--accent);color:var(--ink);box-shadow:0 6px 24px rgba(0,0,0,.45);transition:transform .12s}
+.clip-cover:active .clip-play{transform:scale(.93)}
+.clip-cover:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.clip-sound{position:absolute;left:10px;top:10px;z-index:3;border:0;border-radius:999px;padding:7px 12px;cursor:pointer;background:rgba(0,0,0,.72);color:#fff;font:800 12.5px "Noto Sans KR","Rubik",sans-serif;box-shadow:0 0 0 1.5px rgba(255,255,255,.35);-webkit-tap-highlight-color:transparent}
+.clip-sound:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.clip-len{position:absolute;left:0;right:0;bottom:12px;text-align:center;font:700 12.5px "Noto Sans KR","Rubik",sans-serif;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+
+/* ===== ZONNAFE 2026: 포스터 테마 (검은 바탕 · 붉은 집중선 · 주황/크림 굵은 글자) + 무대 7곳 가로 밀기 ===== */
+html:root[data-fest="zon"]{
+  --bg:#0b0706;--panel:#1a100d;--line:rgba(246,227,192,.13);
+  --tx:#f6e3c0;--tx2:#c2a98a;--off-bg:rgba(20,11,8,.9);--off-tx:#b9a88f;
+  --ink:#1a0503;--accent:#ff7a2e;--bar:rgba(11,7,6,.96);
+  color-scheme:dark;
+}
+html[data-fest="zon"] body{background:#0b0706}
+html[data-fest="zon"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(70% 32% at 50% 0%,rgba(214,48,24,.5),transparent 72%),
+    repeating-conic-gradient(from 0deg at 50% 12%,rgba(226,54,28,.12) 0deg 2deg,transparent 2deg 9deg),
+    radial-gradient(90% 40% at 50% 110%,rgba(214,48,24,.28),transparent 70%),
+    #0b0706;
+}
+html[data-fest="zon"] .btn.main{background:#ff7a2e;color:#1a0503}
+html[data-fest="zon"] .seg button[aria-pressed="true"]{background:#f6e3c0;color:#1a0503}
+html[data-fest="zon"] .seg.opts button[aria-pressed="true"]{background:#ff7a2e;color:#1a0503}
+html[data-fest="zon"] .top-btn{background:#e2361c;color:#fff3dc;box-shadow:inset 0 0 0 2px rgba(246,227,192,.55)}
+html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
+.zon .brand b{color:#ff7a2e}
+.zon-hero{padding-bottom:6px}
+.zon-head{display:flex;gap:14px;align-items:center;padding:14px 0 2px}
+.zon-head .fx-thumb{border-radius:8px;box-shadow:0 0 0 2px #e2361c,5px 6px 0 rgba(226,54,28,.45);transform:rotate(-2.5deg)}
+.zon-head .fx-thumb img{width:104px}
+.zon-head-txt{min-width:0}
+.zon .zon-when{margin:0;font:800 12px "Rubik","Noto Sans KR",sans-serif;letter-spacing:.03em;color:#ff9a4d}
+.zon .hero h1.zon-logo{
+  margin:4px 0 2px;font:400 clamp(44px,13.5vw,66px)/1 "Anton","Rubik",sans-serif;letter-spacing:.01em;
+  background:linear-gradient(180deg,#fff0cf 8%,#ffb25a 52%,#e2361c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 #1a0503) drop-shadow(0 0 14px rgba(226,54,28,.45));
+}
+.zon .zon-where{margin:0 0 10px;font:700 12.5px "Noto Sans KR","Rubik",sans-serif;color:var(--tx2)}
+.zon .fx-pbtn{background:#f6e3c0;color:#1a0503}
+.zon .dl-count b{color:#fff3dc}
+.zon .foot{color:var(--tx2)}
+.zon .sticky{background:rgba(11,7,6,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* 무대 지도: 색 막대 7칸 + 지금 화면에 보이는 범위(테두리) */
+.zon-bar{display:flex;gap:8px;align-items:stretch;padding:8px 0 7px}
+.zon-map{position:relative;flex:1;min-width:0;display:grid;grid-template-columns:repeat(var(--n,7),minmax(0,1fr));gap:3px;border-radius:10px}
+.zon-seg{position:relative;min-width:0;height:34px;border:0;border-radius:8px;padding:0 1px;cursor:pointer;background:#1c110d;background:color-mix(in srgb,var(--c) 26%,#140b08);color:#fff3dc;box-shadow:inset 0 -3px 0 var(--c);font:800 clamp(7.5px,2.3vw,10.5px) "Rubik",sans-serif;letter-spacing:.01em;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.zon-seg .g{display:block;overflow:hidden;white-space:nowrap}
+.zon-seg i{position:absolute;top:-5px;right:-2px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--c);color:var(--ci);font:800 10px/16px "Rubik",sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0b0706;z-index:1}
+.zon-seg:active{transform:scale(.95)}
+.zon-seg:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.zon-view{position:absolute;top:-3px;bottom:-3px;left:var(--vl,0%);width:var(--vw,60%);border-radius:10px;box-shadow:0 0 0 2px #f6e3c0;pointer-events:none;transition:left .08s linear}
+.zon .chip.help{min-width:38px;background:rgba(246,227,192,.1);color:#f6e3c0}
+/* 가로 밀기: 칸 너비 고정(한 화면에 약 4.3칸), 시간축은 왼쪽에 고정 */
+.zon{--cw:clamp(72px,calc((min(100vw,560px) - 57px) / 4.3),132px)}
+.zon-bar .chip.help{margin-left:auto}
+.zon .zon-track{position:relative;grid-template-columns:30px repeat(var(--n),var(--cw));width:max-content;min-width:100%}
+.zon-heads{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.zon-heads::-webkit-scrollbar,.zon-scroll::-webkit-scrollbar{display:none}
+.zon-corner{position:sticky;left:0;z-index:2;background:#0b0706}
+.zon-wrap{position:relative}
+.zon-wrap::after,.zon-wrap::before{content:"";position:absolute;top:10px;bottom:10px;width:22px;pointer-events:none;z-index:4;opacity:1;transition:opacity .2s}
+.zon-wrap::after{right:0;background:linear-gradient(to right,transparent,rgba(11,7,6,.92))}
+.zon-wrap::before{left:30px;background:linear-gradient(to left,transparent,rgba(11,7,6,.75))}
+.zon-wrap.at-end::after,.zon-wrap.at-start::before{opacity:0}
+.zon-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x proximity;scroll-padding-left:33px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.zon .col{scroll-snap-align:start;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60 - 1px),rgba(246,227,192,.1) calc(var(--ppm) * 60))}
+.zon .axis{position:sticky;left:0;z-index:3;background:#0b0706}
+.zon .axis span{color:rgba(246,227,192,.72)}
+.zon .head{border-bottom-color:var(--c);padding-top:2px}
+.zon .head .b{color:#f6e3c0;font:800 clamp(10.5px,3vw,13px)/1.15 "Noto Sans KR","Rubik",sans-serif;letter-spacing:-.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zon .head .h{color:var(--c);font:800 8.5px "Rubik",sans-serif;letter-spacing:.06em;margin-top:3px}
+/* 고르기 전: 무색 바탕·흑백 사진·회색 이름. 고른 뒤: 사진 컬러, 이름 뒤를 무대 색으로, 흰 테두리 */
+.zon .blk{--bgc:rgba(20,11,8,.9);color:#c9b79c;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(246,227,192,.16)}
+.zon .col{container-type:inline-size}
+.zon .blk .nm{font-weight:800;text-transform:uppercase;font-size:clamp(9px,2.6vw,12px);font-size:clamp(7.5px,calc((100cqw - 12px) / (var(--len,8) * .74)),clamp(9px,2.6vw,12px));overflow-wrap:break-word}
+.zon .blk .tm{color:#f6e3c0}
+.zon .blk.on{--bgc:var(--c);color:var(--ci);box-shadow:inset 0 0 0 2px #fff,0 0 12px var(--c)}
+.zon .blk.on .tm{color:var(--ci)}
+.zon .blk.ph .tm-top{background:rgba(11,7,6,.78);color:#fff}
+.zon .blk.ph:not(.on) .ph-img{opacity:.55}
+.zon .blk .ph-img{object-position:50% 30%}
+/* 지금 시각 줄 */
+.zon-now{position:absolute;left:30px;right:0;height:0;border-top:2px solid #ff2d55;z-index:2;pointer-events:none}
+.zon-now span{position:sticky;left:32px;display:inline-block;transform:translateY(-50%);margin-top:-1px;padding:1px 6px;border-radius:6px;background:#ff2d55;color:#fff;font:800 9.5px "Noto Sans KR","Rubik",sans-serif}
+@media (prefers-reduced-motion:reduce){.zon-view{transition:none}}
+
+/* 두 명이서 하는 공연: 아티스트 창에서 사진 두 장 */
+.fx-duo{display:flex;gap:12px;justify-content:center;align-items:flex-start;max-width:100%}
+.fx-duo figure{margin:0;min-width:0;text-align:center}
+.fx-duo .fx-duo-ph{width:min(140px,40vw);height:min(140px,40vw);border-radius:20px}
+.fx-duo .fx-duo-init{width:min(140px,40vw);height:min(140px,40vw);font-size:34px}
+.fx-duo figcaption{margin-top:6px;font:800 12.5px/1.2 "Rubik","Noto Sans KR",sans-serif;letter-spacing:.01em;overflow-wrap:anywhere}
+
+/* 배경화면 만들기: 보기 탭(AI 추천 / 전체 스테이지) + 설명 + 투표 */
+.fx-card .seg.fx-views{margin-top:8px}
+.fx-note{margin:6px 2px 8px;font-size:12px;line-height:1.5;color:var(--tx2)}
+.fx-vote{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 2px;padding:10px 12px;border-radius:14px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
+.fx-vote-q{flex:1 1 100%;font:800 13.5px "Noto Sans KR","Rubik",sans-serif}
+.fx-vote-btn{flex:1;min-width:0;border:0;border-radius:12px;padding:10px 8px;cursor:pointer;font:800 14px "Noto Sans KR","Rubik",sans-serif;background:var(--panel);color:var(--tx);box-shadow:inset 0 0 0 1px var(--line);-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s,background-color .15s}
+.fx-vote-btn:active{transform:scale(.96)}
+.fx-vote-btn[aria-pressed="true"]{background:var(--accent);color:var(--ink);box-shadow:none}
+.fx-vote-btn:focus-visible{outline:2px solid var(--tx);outline-offset:2px}
+.fx-vote-thanks{flex:1 1 100%;margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--tx2)}
+/* 지정장르: 이름 아래 한 줄, 길면 … (아티스트 창에서는 전체가 나온다) */
+.zon .blk .gn{display:block;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:700 clamp(8px,2.3vw,10px)/1.25 "Noto Sans KR","Rubik",sans-serif;letter-spacing:-.02em;opacity:.85;-webkit-line-clamp:unset;-webkit-box-orient:unset}
+.zon .blk.ph .gn{display:block;-webkit-line-clamp:unset}
+.zon .blk:not(.on) .gn{color:#d9c7a8}
+html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}

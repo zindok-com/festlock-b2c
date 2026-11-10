@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { useI18n } from "../i18n";
 import { useBackClose } from "../backClose";
 import { findDrop, loadDrops } from "../drops";
+import { findClip, loadClips } from "../clips";
 import { DROP_DEMO } from "./DropPlayer";
 
 export const TUT_KEY = "edc26:tut";
@@ -32,6 +33,8 @@ export interface TutConfig {
   text?: Partial<Record<string, string>>;
   /** 드랍 구간을 찾을 페이지 주소. 주면 드랍이 있는 아티스트로 시연하고, 유튜브 플레이어가 열리는 단계를 보여 준다 */
   dropSlug?: string;
+  /** 미리보기 영상(mp4) 목록(public/clips.json)에서 찾을 페이지 주소. 주면 영상이 있는 아티스트로 시연하고, 영상 칸이 열리는 단계를 보여 준다 (문구는 text 로 tut.drop.t/b 를 바꿔 쓴다) */
+  clipSlug?: string;
 }
 const EDC_TUT: TutConfig = { storageKey: TUT_KEY, block: ".col .blk:nth-child(2)", blockFallback: ".blk" };
 
@@ -81,15 +84,17 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
   const { t: tr } = useI18n();
   const t = (k: string) => tr(config.text?.[k] ?? k);
   // 드랍이 있는 아티스트를 시연용으로 고른다 (undefined = 아직 찾는 중 → 그동안은 안 그린다)
-  const [dropPick, setDropPick] = useState<string | null | undefined>(config.dropSlug ? undefined : null);
+  const [dropPick, setDropPick] = useState<string | null | undefined>(config.dropSlug || config.clipSlug ? undefined : null);
   useEffect(() => {
-    const slug = config.dropSlug;
-    if (!slug) return;
+    const { dropSlug, clipSlug } = config;
+    if (!dropSlug && !clipSlug) return;
     let alive = true;
     const late = new Promise<null>((res) => window.setTimeout(() => res(null), 1500));
-    Promise.race([loadDrops(), late]).then((d) => {
+    Promise.race([Promise.all([dropSlug ? loadDrops() : null, clipSlug ? loadClips() : null]), late]).then((res) => {
       if (!alive) return;
-      const el = d ? Array.from(document.querySelectorAll<HTMLElement>(config.blockFallback)).find((b) => b.dataset.id && findDrop(d, slug, b.dataset.id)) : undefined;
+      const [d, c] = res ?? [null, null];
+      const has = (id: string) => (d && dropSlug ? !!findDrop(d, dropSlug, id) : false) || (c && clipSlug ? !!findClip(c, clipSlug, id) : false);
+      const el = Array.from(document.querySelectorAll<HTMLElement>(config.blockFallback)).find((b) => b.dataset.id && has(b.dataset.id));
       setDropPick(el?.dataset.id ?? null);
     });
     return () => {

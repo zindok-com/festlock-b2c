@@ -6,6 +6,8 @@ import { festFace } from "./faces";
 import { genreText, initialsOf, listenLinks, names } from "./common";
 import { timeText, type FDay, type FItem, type FStage } from "./types";
 import { DropPlayer } from "../components/DropPlayer";
+import { ClipPlayer } from "../components/ClipPlayer";
+import { useClip } from "../clips";
 
 /** 사진(private만). 없거나 실패하면 이니셜 */
 export function FFace({ fest, id, name, className, initClass }: { fest: string; id?: string; name: string; className: string; initClass: string }) {
@@ -17,6 +19,17 @@ export function FFace({ fest, id, name, className, initClass }: { fest: string; 
       {initialsOf(name)}
     </span>
   );
+}
+
+/**
+ * 아티스트 창의 미리보기: 올려 둔 영상(mp4, public/clips.json)이 있으면 그 영상, 없으면 유튜브 드랍 구간.
+ * 영상 목록을 확인하는 동안에는 아무것도 그리지 않는다 (유튜브가 잠깐 떴다 바뀌지 않게).
+ */
+export function PreviewPlayer({ fest, slug, artistId, autoPlay }: { fest: string; slug: string; artistId: string; autoPlay: boolean }) {
+  const found = useClip(slug, artistId);
+  if (found === undefined) return null;
+  if (found) return <ClipPlayer clip={found.clip} urls={found.urls} poster={festFace(fest, artistId)} autoPlay={autoPlay} />;
+  return <DropPlayer slug={slug} artistId={artistId} autoPlay={autoPlay} />;
 }
 
 /** 사진으로 쓸 id (토크·이벤트는 함께 나오는 아티스트 사진) */
@@ -124,7 +137,22 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
           </button>
         </div>
         <div className="art" style={{ "--c": stage.color } as CSSProperties}>
-          <FFace fest={fest} id={photoId(it)} name={it.ko} className="fx-art-ph" initClass="art-init" />
+          {it.duo ? (
+            // 두 명이서 하는 공연: 사진 두 장을 나란히 (이름이 "A & B" 형태면 사진 아래에 각각 적는다)
+            <div className="fx-duo">
+              {it.duo.map((pid, k) => {
+                const who = it.en.split(" & ");
+                return (
+                  <figure key={pid}>
+                    <FFace fest={fest} id={pid} name={who[k] ?? it.ko} className="fx-art-ph fx-duo-ph" initClass="art-init fx-duo-init" />
+                    {who.length === it.duo!.length && <figcaption>{who[k]}</figcaption>}
+                  </figure>
+                );
+              })}
+            </div>
+          ) : (
+            <FFace fest={fest} id={photoId(it)} name={it.ko} className="fx-art-ph" initClass="art-init" />
+          )}
           {it.tag && <span className="fx-tag">{it.tag}</span>}
           {!isAct && <span className="fx-kind">{it.kind!.toUpperCase()}</span>}
           <h2>{main}</h2>
@@ -140,7 +168,7 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
         </div>
         {isAct && (
           <>
-            <DropPlayer slug={slug} artistId={it.id} autoPlay={!inTutorial} />
+            <PreviewPlayer fest={fest} slug={slug} artistId={it.id} autoPlay={!inTutorial} />
             {/* 한국어: 멜론 포함 4개 2×2 / 그 밖의 언어: 멜론 빼고 한 줄에 3개(짧은 이름) */}
             <div className={"links" + (lang === "ko" ? "" : " g3")}>
               <a className="link sp" href={links.spotify} target="_blank" rel="noopener noreferrer" aria-label={t("link.sp")}>

@@ -10,6 +10,8 @@ FestLock에 페스티벌을 넣는 방법입니다. 상황에 따라 세 단계�
 
 > 주소(slug)는 한번 공개하면 바꾸지 마세요. 링크가 깨집니다.
 
+> **앞으로 만드는 페스티벌은 ZONNAFE 구조 + 필수 7가지(영상 자동재생·장르·얼굴 사진·AI 추천·이미지 최적화·무대 6개 이상일 때 위치 지도·✕ 버튼)를 따릅니다. 시작 전에 [새-페스티벌-표준-지침.md](새-페스티벌-표준-지침.md)를 먼저 읽고, 맨 아래 체크리스트로 끝냅니다.**
+
 ---
 
 ## 0. 먼저 알아둘 구조
@@ -156,6 +158,127 @@ node scripts/sync-lineup.mjs
 
 사진을 내려야 하면 Blob 대시보드에서 해당 파일을 지우면 즉시 내려갑니다.
 
+> **사진을 바꿔서 같은 이름으로 다시 올렸다면** `src/fest/faces.ts`의 `PHOTO_VERSION`에서 그 페스티벌의 번호를 하나 올리세요. 사진이 30일 동안 브라우저·CDN에 캐시돼서, 번호를 올려 주소 뒤 `?v=번호`를 바꿔야 새 사진을 받습니다.
+
+> **두 명이서 하는 공연:** 시간표·배경화면에는 두 사람을 합친 사진 한 장(`faces-src/<키>/{id}.webp`)을, 아티스트 창에는 사진 두 장(`{id}-1.webp`, `{id}-2.webp`)을 따로 보여 줍니다. 라인업 파일(`zon.ts`의 `ZON_DUO`)에 그 공연의 id를 적으면 됩니다. 이름이 `A & B`이면 사진 아래에 이름이 각각 붙습니다. 합친 사진은 가로로 좁은 칸에서도 두 얼굴이 보이게 **세로로 긴 조각 둘을 나란히** 붙입니다.
+
+> **얼굴이 안 보이는 사진 고르기:** 자동으로 가운데를 자르면 몸통·배경이 나오는 사진이 있습니다. 얼굴 인식(OpenCV)으로 얼굴이 가운데 위쪽에 오게 자르고, 인식이 틀린 사진은 눈으로 보고 좌표를 손으로 정했습니다. 사진 칸은 가로로 좁아서(78px) **얼굴이 사진 가로 한가운데에 있어야** 잘리지 않습니다.
+
+> 올리기 전에 내 PC에서 사진을 보려면 `.env.local`에 `VITE_FACE_BASE=/__faces` 를 넣고 `npm run dev`. 개발 서버가 `faces-src/`를 그대로 보여 줍니다 (배포본에는 영향 없음).
+
+---
+
+## 4단계. 미리보기 영상 (선택)
+
+아티스트·주최측이 준 영상(mp4·mov)이 있으면, 아티스트 창(꾹 누르면 뜨는 창) 맨 위에 **미리보기 영상**으로 보여 줍니다. 창이 열리면 **자동 재생**됩니다. 영상이 있는 아티스트는 유튜브 드랍 대신 이 영상이 나오고, 없는 아티스트는 기존대로(유튜브 드랍 또는 없음) 나옵니다. 화면 코드는 건드릴 필요가 없습니다.
+
+> 아이폰·앱 안 브라우저 재생 규칙과 테스트 방법은 **[영상-미리보기-플레이어-지침.md](영상-미리보기-플레이어-지침.md)** (유튜브는 [유튜브-드랍-플레이어-지침.md](유튜브-드랍-플레이어-지침.md)). 플레이어를 고쳤다면 개발 서버만 보지 말고 **빌드 + WebKit(아이폰 엔진)** 으로 확인하세요.
+
+구조는 얼굴 사진과 같습니다. 영상 파일은 저장소에 없고 Vercel Blob(`festlock-blob`)의 `clips/` 폴더에 있으며, 어떤 아티스트에게 영상이 있는지는 `public/clips.json`(스크립트가 만드는 목록, 커밋함)이 알려 줍니다.
+
+**순서**
+
+1. 원본을 준비합니다. 둘 중 하나:
+   - `_inbox/clips/<키>/{id}.mp4` 처럼 **id를 파일 이름으로** 넣거나 (예: `_inbox/clips/zon/ak.mp4`)
+   - 원본이 다른 폴더에 흩어져 있으면 표를 만듭니다: `_inbox/zon-clips.json`
+     ```json
+     { "ak": { "src": "D:/받은영상/AK/waterbomb.mp4" }, "roha": { "src": "D:/받은영상/ROHA.mp4", "start": 12, "len": 20 } }
+     ```
+   `<키>`는 `festivals.json`의 `"page"` 값(예: `zon`), `id`는 라인업 파일의 id와 같아야 합니다.
+2. 변환 (ffmpeg 필요. 윈도우: `winget install Gyan.FFmpeg`):
+   ```bash
+   npm run clips -- zon                        # _inbox/clips/zon/ 폴더 기준
+   npm run clips -- zon _inbox/zon-clips.json   # 표 기준
+   ```
+   `clips-src/zon/{id}.mp4`가 생기고 `public/clips.json`의 그 페스티벌 목록이 새로 써집니다. 이미 만든 영상은 건너뜁니다(`--force`로 다시 만듦).
+3. 내 PC에서 확인: `npm run dev` → 아티스트를 꾹 눌러 영상이 나오는지 봅니다 (개발 서버는 `clips-src/`를 바로 보여 줍니다. 올리기 전에도 보입니다).
+4. 업로드: `.env.local`에 `BLOB_READ_WRITE_TOKEN=...` (3단계와 같은 토큰)을 넣고
+   ```bash
+   npm run upload-clips
+   ```
+   바뀐 영상만 올라가고, `public/clips.json`의 `"base"`에 Blob 주소가 채워집니다.
+5. **`public/clips.json`을 커밋하고 배포**합니다. (`clips-src/`는 커밋하지 않습니다.) 목록에 영상이 있는데 업로드를 안 했으면 Vercel 빌드가 멈춰서 알려 줍니다.
+
+**변환 규칙** (`scripts/make-clips.mjs` 위쪽 상수)
+
+| 항목 | 값 | 이유 |
+|---|---|---|
+| 길이 | 최대 24초 (`len`으로 5~60초) | 미리보기용. 원본이 더 길면 **소리가 가장 큰 구간**을 자동으로 고릅니다. 마음에 안 들면 `start`(초)로 직접 지정 |
+| 크기 | 긴 변 960px, 30fps, H.264 + AAC | 아이폰·안드로이드·인스타/카톡 앱 안 브라우저에서 모두 재생 |
+| 용량 | 1편 약 1~2MB | 아래 "Blob 한도" 참고 |
+| 소리 | 영상마다 비슷한 크기로 맞춤 | 영상마다 볼륨이 제각각이라 |
+
+**Blob 한도 (꼭 읽기)**
+
+Vercel 무료(Hobby) 요금제의 Blob은 **저장 1GB, 한 달 전송 10GB**이고, 넘으면 요금이 나오는 대신 **스토어 전체가 막힙니다. 얼굴 사진도 같이 안 나옵니다.** 그래서:
+
+- 영상은 창이 열릴 때 **자동으로 받아 재생**합니다. 창을 열 때마다 영상 1편(약 1.7MB)을 받으므로, 영상이 5,800번 재생되면 그것만으로 10GB입니다. 전송량이 모자라면 `src/components/ClipPlayer.tsx`의 `AUTOPLAY`를 `false`로 바꿔 **▶를 눌렀을 때만** 받게 할 수 있습니다.
+- 행사 전후로 Vercel → Storage → `festlock-blob` → Usage 에서 전송량을 확인하세요. 한도에 가까우면 Pro 요금제로 올리거나, 급하면 `public/clips.json`에서 그 페스티벌 칸을 비우고 배포하면 영상만 꺼집니다(사진은 유지).
+
+**영상 내리기**: `clips-src/<키>/{id}.mp4`를 지우고 `npm run clips -- <키>` → `public/clips.json` 커밋·배포. 급하면 Blob 대시보드에서 `clips/<키>/{id}.mp4`를 지우면 즉시 내려갑니다.
+
+---
+
+## 한도 알림 (Blob이 막히면 이메일)
+
+Vercel Hobby 요금제는 Blob 전송량이 한 달 10GB를 넘으면 요금이 나오는 대신 **스토어가 막혀서 사진·영상이 모두 안 나옵니다.** 사이트가 이걸 알아채고 운영자 이메일로 알립니다. (문자는 요금이 들고 발신번호 등록이 필요해서 쓰지 않았습니다. 이메일은 Resend 무료 한도로 충분합니다: 월 약 3,000통, 하루 100통.)
+
+**동작**
+
+1. 방문자 브라우저에서 Blob 사진·영상이 3번 실패하면 `/api/blob-alert`에 빈 요청을 한 번 보냅니다 (`src/blobHealth.ts`. 같은 브라우저는 30분에 한 번. 개발 서버·localhost에서는 꺼져 있음).
+2. 10분 안에 **서로 다른 IP 3곳** 이상이 알려 오면, 서버가 Blob 사진 하나를 **직접** 확인합니다 (1바이트만 요청). 한 사람의 인터넷 문제로는 메일이 가지 않습니다.
+3. 서버에서도 안 열리면(403 등) 이메일 한 통을 보냅니다. **6시간에 한 번까지만.** 서버에서 보면 멀쩡하면 보내지 않습니다.
+4. 메일에는 확인 시각, 서버가 본 응답, 확인할 곳(Vercel → Storage → festlock-blob → Usage), 할 수 있는 일(Pro 올리기 / 영상만 끄기 / 자동 재생 끄기)이 들어 있습니다.
+
+> Vercel도 한도에 가까워지면 가입 이메일로 알려 줍니다 ([문서](https://vercel.com/docs/vercel-blob/usage-and-pricing)). 이 알림은 그것과 별개로, "이미 막혀서 사진이 안 나오는" 순간을 사이트가 직접 알려 주는 것입니다.
+
+**처음 설정 (한 번만, 5분)**
+
+1. [resend.com](https://resend.com)에 **알림을 받고 싶은 이메일로** 가입합니다. (무료 계정은 가입한 이메일로만 받을 수 있습니다. 도메인은 필요 없습니다.)
+2. Resend → API Keys → Create API Key (권한 "Sending access") → `re_...` 키를 복사합니다.
+3. 먼저 내 PC에서 시험합니다. `C:\festlock\.env.local`에 두 줄을 추가하고 (이 파일은 저장소에 올라가지 않습니다)
+   ```
+   RESEND_API_KEY=re_여기에키
+   ALERT_EMAIL=알림받을이메일@gmail.com
+   ```
+   ```bash
+   node scripts/test-alert-mail.mjs
+   ```
+   시험 메일이 오면(스팸함도 확인) 성공입니다.
+4. Vercel → 프로젝트 → Settings → Environment Variables에 **같은 두 값**(`ALERT_EMAIL`, `RESEND_API_KEY`)을 넣고 **Redeploy**합니다. 이메일 주소는 코드에 적혀 있지 않고 이 환경변수에만 있습니다.
+
+**끄거나 바꾸기:** `ALERT_EMAIL`을 지우면 아무것도 보내지 않습니다. 보내는 주소를 바꾸려면 `ALERT_FROM`, 직접 확인할 사진을 바꾸려면 `ALERT_PROBE_URL`. 코드는 `api/blob-alert.ts`(조건·메일 내용)와 `src/blobHealth.ts`(브라우저 쪽).
+
+---
+
+## 배경화면 "AI 추천" 투표 (👍 좋아요 / 👎 별로예요)
+
+배경화면 만들기 창에서 사용자가 지금 보이는 배경화면이 괜찮은지 투표합니다. 배치를 다듬는 데 쓰려고 모으는 것이고, **사이트에는 결과를 보여 주는 곳이 없습니다.** 나만 DB에서 봅니다.
+
+- 화면: ZONNAFE 배경화면 창의 `✨ AI 추천 | 전체 스테이지` 탭 아래 설명 + 미리보기 아래 "이 배경화면 어때요?" (`FestExport`의 `views`, `voteFest`). "AI 추천"은 고른 공연에 맞춰 규칙으로 가장 읽기 좋은 모양을 자동으로 고르는 것입니다.
+- 저장: `api/fest-vote.ts` → Upstash Redis (다운로드 수·랭킹과 같은 DB). 한 기기는 한 모양에 한 표이고 👍↔👎로 바꿀 수 있습니다. 기록에는 기기 id·IP를 남기지 않습니다.
+- 모양: `ai:packed`(고른 공연만) · `ai:grid`(많이 겹쳐 전체 표로 바뀜) · `ai:text`(사진 뺌) · `all:all`(전체 스테이지) 별로 따로 셉니다.
+
+**투표 보기 (나만)**
+
+1. 터미널에서 (Redis 접속 정보를 한 번 받아 둡니다. `.env.local`은 덮어쓰지 않게 다른 이름으로)
+   ```bash
+   vercel env pull .env.vercel
+   node scripts/fest-votes.mjs zon
+   ```
+   모양별 👍/👎/호감도, 고른 무대 수별 호감도, 최근 투표(언제·몇 팀·무대 몇 곳·비율·옵션·언어·기기 종류)가 나옵니다. `--log 50`으로 최근 50건.
+2. 또는 Vercel → Storage → Upstash(Redis) → Data Browser에서 `fl:zon:votesum`(합계 해시), `fl:zon:votelog`(최근 2000건 리스트)를 봅니다.
+
+**다른 페스티벌에도 넣기:** 그 페스티벌 화면에서 `FestExport`에 `voteFest="키"`를 주고, 키가 `src/fest/festStats.ts`의 `FestKey`와 `api/fest-vote.ts`의 `FESTS`에 있는지 확인합니다. 투표 줄은 render가 돌려주는 캔버스의 `dataset.layout`(·`view`·`picks`·`stages`·`busiest`)이 있어야 나옵니다 — `festMulti.ts`의 `renderMulti` 참고.
+
+**지우기:** Data Browser에서 `fl:zon:vote:*`, `fl:zon:votesum`, `fl:zon:votelog`를 삭제하면 처음부터 다시 셉니다.
+
+---
+
+## 무대가 6개 이상인 페스티벌
+
+무대가 많으면 칸을 좁히지 않고 **옆으로 밀어서** 보는 화면을 씁니다. 화면·배경화면 규칙은 **[무대-많은-페스티벌-UIUX.md](무대-많은-페스티벌-UIUX.md)**, 예시 코드는 `src/fest/ZonPage.tsx`(화면) · `src/fest/festMulti.ts`(배경화면)입니다. 새 페스티벌은 `ZonPage.tsx`를 복사하고, 배경·제목만 `zonLook.ts`처럼 따로 만들면 됩니다.
+
 ---
 
 ## 배포 전 점검 목록
@@ -182,6 +305,6 @@ node scripts/sync-lineup.mjs
 
 ## 참고
 
-- 환경변수: `VITE_FACE_BASE`(사진 주소), `SITE_URL`(미리보기 주소), Upstash Redis 연결 변수(`KV_REST_API_*`)
+- 환경변수: `VITE_FACE_BASE`(사진 주소), `SITE_URL`(미리보기 주소), Upstash Redis 연결 변수(`KV_REST_API_*`), 한도 알림(`ALERT_EMAIL`, `RESEND_API_KEY`)
 - `public/drops.json`은 Drop Studio가 만드는 파일입니다. 직접 고치지 마세요 (빌드 때 `scripts/check-drops.mjs`가 모양을 검사합니다)
 - 링크 미리보기와 `robots.txt`는 지금 검색 노출을 막아 둔 상태입니다. 정식 출시 때 `public/robots.txt`와 `vercel.json`의 `X-Robots-Tag`를 바꿉니다.
