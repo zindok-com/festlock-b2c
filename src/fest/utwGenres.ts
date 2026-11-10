@@ -4,7 +4,7 @@
 //
 //  alan-walker         progressive house / electro house        Wikipedia, Goout, DJ Mag
 //  sebastian-ingrosso  progressive house / electro house        Wikipedia
-//  bunt                folk house (electronic folk)             Wikipedia, Platinumlist, Line of Best Fit
+//  bunt                stutter house (사용자 정정, 2026-11-11. 검색에서는 folk house / electronic folk 로 나왔음)
 //  yousuke-yukimatsu   genre-fluid: techno·gabber·trance·house  Mixmag, DJ Mag, Exit Festival
 //  levity              dubstep / bass (trap·future bass 영향)    EDM 매체·음원 사이트 프로필
 //  halo                progressive house (Third Party·Dubvision·Matisse & Sadko)   ArtistRack
@@ -25,7 +25,7 @@ export interface UtwGenre {
 export const UTW_GENRES: Record<string, UtwGenre> = {
   "alan-walker": { g: "PROGRESSIVE HOUSE · ELECTRO HOUSE" },
   "sebastian-ingrosso": { g: "PROGRESSIVE HOUSE · ELECTRO HOUSE" },
-  bunt: { g: "FOLK HOUSE" },
+  bunt: { g: "STUTTER HOUSE" },
   "yousuke-yukimatsu": { g: "TECHNO · GABBER · GENRE-FLUID" },
   levity: { g: "DUBSTEP · BASS" },
   halo: { g: "PROGRESSIVE HOUSE" },
