@@ -379,8 +379,8 @@ html[data-fest="utw"] .sheet .art .g{color:var(--accent);font-weight:800}
 .utw .zon-head .fx-thumb{box-shadow:0 0 0 2px #3fd6ff,5px 6px 0 rgba(63,214,255,.35)}
 .utw .zon-when{color:#7be4ff}
 .utw .hero h1.zon-logo{font-size:clamp(40px,12vw,58px);line-height:.95;background:linear-gradient(180deg,#fff 8%,#bff3ff 52%,#3fd6ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #02101a) drop-shadow(0 0 14px rgba(63,214,255,.45))}
-.utw .sticky{background:rgba(4,7,13,.95)}
-.utw .axis,.utw .zon-corner{background:#04070d}
+.utw .sticky{background:rgba(4,7,13,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.utw .axis,.utw .zon-corner{background:transparent}
 .utw .axis span{color:rgba(230,251,255,.72)}
 .utw .col{background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(230,251,255,.1) calc(var(--ppm) * 60 - 1px),rgba(230,251,255,.1) calc(var(--ppm) * 60))}
 .utw .head .b{color:#e6fbff}
