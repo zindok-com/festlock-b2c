@@ -7,7 +7,7 @@
 //   - "all" 전체 스테이지. 고른 공연이 하나라도 있는 무대를 모두 그리고, 안 고른 공연은 어둡게 보여 준다 (고른 공연이 없는 무대는 뺀다)
 // 배경·제목만 페스티벌마다 다르게 그린다(MultiLook).
 import { RATIO_H, SANS, canvas, cover, hexA, margins, rr, type Img, type Ratio } from "./festCanvas";
-import { fmt, type FDay, type FItem, type FStage } from "./types";
+import { fmt, timeText, type FDay, type FItem, type FStage } from "./types";
 
 const W = 1080;
 export const MAX_COLS = 5;
@@ -202,7 +202,8 @@ function drawBlock(ctx: CanvasRenderingContext2D, o: MultiOpt, st: FStage, it: F
   }
   const small = h < 64;
   const pad = small ? 7 : 10;
-  const timeStr = fmt(it.s) + "–" + fmt(it.e);
+  // 끝나는 시각이 미발표(open)면 시작 시각만 ("12:45 –"). 추정한 끝 시각을 확정처럼 보이지 않게 한다 (ULTRA TAIWAN)
+  const timeStr = it.open ? timeText(it) : fmt(it.s) + "–" + fmt(it.e);
   const ts = Math.max(13, Math.min(22, Math.round(w / 9)));
   ctx.textAlign = "left";
   // 시간 알약 (사진 칸, 높이 96px 이상)

@@ -23,7 +23,7 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
 /** 투표를 받는 페스티벌 (src/fest/festStats.ts FestKey 와 같게) */
-const FESTS = ["gmf", "nol", "orl", "zon"];
+const FESTS = ["gmf", "nol", "orl", "zon", "utw"];
 const VIEWS = ["ai", "all"];
 const LAYOUTS = ["packed", "grid", "text", "all"];
 const RATIOS = ["story", "phone"];

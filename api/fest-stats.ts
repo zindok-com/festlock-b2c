@@ -1,5 +1,5 @@
 /// <reference types="node" />
-// GET /api/fest-stats?fest=gmf|nol|orl|zon → { downloads: { 날짜: 수 }, all: [{ id, count }] (많은 순) }
+// GET /api/fest-stats?fest=gmf|nol|orl|zon|utw → { downloads: { 날짜: 수 }, all: [{ id, count }] (많은 순) }
 import { Redis } from "@upstash/redis";
 
 function db(): Redis | null {
@@ -9,7 +9,7 @@ function db(): Redis | null {
 }
 
 /** 페스티벌별 집계 날짜 (api/fest-download.ts와 같게) */
-const DAYS: Record<string, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"] };
+const DAYS: Record<string, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"], utw: ["sat"] };
 
 export async function GET(request: Request): Promise<Response> {
   const fest = new URL(request.url).searchParams.get("fest") ?? "";

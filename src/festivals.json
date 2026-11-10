@@ -24,6 +24,28 @@
     }
   },
   {
+    "slug": "ultra-taiwan-2026",
+    "aliases": ["ultra-taiwan", "utw"],
+    "page": "utw",
+    "titleKey": "f.doc.utw",
+    "name": { "ko": "ULTRA TAIWAN 2026", "en": "ULTRA TAIWAN 2026", "ja": "ULTRA TAIWAN 2026", "zh": "ULTRA TAIWAN 2026" },
+    "dates": "2026.11.14",
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "utc": 8,
+    "venue": { "ko": "타이베이 다자 리버사이드 파크", "en": "Dajia Riverside Park, Taipei", "ja": "台北 大佳河濱公園", "zh": "台北大佳河滨公园" },
+    "ready": true,
+    "color": "#3fd6ff",
+    "color2": "#ff9a2e",
+    "thumb": "/poster/utw-key.webp",
+    "posters": [{ "src": "/poster/utw-key.webp", "key": "f.posterKey" }],
+    "og": {
+      "title": "ULTRA TAIWAN 2026 타임테이블 | FestLock",
+      "desc": "무대 2곳 · 15팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고 장르도 확인하세요. 11.14 토 12:00 – 22:00 타이베이",
+      "img": "/og/utw.jpg"
+    }
+  },
+  {
     "slug": "edc-orlando-2026",
     "page": "orl",
     "titleKey": "f.doc.orl",

@@ -354,6 +354,40 @@ html[data-fest="zon"] .drop-play{background:#ff7a2e;color:#1a0503}
 .zon-now{position:absolute;left:30px;right:0;height:0;border-top:2px solid #ff2d55;z-index:2;pointer-events:none}
 .zon-now span{position:sticky;left:32px;display:inline-block;transform:translateY(-50%);margin-top:-1px;padding:1px 6px;border-radius:6px;background:#ff2d55;color:#fff;font:800 9.5px "Noto Sans KR","Rubik",sans-serif}
 
+/* ===== ULTRA TAIWAN 2026: 포스터 테마 (검은 남색 바탕 · 청록 빛 · 주황 포인트) + 무대 2곳 한 화면 ===== */
+html:root[data-fest="utw"]{
+  --bg:#04070d;--panel:#0b131d;--line:rgba(160,235,245,.14);
+  --tx:#e6fbff;--tx2:#8fb7c2;--off-bg:rgba(8,16,26,.9);--off-tx:#8aa6b0;
+  --ink:#021018;--accent:#ff9a2e;--bar:rgba(4,7,13,.96);
+  color-scheme:dark;
+}
+html[data-fest="utw"] body{background:#04070d}
+html[data-fest="utw"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(80% 34% at 50% 0%,rgba(63,214,255,.34),transparent 72%),
+    radial-gradient(90% 40% at 50% 110%,rgba(255,154,46,.26),transparent 70%),
+    #04070d;
+}
+html[data-fest="utw"] .btn.main{background:#ff9a2e;color:#1a0d00}
+html[data-fest="utw"] .seg button[aria-pressed="true"]{background:#e6fbff;color:#021018}
+html[data-fest="utw"] .seg.opts button[aria-pressed="true"]{background:#ff9a2e;color:#1a0d00}
+html[data-fest="utw"] .top-btn{background:#0e7fa0;color:#e6fbff;box-shadow:inset 0 0 0 2px rgba(230,251,255,.5)}
+html[data-fest="utw"] .drop-play{background:#ff9a2e;color:#1a0d00}
+html[data-fest="utw"] .sheet .art .g{color:var(--accent);font-weight:800}
+.utw .brand b{color:#3fd6ff}
+.utw .zon-head .fx-thumb{box-shadow:0 0 0 2px #3fd6ff,5px 6px 0 rgba(63,214,255,.35)}
+.utw .zon-when{color:#7be4ff}
+.utw .hero h1.zon-logo{font-size:clamp(40px,12vw,58px);line-height:.95;background:linear-gradient(180deg,#fff 8%,#bff3ff 52%,#3fd6ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #02101a) drop-shadow(0 0 14px rgba(63,214,255,.45))}
+.utw .sticky{background:rgba(4,7,13,.95)}
+.utw .axis,.utw .zon-corner{background:#04070d}
+.utw .axis span{color:rgba(230,251,255,.72)}
+.utw .col{background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--ppm) * 60 - 1px),rgba(230,251,255,.1) calc(var(--ppm) * 60 - 1px),rgba(230,251,255,.1) calc(var(--ppm) * 60))}
+.utw .head .b{color:#e6fbff}
+.utw .blk{--bgc:rgba(8,16,26,.9);color:#b9d2da;box-shadow:inset 0 0 0 1px rgba(230,251,255,.16)}
+.utw .blk .tm{color:#e6fbff}
+.utw .blk:not(.on) .gn{color:#a9c9d4}
+.utw .blk.ph .tm-top{background:rgba(4,7,13,.78);color:#fff}
 /* 두 명이서 하는 공연: 아티스트 창에서 사진 두 장 */
 .fx-duo{display:flex;gap:12px;justify-content:center;align-items:flex-start;max-width:100%}
 .fx-duo figure{margin:0;min-width:0;text-align:center}

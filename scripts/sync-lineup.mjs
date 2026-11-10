@@ -18,7 +18,7 @@ function ids(file) {
   return [...new Set(out)];
 }
 
-const lists = { gmf: ids("src/fest/gmf.ts"), nol: ids("src/fest/nol.ts"), orl: ids("src/fest/orl.ts"), zon: ids("src/fest/zon.ts") };
+const lists = { gmf: ids("src/fest/gmf.ts"), nol: ids("src/fest/nol.ts"), orl: ids("src/fest/orl.ts"), zon: ids("src/fest/zon.ts"), utw: ids("src/fest/utw.ts") };
 const block =
   START +
   "\n// scripts/sync-lineup.mjs가 src/fest/gmf.ts·nol.ts에서 자동으로 만든 목록. 손으로 고치지 말 것\n" +

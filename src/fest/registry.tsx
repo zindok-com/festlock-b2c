@@ -6,6 +6,7 @@ import { GmfPage } from "./GmfPage";
 import { NolPage } from "./NolPage";
 import { OrlPage } from "./OrlPage";
 import { ZonPage } from "./ZonPage";
+import { UtwPage } from "./UtwPage";
 
 export const PAGES: Record<string, ComponentType> = {
   edc: App,
@@ -13,4 +14,5 @@ export const PAGES: Record<string, ComponentType> = {
   gmf: GmfPage,
   orl: OrlPage,
   zon: ZonPage,
+  utw: UtwPage,
 };

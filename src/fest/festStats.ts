@@ -4,11 +4,12 @@ import { GMF_ITEMS } from "./gmf";
 import { NOL_ITEMS } from "./nol";
 import { ORL_ITEMS } from "./orl";
 import { ZON_ITEMS } from "./zon";
+import { UTW_ITEMS } from "./utw";
 
-export type FestKey = "gmf" | "nol" | "orl" | "zon";
+export type FestKey = "gmf" | "nol" | "orl" | "zon" | "utw";
 
 /** 페스티벌별 집계 날짜 (서버 api/fest-download.ts·fest-stats.ts와 같게) */
-export const FEST_DAYS: Record<FestKey, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"] };
+export const FEST_DAYS: Record<FestKey, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"], utw: ["sat"] };
 
 /** 로컬 더미 데이터용 페스티벌별 값 (실제 사이트에서는 쓰이지 않음). 새 페스티벌은 여기에 한 줄 추가 */
 const DEMO_META: Record<FestKey, { items: () => { id: string; s: number }[]; seed: number; downloads: Record<string, number> }> = {
@@ -16,6 +17,7 @@ const DEMO_META: Record<FestKey, { items: () => { id: string; s: number }[]; see
   nol: { items: () => NOL_ITEMS, seed: 29, downloads: { sat: 1531, sun: 1206 } },
   orl: { items: () => ORL_ITEMS, seed: 41, downloads: { fri: 642, sat: 811, sun: 733 } },
   zon: { items: () => ZON_ITEMS, seed: 53, downloads: { sat: 418 } },
+  utw: { items: () => UTW_ITEMS, seed: 67, downloads: { sat: 236 } },
 };
 
 export interface FestStats {
