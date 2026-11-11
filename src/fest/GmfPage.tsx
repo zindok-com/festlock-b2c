@@ -32,7 +32,7 @@ export const GMF_POSTERS = [
 ];
 
 /** 튜토리얼: 민트 브리즈 무대 두 번째 공연으로 시연, 3단계 설명은 멜론 포함 문구 */
-const TUT: TutConfig = { storageKey: "fl:gmf:tut", block: ".gmf-col .gb:nth-child(2)", blockFallback: ".gb", text: { "tut.s3.b": "f.tut.s3.b" } };
+const TUT: TutConfig = { storageKey: "fl:gmf:tut", block: ".gmf-col .gb:nth-child(2)", blockFallback: ".gb", text: { "tut.s3.b": "f.tut.s3.b" }, sample: "/tutorial/gmf.webp" };
 
 const hours: number[] = [];
 for (let m = START; m <= END; m += 60) hours.push(m);

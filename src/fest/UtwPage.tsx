@@ -48,6 +48,7 @@ const TUT: TutConfig = {
   block: ".zon .col .blk:nth-child(2)",
   blockFallback: ".zon .blk",
   text: { "tut.s3.b": "f.tut.s3.b" },
+  sample: "/tutorial/utw.webp",
 };
 
 const hours: number[] = [];

@@ -4,6 +4,7 @@ import { useBackClose } from "../backClose";
 import { findDrop, loadDrops } from "../drops";
 import { findClip, loadClips } from "../clips";
 import { DROP_DEMO } from "./DropPlayer";
+import { IN_APP } from "../inApp";
 
 export const TUT_KEY = "edc26:tut";
 
@@ -15,6 +16,8 @@ interface Step {
   sheet?: boolean;
   /** 이 단계에서 창 위쪽에 드랍 플레이어를 펼쳐 보일지 */
   demoDrop?: boolean;
+  /** 이 단계 카드에 예시 이미지와 저장 안내를 같이 보일지 */
+  save?: boolean;
   /** 번역 키 */
   title: string;
   /** 번역 키 */
@@ -37,8 +40,10 @@ export interface TutConfig {
   clipSlug?: string;
   /** 시연에 먼저 쓸 아티스트 id (영상·드랍이 있을 때만. 없으면 화면 순서대로 첫 번째) */
   prefer?: string;
+  /** 마지막(저장) 단계에서 "이런 이미지가 만들어져요"로 보여 줄 예시 배경화면 (public/tutorial/…) */
+  sample?: string;
 }
-const EDC_TUT: TutConfig = { storageKey: TUT_KEY, block: ".col .blk:nth-child(2)", blockFallback: ".blk" };
+const EDC_TUT: TutConfig = { storageKey: TUT_KEY, block: ".col .blk:nth-child(2)", blockFallback: ".blk", sample: "/tutorial/edc.webp" };
 
 function makeSteps(firstBlock: () => Element | null, withDrop: boolean): Step[] {
   const steps: Step[] = [
@@ -63,6 +68,7 @@ function makeSteps(firstBlock: () => Element | null, withDrop: boolean): Step[] 
   {
     target: () => document.querySelector(".bar .btn.main"),
     icon: "save",
+    save: true,
     title: "tut.s4.t",
     body: "tut.s4.b",
   },
@@ -188,7 +194,8 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
   const vh = window.innerHeight;
   // 설명 카드는 강조 영역 아래에 공간이 있으면 아래, 없으면 위
   // 아래에도 위에도 카드가 들어갈 자리가 없으면(영상 칸처럼 강조 영역이 화면을 거의 채울 때) 화면 아래쪽에 고정해 강조 영역 위에 겹쳐 보인다 (잘려서 안 보이는 것보다 낫다)
-  const CARD_H = 200;
+  const showSave = !!step.save;
+  const CARD_H = showSave ? 420 : 200;
   const roomBelow = r ? vh - (r.y + r.h) - 14 : vh;
   const roomAbove = r ? r.y - 14 : vh;
   const below = r ? roomBelow >= CARD_H : true;
@@ -228,6 +235,23 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
         </div>
         <strong>{t(step.title)}</strong>
         <p>{t(step.body)}</p>
+        {showSave && (
+          <div className="tut-save">
+            {config.sample && (
+              <figure className="tut-sample">
+                <img src={config.sample} alt="" draggable={false} />
+                <figcaption>{t("tut.save.ex")}</figcaption>
+              </figure>
+            )}
+            {/* 인스타·카톡 등 앱 안 브라우저로 들어온 사람에게만 보인다 (크롬·사파리 등은 저장 버튼이 잘 되므로 안내하지 않는다) */}
+            {IN_APP && (
+              <p className="tut-warn here">
+                <span aria-hidden="true">⚠️ </span>
+                {t("tut.save.here")}
+              </p>
+            )}
+          </div>
+        )}
         <div className="tut-acts">
           <button type="button" className="tut-skip" onClick={finish}>
             {t("tut.skip")}

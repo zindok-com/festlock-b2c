@@ -132,6 +132,8 @@ const T: Record<Lang, Dict> = {
     "tut.drop.b": "창이 열리고 잠깐 뒤, 위쪽에 유튜브 플레이어가 열리면서 드랍 구간(또는 영상)을 바로 틀어 줘요.",
     "tut.s4.t": "배경화면으로 저장",
     "tut.s4.b": "다 골랐으면 여기서 인스타 스토리(9:16)나 폰 배경화면(9:19) 이미지로 저장할 수 있어요.",
+    "tut.save.ex": "이런 이미지가 만들어져요 (예시)",
+    "tut.save.here": "지금 앱 안 브라우저(인스타그램 등)로 보고 계시네요. 여기서는 저장 버튼이 안 먹혀요. 이미지를 꾹 눌러 저장하거나 스크린샷을 찍어 주세요. 크롬·사파리에서 열면 버튼으로 바로 저장돼요.",
   },
   en: {
     "doc.title": "EDC KOREA 2026 · My Timetable",
@@ -232,6 +234,8 @@ const T: Record<Lang, Dict> = {
     "tut.drop.b": "A moment after the window opens, a YouTube player opens at the top and plays the drop (or the video) right away.",
     "tut.s4.t": "Save as wallpaper",
     "tut.s4.b": "When you're done, save your picks here as an Instagram story (9:16) or phone wallpaper (9:19) image.",
+    "tut.save.ex": "You'll get an image like this (example)",
+    "tut.save.here": "You're viewing this in an in-app browser (Instagram etc.), so the save button won't work here. Press and hold the image to save it, or take a screenshot. Open it in Chrome or Safari and the button saves it directly.",
   },
   ja: {
     "doc.title": "EDC KOREA 2026 · マイタイムテーブル",
@@ -332,6 +336,8 @@ const T: Record<Lang, Dict> = {
     "tut.drop.b": "画面が開いて少しすると、上にYouTubeプレーヤーが開き、ドロップ（または動画）をすぐ再生します。",
     "tut.s4.t": "壁紙として保存",
     "tut.s4.b": "選び終わったら、ここでインスタストーリー(9:16)やスマホ壁紙(9:19)の画像として保存できます。",
+    "tut.save.ex": "こんな画像が作られます(例)",
+    "tut.save.here": "今はアプリ内ブラウザ(Instagramなど)でご覧のため、保存ボタンが使えません。画像を長押しして保存するか、スクリーンショットを撮ってください。ChromeやSafariで開けばボタンでそのまま保存できます。",
   },
   zh: {
     "doc.title": "EDC KOREA 2026 · 我的时间表",
@@ -432,6 +438,8 @@ const T: Record<Lang, Dict> = {
     "tut.drop.b": "窗口打开片刻后，顶部会出现 YouTube 播放器，直接播放 Drop（或整段视频）。",
     "tut.s4.t": "保存为壁纸",
     "tut.s4.b": "选好后，可在这里保存为 Instagram 快拍(9:16)或手机壁纸(9:19)图片。",
+    "tut.save.ex": "会生成这样的图片(示例)",
+    "tut.save.here": "您现在是在应用内浏览器(如 Instagram)中查看，保存按钮无法使用。请长按图片保存，或直接截图。在 Chrome 或 Safari 中打开即可用按钮直接保存。",
   },
 };
 

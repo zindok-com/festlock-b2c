@@ -32,7 +32,7 @@ const DAY_TITLE: Record<string, string> = { fri: "FRIDAY NOV 6", sat: "SATURDAY 
 const toneVars = (key: string) => ({ "--c": STAGE[key].color, "--ci": STAGE[key].ink }) as CSSProperties;
 
 /** 튜토리얼: 드랍이 있는 첫 공연으로 시연(유튜브 플레이어가 열리는 단계 포함), 없으면 Kinetic Field 두 번째 공연 */
-const TUT: TutConfig = { storageKey: "fl:orl:tut", block: ".orl .col .blk:nth-child(2)", blockFallback: ".orl .blk", text: { "tut.s3.b": "f.tut.s3.b" }, dropSlug: SLUG };
+const TUT: TutConfig = { storageKey: "fl:orl:tut", block: ".orl .col .blk:nth-child(2)", blockFallback: ".orl .blk", text: { "tut.s3.b": "f.tut.s3.b" }, dropSlug: SLUG, sample: "/tutorial/orl.webp" };
 
 const hours: number[] = [];
 for (let m = START; m <= END; m += 60) hours.push(m);
