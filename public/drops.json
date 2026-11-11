@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-02T13:20:56.987Z",
+  "exportedAt": "2026-11-11T03:58:30.470Z",
   "festivals": {
     "edc-korea-2026": {
       "kream": {
@@ -1208,7 +1208,117 @@
         "source": "artist",
         "full": true
       }
-    }
+    },
+    "ultra-taiwan-2026": {
+      "mykris": {
+        "videoId": "F7U49tgc2S8",
+        "start": 0,
+        "end": 3786,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "halo": {
+        "videoId": "6szz_sAs8Zg",
+        "start": 0,
+        "end": 3600,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "levity": {
+        "videoId": "LXVYTEqFarM",
+        "start": 2442.5,
+        "end": 2472.5,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist"
+      },
+      "yousuke-yukimatsu": {
+        "videoId": "EIvt_WrrxW0",
+        "start": 0,
+        "end": 5932,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "bunt": {
+        "videoId": "1MX4Vtc5aUU",
+        "start": 0,
+        "end": 6603,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "sebastian-ingrosso": {
+        "videoId": "g4vR2VlhNtk",
+        "start": 0,
+        "end": 3470,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "alan-walker": {
+        "videoId": "wuwPiyvPqLA",
+        "start": 0,
+        "end": 3566,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "veena": {
+        "videoId": "xXRvcXKWVvU",
+        "start": 0,
+        "end": 5584,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "lynne": {
+        "videoId": "LQZUrOhh8Hw",
+        "start": 0,
+        "end": 5469,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "chris-avantgarde": {
+        "videoId": "L_xFAIUDCoc",
+        "start": 0,
+        "end": 8103,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "korolova": {
+        "videoId": "BdmIDKUvlDQ",
+        "start": 0,
+        "end": 5391,
+        "kind": "live",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      },
+      "camelphat": {
+        "videoId": "Q-gTWjK62vw",
+        "start": 0,
+        "end": 7280,
+        "kind": "mixset",
+        "label": "drop",
+        "source": "artist",
+        "full": true
+      }
+    },
+    "zonnafe-2026": {}
   },
   "artists": {
     "10cm-x-soran": {
@@ -1473,6 +1583,24 @@
       "source": "artist",
       "full": true
     },
+    "bunt": {
+      "videoId": "1MX4Vtc5aUU",
+      "start": 0,
+      "end": 6603,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "camelphat": {
+      "videoId": "Q-gTWjK62vw",
+      "start": 0,
+      "end": 7280,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
     "cc-love": {
       "videoId": "A-k1IwtF8cI",
       "start": 0,
@@ -1504,6 +1632,15 @@
       "videoId": "SijqYLBuBwM",
       "start": 0,
       "end": 3501,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "chris-avantgarde": {
+      "videoId": "L_xFAIUDCoc",
+      "start": 0,
+      "end": 8103,
       "kind": "live",
       "label": "drop",
       "source": "artist",
@@ -1639,6 +1776,15 @@
       "videoId": "JjkfofWcfec",
       "start": 0,
       "end": 5468,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "halo": {
+      "videoId": "6szz_sAs8Zg",
+      "start": 0,
+      "end": 3600,
       "kind": "live",
       "label": "drop",
       "source": "artist",
@@ -1863,6 +2009,15 @@
       "label": "drop",
       "source": "artist"
     },
+    "korolova": {
+      "videoId": "BdmIDKUvlDQ",
+      "start": 0,
+      "end": 5391,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
     "kream": {
       "videoId": "kM7iuhXXaZg",
       "start": 1262.8,
@@ -1909,6 +2064,15 @@
       "videoId": "g6y-gfyCUUs",
       "start": 0,
       "end": 10831,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
+    "lynne": {
+      "videoId": "LQZUrOhh8Hw",
+      "start": 0,
+      "end": 5469,
       "kind": "live",
       "label": "drop",
       "source": "artist",
@@ -2037,6 +2201,15 @@
       "label": "drop",
       "source": "artist"
     },
+    "mykris": {
+      "videoId": "F7U49tgc2S8",
+      "start": 0,
+      "end": 3786,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
     "nico-moreno": {
       "videoId": "UyqBSncE7LQ",
       "start": 0,
@@ -2159,6 +2332,15 @@
       "source": "artist",
       "full": true
     },
+    "sebastian-ingrosso": {
+      "videoId": "g4vR2VlhNtk",
+      "start": 0,
+      "end": 3470,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
     "seeing-double": {
       "videoId": "YaWzpNmIYSA",
       "start": 0,
@@ -2266,6 +2448,15 @@
       "source": "artist",
       "full": true
     },
+    "veena": {
+      "videoId": "xXRvcXKWVvU",
+      "start": 0,
+      "end": 5584,
+      "kind": "live",
+      "label": "drop",
+      "source": "artist",
+      "full": true
+    },
     "whethan": {
       "videoId": "1Q-j11Nlm4k",
       "start": 2529.8,
@@ -2298,6 +2489,15 @@
       "kind": "topic",
       "label": "drop",
       "source": "artist"
+    },
+    "yousuke-yukimatsu": {
+      "videoId": "EIvt_WrrxW0",
+      "start": 0,
+      "end": 5932,
+      "kind": "mixset",
+      "label": "drop",
+      "source": "artist",
+      "full": true
     },
     "zack-martino": {
       "videoId": "HM2E_TDxcr8",

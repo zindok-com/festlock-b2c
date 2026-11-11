@@ -42,12 +42,14 @@ const MANY = UTW_STAGES.length >= MAP_MIN_STAGES;
 const FIT_STYLE = MANY ? undefined : ({ "--cw": `clamp(48px, calc((min(100vw, 560px) - ${42 + 3 * UTW_STAGES.length}px) / ${UTW_STAGES.length}), ${UTW_STAGES.length <= 3 ? 200 : 132}px)` } as CSSProperties);
 const toneVars = (key: string) => ({ "--c": STAGE[key].color, "--ci": STAGE[key].ink }) as CSSProperties;
 
-// 튜토리얼: 두 번째 칸으로 시연 (이 페스티벌은 미리보기 영상이 없다)
+// 튜토리얼: 드랍(유튜브 구간)이 있는 아티스트로 시연 (Drop Studio에서 고른 구간. 튜토리얼에서는 소리 없이 자리만 펼친다)
 const TUT: TutConfig = {
   storageKey: "fl:utw:tut",
   block: ".zon .col .blk:nth-child(2)",
   blockFallback: ".zon .blk",
   text: { "tut.s3.b": "f.tut.s3.b" },
+  dropSlug: SLUG,
+  prefer: "levity",
   sample: "/tutorial/utw.webp",
 };
 
