@@ -115,8 +115,8 @@ const ZON_BASE: FItem[] = [
     ["17:00", "18:00", "king", "KING", "KING"],
     ["18:00", "19:00", "voidrover", "VOIDROVER", "VOIDROVER"],
     ["19:00", "20:00", "zi-zero", "ZI-ZERO", "ZI-ZERO"],
-    ["20:00", "21:00", "kim-dongsun", "KIM DONGSUN", "KIM DONGSUN"],
-    ["21:00", "21:45", "kim-qna", "KIM.QNA", "KIM.QNA"],
+    ["20:00", "21:00", "kim-qna", "KIM.QNA", "KIM.QNA"],
+    ["21:00", "21:45", "kim-dongsun", "KIM DONGSUN", "KIM DONGSUN"],
     ["21:45", "22:30", "zomdol", "ZOMDOL", "ZOMDOL"],
     ["22:30", "23:15", "g1kim", "G1KIM", "G1KIM"],
     ["23:15", "24:00", "songpancake", "SONGPANCAKE", "SONGPANCAKE"],
@@ -136,8 +136,8 @@ const ZON_BASE: FItem[] = [
     ["22:00", "23:00", "yh", "YH", "YH"],
     ["23:00", "24:00", "honn", "HONN", "HONN"],
     ["24:00", "25:00", "funkin-cat", "FUNKIN CAT", "FUNKIN CAT"],
-    ["25:00", "26:00", "dj-bowlcut", "DJ BOWLCUT", "DJ BOWLCUT"],
-    ["26:00", "27:00", "coral-the-animal", "CORAL THE ANIMAL", "CORAL THE ANIMAL"],
+    ["25:00", "26:00", "coral-the-animal", "CORAL THE ANIMAL", "CORAL THE ANIMAL"],
+    ["26:00", "27:00", "dj-bowlcut", "DJ BOWLCUT", "DJ BOWLCUT"],
   ]),
 ];
 
