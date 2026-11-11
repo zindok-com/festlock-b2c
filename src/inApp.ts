@@ -8,3 +8,11 @@ export function inAppBrowser(): "kakao" | "instagram" | "other" | null {
   return null;
 }
 export const IN_APP = inAppBrowser();
+
+/** 같은 주소를 휴대폰 기본 브라우저로 여는 링크 (가능한 경우만) */
+export function externalUrl(): string | null {
+  const url = location.href;
+  if (IN_APP === "kakao") return "kakaotalk://web/openExternal?url=" + encodeURIComponent(url);
+  if (/Android/i.test(navigator.userAgent)) return "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+  return null; // 아이폰 인스타 안 브라우저는 오른쪽 위 ⋯ 메뉴로만 열 수 있다
+}

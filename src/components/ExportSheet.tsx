@@ -4,6 +4,8 @@ import { DAYS, ITEMS, dayOf, pickOf } from "../data";
 import { Rich, useI18n } from "../i18n";
 import { reportDownload, type ReportResult } from "../stats";
 import { useBackClose } from "../backClose";
+import { IN_APP } from "../inApp";
+import { InAppSaveNotice } from "./InAppSaveNotice";
 import { ensureFonts, fileName, loadFaces, renderBothCanvas, renderExportCanvas, type FaceImg, type Ratio } from "../exportImage";
 
 interface Props {
@@ -24,6 +26,8 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
   const [layout, setLayout] = useState<"stack" | "side">("stack");
   // 너무 자주 눌러 집계가 잠시 제한됐을 때 안내
   const [limitNotice, setLimitNotice] = useState(false);
+  /** 앱 안 브라우저에서 "이미지 저장"을 눌렀을 때 안내 */
+  const [saveNotice, setSaveNotice] = useState(false);
   const noticeShownAt = useRef(0);
   const [src, setSrc] = useState<string | null>(null);
   const [viewer, setViewer] = useState(false);
@@ -93,6 +97,11 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
   }
 
   async function save() {
+    // 앱 안 브라우저(인스타·카톡 등)는 <a download>를 조용히 무시한다 → 저장한 척하지 않고 안내한다
+    if (IN_APP) {
+      setSaveNotice(true);
+      return;
+    }
     const blob = await getBlob();
     if (!blob) return;
     markDownloaded();
@@ -227,6 +236,15 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
             </button>
           </div>
         </div>
+      )}
+      {saveNotice && (
+        <InAppSaveNotice
+          onClose={() => setSaveNotice(false)}
+          onView={() => {
+            markDownloaded();
+            setViewer(true);
+          }}
+        />
       )}
       {viewer && src && (
         <div className="viewer" role="dialog" aria-modal="true" aria-label={t("viewer.aria")}>

@@ -1,6 +1,7 @@
 // 배경화면 만들기 창 (새 페스티벌 공통). 저장·공유·크게 보기를 누르면 다운로드·선택 집계를 보낸다.
 import { useEffect, useRef, useState } from "react";
-import { IN_APP } from "../inApp";
+import { IN_APP, externalUrl } from "../inApp";
+import { InAppSaveNotice } from "../components/InAppSaveNotice";
 import { Rich, useI18n } from "../i18n";
 import { useBackClose } from "../backClose";
 import type { Ratio } from "./festCanvas";
@@ -62,14 +63,6 @@ const DEFAULT_OPTS: ExportOpt[] = ["lock", "from", "compact"];
 const PAIR = "__pair";
 
 
-/** 같은 주소를 휴대폰 기본 브라우저로 여는 링크 (가능한 경우만) */
-function externalUrl(): string | null {
-  const url = location.href;
-  if (IN_APP === "kakao") return "kakaotalk://web/openExternal?url=" + encodeURIComponent(url);
-  if (/Android/i.test(navigator.userAgent)) return "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-  return null; // 아이폰 인스타 안 브라우저는 오른쪽 위 ⋯ 메뉴로만 열 수 있다
-}
-
 export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, render, hoursFor, firstPick, fileName, onClose, toast, report, onCounted, opts = DEFAULT_OPTS, views, voteFest }: Props) {
   const { t, lang } = useI18n();
   const [seg, setSeg] = useState(initial);
@@ -92,6 +85,8 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
   // 공유·저장용 파일을 미리 만들어 둔다 (탭한 순간 바로 공유 창을 열어야 아이폰에서 막히지 않는다)
   const blobRef = useRef<Blob | null>(null);
   const [inAppNotice, setInAppNotice] = useState(false);
+  /** 앱 안 브라우저에서 "이미지 저장"을 눌렀을 때 안내 */
+  const [saveNotice, setSaveNotice] = useState(false);
   // 너무 자주 눌러 집계가 잠시 제한됐을 때 안내 (1분에 한 번만)
   const [limitNotice, setLimitNotice] = useState(false);
   const noticeAt = useRef(0);
@@ -198,6 +193,11 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
     return new Promise((res) => (cvRef.current ? cvRef.current.toBlob((b) => res(b), "image/png") : res(null)));
   }
   async function save() {
+    // 앱 안 브라우저(인스타·카톡 등)는 <a download>를 조용히 무시한다 → 저장한 척하지 않고 안내한다
+    if (IN_APP) {
+      setSaveNotice(true);
+      return;
+    }
     const b = await blob();
     if (!b) return;
     mark();
@@ -376,6 +376,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
           <p className="hint">{t("exp.hint")}</p>
         </div>
       </div>
+      {saveNotice && <InAppSaveNotice onClose={() => setSaveNotice(false)} onView={view} />}
       {inAppNotice && (
         <div className="evt" role="alertdialog" aria-modal="true" aria-label={t("f.inapp.title")} onClick={(e) => e.target === e.currentTarget && setInAppNotice(false)}>
           <div className="evt-card limit-card">
