@@ -35,6 +35,8 @@ export interface TutConfig {
   dropSlug?: string;
   /** 미리보기 영상(mp4) 목록(public/clips.json)에서 찾을 페이지 주소. 주면 영상이 있는 아티스트로 시연하고, 영상 칸이 열리는 단계를 보여 준다 (문구는 text 로 tut.drop.t/b 를 바꿔 쓴다) */
   clipSlug?: string;
+  /** 시연에 먼저 쓸 아티스트 id (영상·드랍이 있을 때만. 없으면 화면 순서대로 첫 번째) */
+  prefer?: string;
 }
 const EDC_TUT: TutConfig = { storageKey: TUT_KEY, block: ".col .blk:nth-child(2)", blockFallback: ".blk" };
 
@@ -94,7 +96,9 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
       if (!alive) return;
       const [d, c] = res ?? [null, null];
       const has = (id: string) => (d && dropSlug ? !!findDrop(d, dropSlug, id) : false) || (c && clipSlug ? !!findClip(c, clipSlug, id) : false);
-      const el = Array.from(document.querySelectorAll<HTMLElement>(config.blockFallback)).find((b) => b.dataset.id && has(b.dataset.id));
+      const blocks = Array.from(document.querySelectorAll<HTMLElement>(config.blockFallback));
+      const prefer = config.prefer;
+      const el = (prefer ? blocks.find((b) => b.dataset.id === prefer && has(prefer)) : undefined) ?? blocks.find((b) => b.dataset.id && has(b.dataset.id));
       setDropPick(el?.dataset.id ?? null);
     });
     return () => {
@@ -183,11 +187,17 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   // 설명 카드는 강조 영역 아래에 공간이 있으면 아래, 없으면 위
-  const below = r ? vh - (r.y + r.h) > 230 : true;
+  // 아래에도 위에도 카드가 들어갈 자리가 없으면(영상 칸처럼 강조 영역이 화면을 거의 채울 때) 화면 아래쪽에 고정해 강조 영역 위에 겹쳐 보인다 (잘려서 안 보이는 것보다 낫다)
+  const CARD_H = 200;
+  const roomBelow = r ? vh - (r.y + r.h) - 14 : vh;
+  const roomAbove = r ? r.y - 14 : vh;
+  const below = r ? roomBelow >= CARD_H : true;
   const cardStyle = r
     ? below
-      ? { top: Math.min(r.y + r.h + 14, vh - 220) }
-      : { bottom: Math.max(vh - r.y + 14, 12) }
+      ? { top: Math.min(r.y + r.h + 14, vh - CARD_H - 12) }
+      : roomAbove >= CARD_H
+        ? { bottom: Math.max(vh - r.y + 14, 12) }
+        : { bottom: 12 }
     : { top: vh / 2 - 100 };
 
   return (

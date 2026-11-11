@@ -53,6 +53,7 @@ const TUT: TutConfig = {
   blockFallback: ".zon .blk",
   text: { "tut.s3.b": "f.tut.s3.b", "tut.drop.t": "f.zon.tut.clip.t", "tut.drop.b": "f.zon.tut.clip.b" },
   clipSlug: SLUG,
+  prefer: "flash-finger",
 };
 
 const hours: number[] = [];
