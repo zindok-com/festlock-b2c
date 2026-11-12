@@ -1,31 +1,35 @@
-// 다국어(한국어·영어·일본어·중국어 간체). 폰 언어 설정으로 자동 선택하고, 🌐 버튼으로 바꿀 수 있다.
+// 다국어(한국어·영어·일본어·중국어 간체·중국어 번체). 폰 언어 설정으로 자동 선택하고, 🌐 버튼으로 바꿀 수 있다.
 import { Fragment, createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Item } from "./data";
 import { useBackClose } from "./backClose";
 import { FEST_T } from "./fest/strings";
 
-export type Lang = "ko" | "en" | "ja" | "zh";
+export type Lang = "ko" | "en" | "ja" | "zh" | "zht";
 export const LANGS: { id: Lang; name: string }[] = [
   { id: "ko", name: "한국어" },
   { id: "en", name: "English" },
   { id: "ja", name: "日本語" },
-  { id: "zh", name: "中文" },
+  { id: "zh", name: "简体中文" },
+  { id: "zht", name: "繁體中文" },
 ];
 const LANG_KEY = "edc26:lang";
-const HTML_LANG: Record<Lang, string> = { ko: "ko", en: "en", ja: "ja", zh: "zh-Hans" };
+const HTML_LANG: Record<Lang, string> = { ko: "ko", en: "en", ja: "ja", zh: "zh-Hans", zht: "zh-Hant" };
 
 /** 저장된 선택 → 폰 언어 목록 순서대로 → 없으면 영어 */
 function detect(): Lang {
   try {
     const s = localStorage.getItem(LANG_KEY);
-    if (s === "ko" || s === "en" || s === "ja" || s === "zh") return s;
+    if (s === "ko" || s === "en" || s === "ja" || s === "zh" || s === "zht") return s;
   } catch {
     /* 저장소 없음 */
   }
   const list = navigator.languages?.length ? navigator.languages : [navigator.language || "en"];
   for (const l of list) {
-    const c = l.toLowerCase().slice(0, 2);
-    if (c === "ko" || c === "en" || c === "ja" || c === "zh") return c;
+    const low = l.toLowerCase();
+    // 중국어: 번체(대만·홍콩·마카오·Hant)와 간체를 가른다
+    if (low.startsWith("zh")) return /^zh-(tw|hk|mo|hant)/.test(low) ? "zht" : "zh";
+    const c = low.slice(0, 2);
+    if (c === "ko" || c === "en" || c === "ja") return c;
   }
   return "en";
 }
@@ -441,6 +445,108 @@ const T: Record<Lang, Dict> = {
     "tut.save.ex": "会生成这样的图片(示例)",
     "tut.save.here": "您现在是在应用内浏览器(如 Instagram)中查看，保存按钮无法使用。请长按图片保存，或直接截图。在 Chrome 或 Safari 中打开即可用按钮直接保存。",
   },
+  zht: {
+    "doc.title": "EDC KOREA 2026 · 我的時間表",
+    "home.docTitle": "FestLock · 把音樂節時間表做成鎖定畫面",
+    "home.title": "把音樂節時間表放到你的鎖定畫面上",
+    "home.sub": "只挑你想看的藝人，儲存為 Instagram 限時動態或手機桌布圖片。",
+    "home.list": "音樂節",
+    "home.notice": "非官方粉絲自製服務，與各音樂節主辦方無關。時間以官方公佈為準，可能會有變動。",
+    "fest.soon": "即將開放",
+    "fest.live": "已開放",
+    "fest.ended": "已結束 · 回顧",
+    "soon.title": "時間表準備中",
+    "soon.body": "時間表一公佈，就能在這裡挑選你的陣容並做成鎖定畫面。",
+    "soon.home": "看看其他音樂節",
+    "edc.ended": "EDC KOREA 2026 已結束。仍可檢視時間表並製作桌布。",
+    "stats.dl": "桌布下載 **{n}** 次",
+    "stats.split": "週六 {sat} · 週日 {sun}",
+    "top.btn": "DJ 排行",
+    "evt.badge": "活動",
+    "evt.title": "MSE 請你吃炸雞 🍗",
+    "evt.body": "把你的專屬時間表發到 Instagram 限時動態吧！",
+    "evt.step1": "選好想看的 DJ",
+    "evt.step2": "在「生成桌布」中儲存 Instagram 9:16 圖片",
+    "evt.step3": "在限時動態中標記 **@mainstageedm** 和 **@taestival_00** 即可！",
+    "evt.note": "中獎公佈等詳情請檢視 @mainstageedm 的 Instagram。",
+    "evt.go": "去做我的時間表",
+    "evt.insta": "檢視 @mainstageedm",
+    "evt.hideToday": "今天不再顯示",
+    "evt.tagline": "下一場音樂節的時間表也在 FestLock 🔒",
+    "evt.follow": "追蹤 @festlock 搶先收到",
+    "top.title": "DJ 排行", "rank.tabTop": "TOP 10", "rank.tabHour": "按時段", "rank.hourDesc": "與同一時段演出的 DJ 比較的排名。跨兩個時段的 DJ 會同時出現在兩邊。",
+    "top.desc": "按首次生成桌布時所選的 DJ 統計。同一裝置的同一位 DJ 只計一次。",
+    "top.loading": "載入中…",
+    "top.error": "無法載入統計資料，請稍後再試。",
+    "top.empty": "還沒有資料，來做第一張桌布吧！",
+    "top.count": "{n} 人",
+    "hero.intro": "點按想看的藝人即可點亮。長按可在 Spotify、YouTube、Apple Music 試聽。選好的陣容可儲存為 Instagram 限時動態(9:16)或手機桌布(9:19)圖片。",
+    "hero.legend": "風格資訊來自搜尋確認。_以 ~ 開頭的風格_是根據舞台風格等推測的，可能不準確。「暫無風格資訊」表示未能確認。",
+    "genre.none": "暫無風格資訊",
+    "tab.genre": "風格",
+    help: "使用說明",
+    "lang.label": "語言",
+    "day.sat": "10.3 週六",
+    "day.sun": "10.4 週日",
+    "sum.sel": "已選 **{n}** 組",
+    "sum.overlap": "⚠ 時間衝突 {n} 處",
+    reset: "重置",
+    "reset.arm": "再點一次全部清除",
+    "make.wall": "生成桌布",
+    "foot.notice": "非官方資訊整理頁面，與 EDC、Insomniac 及主辦方無關。時間表以官方海報為準，可能會有變動。",
+    "foot.private": "照片與海報的版權和肖像權歸各權利人所有。如需刪除請私信 Instagram(@festlock)。",
+    "blk.hold": "長按檢視試聽連結",
+    overlap: "時間衝突",
+    "art.title": "藝人",
+    close: "關閉",
+    "link.sp": "在 Spotify 收聽",
+    "link.yt": "在 YouTube 觀看",
+    "link.am": "在 Apple Music 收聽",
+    "search.note": "以上按鈕只是按藝人名稱**搜尋**。Spotify、Apple Music 上可能沒有該藝人的主頁，也可能出現同名的其他藝人。",
+    "tt.add": "加入我的時間表",
+    "tt.remove": "從我的時間表移除",
+    "app.note": "詳細資訊請檢視 **Insomniac App**。",
+    "exp.aria": "生成陣容圖片",
+    "exp.story": "Instagram 9:16",
+    "exp.phone": "手機桌布 9:19",
+    "exp.lock": "為鎖定畫面時鐘留出空間",
+    "exp.compact": "縮小頂部文字",
+    "exp.both": "週六+週日",
+    "limit.title": "稍等一下！",
+    "limit.body": "短時間內點了好幾次，下載統計暫時停止了。圖片仍可正常儲存，請放心。一分鐘後再儲存一次即可計入統計。",
+    "limit.ok": "確定",
+    "exp.stack": "上下排列",
+    "exp.side": "左右排列",
+    "exp.empty": "這一天還沒有選擇藝人，請先在時間表中點按。",
+    "exp.pvAlt": "所選陣容預覽",
+    "exp.save": "儲存圖片",
+    "exp.view": "放大檢視",
+    "exp.share": "分享",
+    "exp.hint": "在 App 內建瀏覽器(KakaoTalk、Instagram 等)中，「儲存圖片」可能無法使用。此時請點「放大檢視」，長按圖片儲存到相簿。尺寸：Instagram 1080×1920(9:16)，手機桌布 1080×2280(9:19)。",
+    "viewer.aria": "放大圖片",
+    "viewer.hint": "**長按**圖片即可儲存到相簿",
+    "viewer.alt": "待儲存的陣容圖片",
+    "toast.saved": "已儲存。如果找不到，請在「放大檢視」中長按圖片",
+    "toast.saveFail": "無法儲存，已開啟圖片檢視器，請長按圖片",
+    "toast.shareFail": "無法分享，請長按圖片儲存",
+    "toast.shareNo": "此裝置不支援分享，請長按圖片儲存",
+    "tut.aria": "使用指南",
+    "tut.skip": "跳過",
+    "tut.next": "下一步",
+    "tut.start": "開始使用",
+    "tut.s1.t": "點按加入",
+    "tut.s1.b": "點按一次想看的藝人，方塊會亮起並加入你的時間表。再點一次即可移除。",
+    "tut.s2.t": "長按試聽",
+    "tut.s2.b": "長按藝人會彈出試聽視窗。點「下一步」看看是什麼樣子。",
+    "tut.s3.t": "會彈出這樣的視窗",
+    "tut.s3.b": "點 Spotify、YouTube 或 Apple Music 按鈕即可直接搜尋該藝人。點 ✕ 或視窗外部即可關閉。",
+    "tut.drop.t": "馬上試聽 Drop",
+    "tut.drop.b": "視窗開啟片刻後，頂部會出現 YouTube 播放器，直接播放 Drop（或整段影片）。",
+    "tut.s4.t": "儲存為桌布",
+    "tut.s4.b": "選好後，可在這裡儲存為 Instagram 限時動態(9:16)或手機桌布(9:19)圖片。",
+    "tut.save.ex": "會生成這樣的圖片(示例)",
+    "tut.save.here": "您現在是在 App 內建瀏覽器(如 Instagram)中檢視，儲存按鈕無法使用。請長按圖片儲存，或直接截圖。在 Chrome 或 Safari 中開啟即可用按鈕直接儲存。",
+  },
 };
 
 // 새 페스티벌 페이지 문구 합치기
@@ -448,9 +554,9 @@ for (const l of Object.keys(FEST_T) as Lang[]) Object.assign(T[l], FEST_T[l]);
 
 // 데이터(장르)에 들어 있는 한국어 조각 번역
 const GENRE_PARTS: [string, Record<Lang, string>][] = [
-  ["(스테이지 기준)", { ko: "(스테이지 기준)", en: "(by stage)", ja: "(ステージ傾向)", zh: "(按舞台推测)" }],
-  ["(DJ Snake의 베이스 부캐)", { ko: "(DJ Snake의 베이스 부캐)", en: "(DJ Snake's bass alias)", ja: "(DJ Snakeのベース別名義)", zh: "(DJ Snake 的贝斯分身)" }],
-  ["크로스 장르", { ko: "크로스 장르", en: "Cross-genre", ja: "クロスジャンル", zh: "跨风格" }],
+  ["(스테이지 기준)", { ko: "(스테이지 기준)", en: "(by stage)", ja: "(ステージ傾向)", zh: "(按舞台推测)", zht: "(按舞台推測)" }],
+  ["(DJ Snake의 베이스 부캐)", { ko: "(DJ Snake의 베이스 부캐)", en: "(DJ Snake's bass alias)", ja: "(DJ Snakeのベース別名義)", zh: "(DJ Snake 的贝斯分身)", zht: "(DJ Snake 的貝斯分身)" }],
+  ["크로스 장르", { ko: "크로스 장르", en: "Cross-genre", ja: "クロスジャンル", zh: "跨风格", zht: "跨風格" }],
 ];
 
 interface Ctx {

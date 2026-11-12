@@ -7,9 +7,9 @@
 import { rows, type FDay, type FItem, type FStage } from "./types";
 
 export const ORL_DAYS: FDay[] = [
-  { id: "fri", date: "2026-11-06", utc: -5, short: "11/6 FRI", label: { ko: "11.6 금", en: "Fri 11/6", ja: "11/6 金", zh: "11/6 周五" } },
-  { id: "sat", date: "2026-11-07", utc: -5, short: "11/7 SAT", label: { ko: "11.7 토", en: "Sat 11/7", ja: "11/7 土", zh: "11/7 周六" } },
-  { id: "sun", date: "2026-11-08", utc: -5, short: "11/8 SUN", label: { ko: "11.8 일", en: "Sun 11/8", ja: "11/8 日", zh: "11/8 周日" } },
+  { id: "fri", date: "2026-11-06", utc: -5, short: "11/6 FRI", label: { ko: "11.6 금", en: "Fri 11/6", ja: "11/6 金", zh: "11/6 周五", zht: "11/6 週五" } },
+  { id: "sat", date: "2026-11-07", utc: -5, short: "11/7 SAT", label: { ko: "11.7 토", en: "Sat 11/7", ja: "11/7 土", zh: "11/7 周六", zht: "11/7 週六" } },
+  { id: "sun", date: "2026-11-08", utc: -5, short: "11/8 SUN", label: { ko: "11.8 일", en: "Sun 11/8", ja: "11/8 日", zh: "11/8 周日", zht: "11/8 週日" } },
 ];
 
 /** 무대 브랜드 색 (무대별 라인업 포스터의 바탕색, 고른 칸의 글씨 뒤 색): Kinetic 분홍 물결 · Circuit 파란 회로 · Neon 초록 소용돌이 · Stereo 보라 꽃잎 · Casa 산호색 */

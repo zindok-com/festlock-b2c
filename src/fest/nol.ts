@@ -3,10 +3,10 @@
 import { rows, type FDay, type FItem, type FStage } from "./types";
 
 export const NOL_DAYS: FDay[] = [
-  { id: "sat", date: "2026-10-17", short: "DAY 1 · 10.17 SAT", label: { ko: "DAY 1 · 10.17 토", en: "DAY 1 · Sat 10/17", ja: "DAY 1 · 10/17 土", zh: "DAY 1 · 10/17 周六" } },
-  { id: "sun", date: "2026-10-18", short: "DAY 2 · 10.18 SUN", label: { ko: "DAY 2 · 10.18 일", en: "DAY 2 · Sun 10/18", ja: "DAY 2 · 10/18 日", zh: "DAY 2 · 10/18 周日" } },
+  { id: "sat", date: "2026-10-17", short: "DAY 1 · 10.17 SAT", label: { ko: "DAY 1 · 10.17 토", en: "DAY 1 · Sat 10/17", ja: "DAY 1 · 10/17 土", zh: "DAY 1 · 10/17 周六", zht: "DAY 1 · 10/17 週六" } },
+  { id: "sun", date: "2026-10-18", short: "DAY 2 · 10.18 SUN", label: { ko: "DAY 2 · 10.18 일", en: "DAY 2 · Sun 10/18", ja: "DAY 2 · 10/18 日", zh: "DAY 2 · 10/18 周日", zht: "DAY 2 · 10/18 週日" } },
   // 애프터 파티는 17일 밤(22:00~05:00)
-  { id: "after", date: "2026-10-17", short: "AFTER PARTY", label: { ko: "AFTER PARTY", en: "AFTER PARTY", ja: "AFTER PARTY", zh: "AFTER PARTY" } },
+  { id: "after", date: "2026-10-17", short: "AFTER PARTY", label: { ko: "AFTER PARTY", en: "AFTER PARTY", ja: "AFTER PARTY", zh: "AFTER PARTY", zht: "AFTER PARTY" } },
 ];
 
 export interface NolStage extends FStage {

@@ -1,6 +1,6 @@
 // NOL·그랜드 민트 등 새 페스티벌 공통 데이터 형식. 시간은 그날 00:00 기준 분(자정 넘으면 1440 이상).
 // 서버 집계 함수(api/)도 이 파일을 쓰므로 화면 코드(i18n.tsx)를 불러오지 않는다
-export type Lang = "ko" | "en" | "ja" | "zh";
+export type Lang = "ko" | "en" | "ja" | "zh" | "zht";
 
 export type Kind = "act" | "talk" | "event" | "perf";
 

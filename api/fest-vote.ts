@@ -27,7 +27,7 @@ const FESTS = ["gmf", "nol", "orl", "zon", "utw"];
 const VIEWS = ["ai", "all"];
 const LAYOUTS = ["packed", "grid", "text", "all"];
 const RATIOS = ["story", "phone"];
-const LANGS = ["ko", "en", "ja", "zh"];
+const LANGS = ["ko", "en", "ja", "zh", "zht"];
 
 /** 투표를 멈추려면 true (DB를 쓰지 않고 바로 거절) */
 const CLOSED = false;

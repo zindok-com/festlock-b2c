@@ -236,6 +236,8 @@ h1{
 :lang(zh-Hans) body,body:lang(zh-Hans){font-family:"Noto Sans SC","Rubik","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 .lang-menu button:lang(ja){font-family:"Noto Sans JP",sans-serif}
 .lang-menu button:lang(zh-Hans){font-family:"Noto Sans SC",sans-serif}
+:lang(zh-Hant) body,body:lang(zh-Hant){font-family:"Noto Sans TC","Rubik","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+.lang-menu button:lang(zh-Hant){font-family:"Noto Sans TC",sans-serif}
 
 /* 다운로드 수 · 인기 DJ 버튼 (제목 아래) */
 .stats-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:10px}

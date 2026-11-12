@@ -119,7 +119,7 @@ export const MYF_ITEMS = [
    myf: MyfPage,
    ```
 2. `src/festivals.json`에서 `"ready": true`, `"page": "myf"`, `"titleKey": "f.doc.myf"` 로 바꿉니다.
-3. `src/fest/strings.ts`(필요하면 `src/i18n.tsx`)에 탭 제목 문구 `f.doc.myf`를 **4개 언어(ko/en/ja/zh)** 모두 추가합니다.
+3. `src/fest/strings.ts`(필요하면 `src/i18n.tsx`)에 탭 제목 문구 `f.doc.myf`를 **5개 언어(ko/en/ja/zh 간체/zht 번체)** 모두 추가합니다.
 
 ### 2-4. 다운로드 수·인기 랭킹 연결 (집계를 쓰는 경우)
 
@@ -285,7 +285,7 @@ Vercel Hobby 요금제는 Blob 전송량이 한 달 10GB를 넘으면 요금이 
 
 - [ ] `npm run build` 통과 (라인업 일치 검사·타입 검사 포함)
 - [ ] `/{slug}` 와 별칭 주소가 열린다
-- [ ] 4개 언어(ko/en/ja/zh)로 전환해도 문구가 비지 않는다
+- [ ] 5개 언어(ko/en/ja/zh/zht)로 전환해도 문구가 비지 않는다
 - [ ] 폰 너비(375px)에서 레이아웃이 깨지지 않는다
 - [ ] "이미지로 저장"이 되고, 사진이 있으면 사진이 들어간다
 - [ ] 링크 미리보기: `og.title`·`og.desc`·`og.img` 확인

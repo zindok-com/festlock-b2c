@@ -5,7 +5,7 @@
 import { rows, type FDay, type FItem, type FStage } from "./types";
 import { ZON_DESIGNATED } from "./zonGenres";
 
-export const ZON_DAYS: FDay[] = [{ id: "sat", date: "2026-11-14", short: "11/14 SAT", label: { ko: "11.14 토", en: "Sat 11/14", ja: "11/14 土", zh: "11/14 周六" } }];
+export const ZON_DAYS: FDay[] = [{ id: "sat", date: "2026-11-14", short: "11/14 SAT", label: { ko: "11.14 토", en: "Sat 11/14", ja: "11/14 土", zh: "11/14 周六", zht: "11/14 週六" } }];
 
 /** 무대 순서는 공식 타임테이블 이미지 순서. 색은 FestLock이 정한 구분용 색(공식 색 아님) */
 export const ZON_STAGES: FStage[] = [

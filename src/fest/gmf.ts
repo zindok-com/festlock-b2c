@@ -2,8 +2,8 @@
 import { rows, t2m, type FDay, type FItem, type FStage, type Kind } from "./types";
 
 export const GMF_DAYS: FDay[] = [
-  { id: "sat", date: "2026-10-17", short: "10/17 SAT", label: { ko: "10.17 토", en: "Sat 10/17", ja: "10/17 土", zh: "10/17 周六" } },
-  { id: "sun", date: "2026-10-18", short: "10/18 SUN", label: { ko: "10.18 일", en: "Sun 10/18", ja: "10/18 日", zh: "10/18 周日" } },
+  { id: "sat", date: "2026-10-17", short: "10/17 SAT", label: { ko: "10.17 토", en: "Sat 10/17", ja: "10/17 土", zh: "10/17 周六", zht: "10/17 週六" } },
+  { id: "sun", date: "2026-10-18", short: "10/18 SUN", label: { ko: "10.18 일", en: "Sun 10/18", ja: "10/18 日", zh: "10/18 周日", zht: "10/18 週日" } },
 ];
 
 export const GMF_STAGES: FStage[] = [

@@ -5,7 +5,7 @@
 import { rows, type FDay, type FItem, type FStage } from "./types";
 import { UTW_GENRES } from "./utwGenres";
 
-export const UTW_DAYS: FDay[] = [{ id: "sat", date: "2026-11-14", short: "11/14 SAT", utc: 8, label: { ko: "11.14 토", en: "Sat 11/14", ja: "11/14 土", zh: "11/14 周六" } }];
+export const UTW_DAYS: FDay[] = [{ id: "sat", date: "2026-11-14", short: "11/14 SAT", utc: 8, label: { ko: "11.14 토", en: "Sat 11/14", ja: "11/14 土", zh: "11/14 周六", zht: "11/14 週六" } }];
 
 /** 무대 순서는 공식 SET TIMES 이미지 순서. 색은 FestLock이 정한 구분용 색(공식 색 아님) */
 export const UTW_STAGES: FStage[] = [
