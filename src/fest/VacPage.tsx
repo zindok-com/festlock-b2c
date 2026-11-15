@@ -15,7 +15,7 @@ import { CardThemeMenu } from "./CardThemeMenu";
 import { b2bOf } from "./b2b";
 import { makeThemeSample, setThemeSample } from "./themeSample";
 import { useReverse } from "./viewPrefs";
-import { FestSheet, useLongPress } from "./parts";
+import { FestSheet, PosterViewer, useLongPress, usePoster } from "./parts";
 import { FestExport, type ExportOpt, type RenderOpt } from "./FestExport";
 import { ensureFonts, loadPhotos } from "./festCanvas";
 import { layoutOf, renderMulti } from "./festMulti";
@@ -29,6 +29,7 @@ import "./fest.css";
 
 const SLUG = "vac-2026";
 const FACE = "vac";
+const POSTERS = [{ src: "/poster/vac-key.webp", key: "f.posterKey" }];
 const PPM = 3.2;
 /** 날(day)마다 표가 시작·끝나는 시각 (그날 공연의 처음·끝을 정시로 맞춘다) */
 const RANGE: Record<string, [number, number]> = Object.fromEntries(
@@ -150,6 +151,7 @@ export function VacPage() {
   }, [START, END]);
   useFestTheme("vac");
   const [ctheme, setCtheme] = useCardTheme();
+  const poster = usePoster();
   useMemo(() => setThemeSample(makeThemeSample(FACE, VAC_ITEMS, VAC_STAGES)), []);
   const [reverse, toggleReverse] = useReverse();
   useFont(ANTON);
@@ -318,12 +320,18 @@ export function VacPage() {
             <LangMenu />
           </div>
           <div className="zon-head">
+            <button type="button" className="fx-thumb" onClick={poster.show} aria-label={t("f.poster")}>
+              <img src="/poster/vac-key.webp" alt="" width={105} height={140} />
+            </button>
             <div className="zon-head-txt">
               <p className="zon-when">{t("f.vac.when")}</p>
               <h1 className="zon-logo" aria-label="VAC · Vision & Colour 2026">
                 VISION & COLOUR
               </h1>
               <p className="zon-where">{t("f.vac.where")}</p>
+              <button type="button" className="fx-pbtn" onClick={poster.show}>
+                {t("f.poster")}
+              </button>
             </div>
           </div>
           <div className="stats-row">
@@ -486,6 +494,7 @@ export function VacPage() {
           onClose={() => setRanking(false)}
         />
       )}
+      {poster.open && <PosterViewer title="VAC 2026 · Vision & Colour" posters={POSTERS.map((p) => ({ src: p.src, label: t(p.key) }))} onClose={poster.hide} />}
       {tut && <Tutorial config={TUT} onClose={() => setTut(false)} onInfo={tutInfo} themePick={{ value: ctheme, onChange: setCtheme }} />}
       {toastNode}
     </>

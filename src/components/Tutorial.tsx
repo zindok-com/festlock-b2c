@@ -5,7 +5,7 @@ import { findDrop, loadDrops } from "../drops";
 import { findClip, loadClips } from "../clips";
 import { DROP_DEMO } from "./DropPlayer";
 import { IN_APP } from "../inApp";
-import { CardThemeMenu } from "../fest/CardThemeMenu";
+import { CardThemeMenu, ThemeShowcase } from "../fest/CardThemeMenu";
 import type { CardTheme } from "../fest/cardTheme";
 
 export const TUT_KEY = "edc26:tut";
@@ -203,7 +203,7 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT, themePick }: Props
   // 설명 카드는 강조 영역 아래에 공간이 있으면 아래, 없으면 위
   // 아래에도 위에도 카드가 들어갈 자리가 없으면(영상 칸처럼 강조 영역이 화면을 거의 채울 때) 화면 아래쪽에 고정해 강조 영역 위에 겹쳐 보인다 (잘려서 안 보이는 것보다 낫다)
   const showSave = !!step.save;
-  const CARD_H = showSave ? 420 : step.theme ? 260 : 200;
+  const CARD_H = showSave ? 420 : step.theme ? 330 : 200;
   const roomBelow = r ? vh - (r.y + r.h) - 14 : vh;
   const roomAbove = r ? r.y - 14 : vh;
   const below = r ? roomBelow >= CARD_H : true;
@@ -243,7 +243,11 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT, themePick }: Props
         </div>
         <strong>{t(step.title)}</strong>
         <p>{t(step.body)}</p>
-        {step.theme && themePick && <CardThemeMenu compact value={themePick.value} onChange={themePick.onChange} />}
+        {step.theme && themePick && (
+          <ThemeShowcase value={themePick.value}>
+            <CardThemeMenu compact value={themePick.value} onChange={themePick.onChange} />
+          </ThemeShowcase>
+        )}
         {showSave && (
           <div className="tut-save">
             {config.sample && (

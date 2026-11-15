@@ -63,6 +63,8 @@
     "ready": true,
     "color": "#ffd98a",
     "color2": "#9bb8ff",
+    "thumb": "/poster/tml-key.webp",
+    "posters": [{ "src": "/poster/tml-key.webp", "key": "f.posterKey" }],
     "og": {
       "title": "TOMORROWLAND THAILAND 2026 타임테이블 | FestLock",
       "desc": "무대 7곳 · 3일 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하세요. 12.11 – 13 태국 위즈덤 밸리",
@@ -86,6 +88,8 @@
     "ready": true,
     "color": "#7dffc2",
     "color2": "#ffcf5a",
+    "thumb": "/poster/vac-key.webp",
+    "posters": [{ "src": "/poster/vac-key.webp", "key": "f.posterKey" }],
     "og": {
       "title": "VAC · Vision & Colour 2026 타임테이블 | FestLock",
       "desc": "무대 3곳 · 2일 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하세요. 11.28 – 29 중국 헝친",

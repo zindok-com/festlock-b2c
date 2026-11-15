@@ -113,6 +113,45 @@ function Popup({ value, onApply, onClose }: { value: CardTheme; onApply: (t: Car
   );
 }
 
+/**
+ * 튜토리얼용: 8가지 모양이 차례로 바뀌면서 "고르기 전 → 고른 뒤" 모션을 계속 보여 준다 (한 번에 하나만 움직여서 가볍다).
+ * children 은 오른쪽에 같이 놓을 것 (카드 모양 버튼 등). 지금 고른 모양부터 시작한다.
+ */
+export function ThemeShowcase({ value, children }: { value: CardTheme; children?: ReactNode }) {
+  const { t } = useI18n();
+  const s = getThemeSample() ?? FALLBACK;
+  const reduced = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [k, setK] = useState(() => Math.max(0, CARD_THEMES.indexOf(value)));
+  useEffect(() => {
+    CARD_THEMES.forEach(ensureThemeFont);
+  }, []);
+  useEffect(() => {
+    if (reduced) return;
+    const h = window.setInterval(() => setK((n) => (n + 1) % CARD_THEMES.length), 3400);
+    return () => window.clearInterval(h);
+  }, [reduced]);
+  const id = CARD_THEMES[k];
+  return (
+    <div className="tut-theme">
+      <div className="ctp-tile tut-theme-tile" data-ct={id} aria-hidden="true">
+        <Preview key={id} id={id} anim reduced={reduced} s={s} />
+      </div>
+      <div className="tut-theme-side">
+        <span className="ctp-name" aria-live="polite">
+          <i aria-hidden="true">{k + 1}</i>
+          {t("f.ct." + id)}
+        </span>
+        <span className="tut-theme-dots" aria-hidden="true">
+          {CARD_THEMES.map((x, n) => (
+            <b key={x} className={n === k ? "on" : ""} />
+          ))}
+        </span>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 /** 카드 모양 고르기: 버튼을 누르면 팝업이 열리고, 모양을 누르면 그 모양만 "고르기 전 ↔ 고른 뒤"로 움직이고, 적용을 눌러야 바뀐다. compact 면 라벨 없이 버튼만 */
 export function CardThemeMenu({ value, onChange, compact = false, extra }: { value: CardTheme; onChange: (t: CardTheme) => void; compact?: boolean; extra?: ReactNode }) {
   const { t } = useI18n();

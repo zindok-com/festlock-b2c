@@ -814,3 +814,12 @@ html[data-fest="vac"] .sheet .art .g{color:var(--accent);font-weight:800}
 @container (max-width: 125px) and (max-height: 84px) {
   .zon[data-ct="minimal"] .blk.b2b-faces .phw2,.zon[data-ct="lock"] .blk.b2b-faces .phw2{display:none}
 }
+
+/* 튜토리얼 카드 모양 단계: 모양이 차례로 바뀌며 고르기 전 → 고른 뒤 모션 (CardThemeMenu.tsx ThemeShowcase) */
+.tut-theme{display:flex;align-items:center;gap:14px;margin:10px 0 2px}
+.tut-theme-tile{flex:none;width:112px;height:150px}
+.tut-theme-side{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
+.tut-theme-dots{display:flex;gap:5px}
+.tut-theme-dots b{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);transition:background-color .25s,transform .25s}
+.tut-theme-dots b.on{background:var(--accent,#fff);transform:scale(1.35)}
+.tut-theme-side .ct-menu{margin:0}

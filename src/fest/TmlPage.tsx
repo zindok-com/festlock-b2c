@@ -15,7 +15,7 @@ import { CardThemeMenu } from "./CardThemeMenu";
 import { b2bOf } from "./b2b";
 import { makeThemeSample, setThemeSample } from "./themeSample";
 import { useReverse } from "./viewPrefs";
-import { FestSheet, useLongPress } from "./parts";
+import { FestSheet, PosterViewer, useLongPress, usePoster } from "./parts";
 import { FestExport, type ExportOpt, type RenderOpt } from "./FestExport";
 import { ensureFonts, loadPhotos } from "./festCanvas";
 import { layoutOf, renderMulti } from "./festMulti";
@@ -29,6 +29,7 @@ import "./fest.css";
 
 const SLUG = "tomorrowland-thailand-2026";
 const FACE = "tml";
+const POSTERS = [{ src: "/poster/tml-key.webp", key: "f.posterKey" }];
 const PPM = 2.6;
 /** 날(day)마다 표가 시작·끝나는 시각 (그날 공연의 처음·끝을 정시로 맞춘다) */
 const RANGE: Record<string, [number, number]> = Object.fromEntries(
@@ -150,6 +151,7 @@ export function TmlPage() {
   }, [START, END]);
   useFestTheme("tml");
   const [ctheme, setCtheme] = useCardTheme();
+  const poster = usePoster();
   useMemo(() => setThemeSample(makeThemeSample(FACE, TML_ITEMS, TML_STAGES)), []);
   const [reverse, toggleReverse] = useReverse();
   useFont(ANTON);
@@ -318,12 +320,18 @@ export function TmlPage() {
             <LangMenu />
           </div>
           <div className="zon-head">
+            <button type="button" className="fx-thumb" onClick={poster.show} aria-label={t("f.poster")}>
+              <img src="/poster/tml-key.webp" alt="" width={105} height={131} />
+            </button>
             <div className="zon-head-txt">
               <p className="zon-when">{t("f.tml.when")}</p>
               <h1 className="zon-logo" aria-label="TOMORROWLAND THAILAND 2026">
                 TOMORROWLAND
               </h1>
               <p className="zon-where">{t("f.tml.where")}</p>
+              <button type="button" className="fx-pbtn" onClick={poster.show}>
+                {t("f.poster")}
+              </button>
             </div>
           </div>
           <div className="stats-row">
@@ -486,6 +494,7 @@ export function TmlPage() {
           onClose={() => setRanking(false)}
         />
       )}
+      {poster.open && <PosterViewer title="TOMORROWLAND THAILAND 2026" posters={POSTERS.map((p) => ({ src: p.src, label: t(p.key) }))} onClose={poster.hide} />}
       {tut && <Tutorial config={TUT} onClose={() => setTut(false)} onInfo={tutInfo} themePick={{ value: ctheme, onChange: setCtheme }} />}
       {toastNode}
     </>

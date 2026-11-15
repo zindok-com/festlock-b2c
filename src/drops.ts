@@ -41,8 +41,9 @@ export function loadDrops(): Promise<DropsFile | null> {
 
 export function findDrop(d: DropsFile | null, slug: string, artistId: string): Drop | null {
   if (!d) return null;
-  // 같은 아티스트의 두 번째 세트(id 끝 -casa, 예: aat-casa)는 그 아티스트 구간을 같이 쓴다
-  const base = artistId.replace(/-casa$/, "");
+  // 같은 아티스트의 두 번째 세트(id 끝 -casa, 예: aat-casa)는 그 아티스트 구간을 같이 쓴다.
+  // 여러 날 나오는 아티스트(id 끝 -fri/-sat/-sun, 예: dj-licious-sat: TML·VAC)도 마찬가지 (Drop Studio 는 접미사 없는 id 로 저장한다)
+  const base = artistId.replace(/-(casa|fri|sat|sun)$/, "");
   return d.festivals[slug]?.[artistId] ?? d.festivals[slug]?.[base] ?? d.artists?.[artistId] ?? d.artists?.[base] ?? null;
 }
 
