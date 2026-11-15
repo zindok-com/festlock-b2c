@@ -60,6 +60,8 @@ const TUT: TutConfig = {
   block: ".zon .col .blk:nth-child(2)",
   blockFallback: ".zon .blk",
   text: { "tut.s3.b": "f.tut.s3.b" },
+  dropSlug: SLUG,
+  prefer: "chris-lorenzo",
   sample: "/tutorial/vac.webp",
 };
 
