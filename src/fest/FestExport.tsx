@@ -4,6 +4,8 @@ import { IN_APP, externalUrl } from "../inApp";
 import { CardThemeMenu } from "./CardThemeMenu";
 import type { CardTheme } from "./cardTheme";
 import { InAppSaveNotice } from "../components/InAppSaveNotice";
+import { AppSoonNote } from "../components/AppSoonNote";
+import { AppSoonPopup } from "../components/AppSoonPopup";
 import { Rich, useI18n } from "../i18n";
 import { useBackClose } from "../backClose";
 import type { Ratio } from "./festCanvas";
@@ -94,6 +96,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
   const [inAppNotice, setInAppNotice] = useState(false);
   /** 앱 안 브라우저에서 "이미지 저장"을 눌렀을 때 안내 */
   const [saveNotice, setSaveNotice] = useState(false);
+  const [soonOpen, setSoonOpen] = useState(false);
   // 너무 자주 눌러 집계가 잠시 제한됐을 때 안내 (1분에 한 번만)
   const [limitNotice, setLimitNotice] = useState(false);
   const noticeAt = useRef(0);
@@ -370,7 +373,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
             </div>
           )}
           <div className="acts">
-            <button className="btn main" type="button" disabled={empty || !src} onClick={save}>
+            <button className="btn main" type="button" disabled={empty || !src} onClick={() => setSoonOpen(true)}>
               {t("exp.save")}
             </button>
             <button className="btn ghost" type="button" disabled={empty || !src} onClick={view}>
@@ -382,8 +385,18 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
           </div>
           <p className="hint">{t("f.share.hint")}</p>
           <p className="hint">{t("exp.hint")}</p>
+          <AppSoonNote />
         </div>
       </div>
+      {soonOpen && (
+        <AppSoonPopup
+          onClose={() => setSoonOpen(false)}
+          onContinue={() => {
+            setSoonOpen(false);
+            save();
+          }}
+        />
+      )}
       {saveNotice && <InAppSaveNotice onClose={() => setSaveNotice(false)} onView={view} />}
       {inAppNotice && (
         <div className="evt" role="alertdialog" aria-modal="true" aria-label={t("f.inapp.title")} onClick={(e) => e.target === e.currentTarget && setInAppNotice(false)}>

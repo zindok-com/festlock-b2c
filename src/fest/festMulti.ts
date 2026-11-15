@@ -209,7 +209,7 @@ function drawBlock(ctx: CanvasRenderingContext2D, o: MultiOpt, st: FStage, it: F
   ctx.fillRect(x, y, w, h);
   const hasPhoto = !!photo && h > bs.minPhoto;
   if (photo && hasPhoto) {
-    cover(ctx, photo, on, x, y, w, h);
+    cover(ctx, photo, on, x, y, w, h, photo.isPair ? Math.round(Math.min(h * 0.3, 120)) : 0);
     if (!on) {
       ctx.fillStyle = "rgba(10,6,4,.22)";
       ctx.fillRect(x, y, w, h);

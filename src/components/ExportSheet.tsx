@@ -6,6 +6,8 @@ import { reportDownload, type ReportResult } from "../stats";
 import { useBackClose } from "../backClose";
 import { IN_APP } from "../inApp";
 import { InAppSaveNotice } from "./InAppSaveNotice";
+import { AppSoonNote } from "./AppSoonNote";
+import { AppSoonPopup } from "./AppSoonPopup";
 import { ensureFonts, fileName, loadFaces, renderBothCanvas, renderExportCanvas, type FaceImg, type Ratio } from "../exportImage";
 
 interface Props {
@@ -28,6 +30,7 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
   const [limitNotice, setLimitNotice] = useState(false);
   /** 앱 안 브라우저에서 "이미지 저장"을 눌렀을 때 안내 */
   const [saveNotice, setSaveNotice] = useState(false);
+  const [soonOpen, setSoonOpen] = useState(false);
   const noticeShownAt = useRef(0);
   const [src, setSrc] = useState<string | null>(null);
   const [viewer, setViewer] = useState(false);
@@ -207,7 +210,7 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
             )}
           </div>
           <div className="acts">
-            <button className="btn main" type="button" disabled={empty || !src} onClick={save}>
+            <button className="btn main" type="button" disabled={empty || !src} onClick={() => setSoonOpen(true)}>
               {t("exp.save")}
             </button>
             <button className="btn ghost" type="button" disabled={empty || !src} onClick={() => {
@@ -221,8 +224,18 @@ export function ExportSheet({ sel, initialDay, onClose, toast, onDownloaded }: P
             </button>
           </div>
           <p className="hint">{t("exp.hint")}</p>
+          <AppSoonNote />
         </div>
       </div>
+      {soonOpen && (
+        <AppSoonPopup
+          onClose={() => setSoonOpen(false)}
+          onContinue={() => {
+            setSoonOpen(false);
+            save();
+          }}
+        />
+      )}
       {limitNotice && (
         <div className="evt" role="alertdialog" aria-modal="true" aria-label={t("limit.title")} onClick={(e) => e.target === e.currentTarget && setLimitNotice(false)}>
           <div className="evt-card limit-card">

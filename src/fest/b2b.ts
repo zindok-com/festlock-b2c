@@ -23,11 +23,17 @@ export interface B2bSrc {
   cut: string;
 }
 
+/**
+ * 누끼 합성본(-cut)을 다시 만들어 올렸을 때 올리는 번호. 주소 뒤에 ?v=번호 가 붙어서 브라우저·CDN 이 30일 캐시한 옛 합성본 대신 새것을 받는다.
+ * 1: 가로로 나란히 붙인 첫 버전 / 2: 대각선으로 쌓은 버전 (좁은 칸에서 더 크게 보임, 2026-11-15)
+ */
+export const B2B_CUT_VERSION = "2";
+
 /** 이 칸이 "두 사람 사진 준비됨"이면 사진 주소들, 아니면 null */
 export function b2bOf(fest: string, id: string): B2bSrc | null {
   if (!B2B_READY[fest]?.has(id)) return null;
   const a = faceSrc(`${fest}/b2b/${id}-a`), b = faceSrc(`${fest}/b2b/${id}-b`), cut = faceSrc(`${fest}/b2b/${id}-cut`);
-  return a && b && cut ? { a, b, cut } : null;
+  return a && b && cut ? { a, b, cut: cut + "?v=" + B2B_CUT_VERSION } : null;
 }
 
 /** 아티스트 창용 얼굴 id: "<id>-a" / "<id>-b" 가 준비된 B2B 칸의 것이면 사진 주소를 돌려준다 (faces.ts 가 쓴다) */

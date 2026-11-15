@@ -3,6 +3,8 @@
 // - 이 브라우저에서 Blob 파일이 3번 실패하면 한 번만 알린다 (같은 브라우저는 30분에 한 번까지)
 // - 알리는 내용은 없다 (빈 요청). 사용자 정보·주소를 보내지 않는다
 // - 개발 서버(npm run dev)와 내 PC(localhost)에서는 동작하지 않는다
+import { isOffline } from "./offline";
+
 const BLOB = /\.public\.blob\.vercel-storage\.com\//;
 const KEY = "fl:blobfail";
 const GAP_MS = 30 * 60 * 1000;
@@ -18,6 +20,7 @@ export function watchBlobHealth(): void {
     (e) => {
       const t = e.target;
       if (!(t instanceof HTMLImageElement || t instanceof HTMLVideoElement)) return;
+      if (isOffline()) return; // 인터넷이 없어서 못 불러온 것은 사진 저장소 문제가 아니다
       if (!BLOB.test(t.currentSrc || t.src || "")) return;
       if (++fails < 3 || sent) return;
       try {

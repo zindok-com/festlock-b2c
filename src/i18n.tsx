@@ -3,6 +3,7 @@ import { Fragment, createContext, useCallback, useContext, useEffect, useMemo, u
 import type { Item } from "./data";
 import { useBackClose } from "./backClose";
 import { FEST_T } from "./fest/strings";
+import { useOnline } from "./offline";
 
 export type Lang = "ko" | "en" | "ja" | "zh" | "zht" | "es" | "vi" | "th" | "id";
 export const LANGS: { id: Lang; name: string }[] = [
@@ -1010,11 +1011,19 @@ interface Ctx {
   /** 블록·시트에 보일 장르 문구와 표시 클래스(추정 gi / 정보 없음 gu) */
   genre: (it: Item) => { t: string; c: string };
   dayLabel: (dayId: string) => string;
+  /** 인터넷이 되는지 (오프라인이면 사진 없이 이름만: src/offline.ts) */
+  online: boolean;
 }
 const I18n = createContext<Ctx | null>(null);
 
+/** 지금 언어의 모든 문구를 한 줄로 (오프라인 저장 때 필요한 글꼴 조각을 고르는 데 쓴다) */
+export function dictText(lang: Lang): string {
+  return Object.values(T[lang]).join(" ");
+}
+
 export function LangProvider({ children, titleKey = "doc.title" }: { children: ReactNode; titleKey?: string }) {
   const [lang, setLangState] = useState<Lang>(detect);
+  const online = useOnline();
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
@@ -1042,8 +1051,8 @@ export function LangProvider({ children, titleKey = "doc.title" }: { children: R
       for (const [ko, tr] of GENRE_PARTS) g = g.split(ko).join(tr[lang]);
       return it.genreConf === "inferred" ? { t: "~ " + g, c: "gi" } : { t: g, c: "" };
     };
-    return { lang, setLang, t, genre, dayLabel: (id: string) => t("day." + id) };
-  }, [lang, setLang]);
+    return { lang, setLang, t, genre, dayLabel: (id: string) => t("day." + id), online };
+  }, [lang, setLang, online]);
 
   return <I18n.Provider value={value}>{children}</I18n.Provider>;
 }

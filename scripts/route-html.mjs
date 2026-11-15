@@ -46,6 +46,18 @@ for (const p of PAGES) {
   ].join("\n");
   const html = base.replace(/<title>[^<]*<\/title>/, `<title>${esc(p.title)}</title>\n${meta}`);
   if (html === base) throw new Error("dist/index.html에 <title>이 없어요");
-  fs.writeFileSync("dist/" + p.file, html);
+  // 홈 화면에 추가했을 때 그 페스티벌 주소로 열리도록 페이지마다 manifest 를 따로 둔다 (홈은 /manifest.webmanifest 그대로)
+  let doc = html;
+  if (p.path !== "/") {
+    const slug = p.path.slice(1);
+    const f = festivals.find((x) => x.slug === slug);
+    doc = html.replace('href="/manifest.webmanifest"', `href="/manifest/${slug}.webmanifest"`);
+    fs.mkdirSync("dist/manifest", { recursive: true });
+    fs.writeFileSync(
+      `dist/manifest/${slug}.webmanifest`,
+      JSON.stringify({ id: p.path, name: "FestLock · " + (f?.name?.en || slug), short_name: "FestLock", description: p.desc, start_url: p.path, scope: "/", display: "standalone", orientation: "portrait", background_color: "#0b0b14", theme_color: "#0b0b14", lang: "ko", icons: [{ src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }, null, 2) + "\n",
+    );
+  }
+  fs.writeFileSync("dist/" + p.file, doc);
 }
 console.log("route html:", PAGES.map((p) => p.file).join(", "), "→", SITE);

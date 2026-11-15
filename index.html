@@ -8,6 +8,14 @@
 <!-- 다른 사이트에는 주소의 사이트 이름(origin)만 보낸다. YouTube 퍼가기 플레이어가 이 정보가 없으면 오류 153으로 거절한다 -->
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0b0b14">
+<!-- 홈 화면에 추가(오프라인 앱): 주소마다 시작 주소가 다른 manifest 는 scripts/route-html.mjs 가 페이지별 HTML 에서 바꿔 끼운다 -->
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FestLock">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>FestLock · 페스티벌 타임테이블을 내 잠금화면으로</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff4fa0'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white'%3E%E2%99%AA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">

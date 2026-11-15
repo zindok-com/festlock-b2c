@@ -55,4 +55,6 @@ function localMedia(): Plugin {
 
 export default defineConfig({
   plugins: [react(), localMedia()],
+  // 시간표 데이터가 앱에 들어간 시각. 오프라인 화면에 "시간표 기준 …" 으로 보여 준다 (src/offline.ts)
+  define: { __BUILD_TIME__: JSON.stringify(new Date().toISOString()) },
 });

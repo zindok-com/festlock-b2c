@@ -1,12 +1,14 @@
 // 얼굴 사진은 저장소에 없고 Vercel Blob(공개 스토어)에 있다.
 // VITE_FACE_BASE 예: https://<스토어id>.public.blob.vercel-storage.com/artists  (비우면 사진 없이 이니셜 아이콘)
+import { isOffline } from "./offline";
 const BASE = ((import.meta.env.VITE_FACE_BASE as string | undefined) || "").replace(/\/+$/, "");
 
 export const SHOW_FACES = BASE !== "";
 
 /** 사진 주소. 사진이 없는 배포(VITE_FACE_BASE 비어 있음)에서는 null */
 export function faceSrc(id: string): string | null {
-  return BASE ? BASE + "/" + id + ".webp" : null;
+  // 오프라인에서는 사진을 불러오지 않는다 → 이름만 나온다 (src/offline.ts)
+  return BASE && !isOffline() ? BASE + "/" + id + ".webp" : null;
 }
 
 export const NOTICE =

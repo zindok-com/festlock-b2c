@@ -12,6 +12,7 @@ import { festFace } from "./faces";
 import { cutSrc } from "./cutouts";
 import { THEME_FONTS, useCardTheme, type CardTheme } from "./cardTheme";
 import { CardThemeMenu } from "./CardThemeMenu";
+import { OfflineChip } from "./OfflineSheet";
 import { b2bOf } from "./b2b";
 import { makeThemeSample, setThemeSample } from "./themeSample";
 import { useReverse } from "./viewPrefs";
@@ -122,9 +123,6 @@ function Block({ it, on, live, theme, start, end, reverse, onToggle, onInfo }: {
             <span className="cap">
               <span className="nm">{it.en}</span>
               {it.genre && <span className="gn">{it.genre}</span>}
-            </span>
-            <span className="ck" aria-hidden="true">
-              ✓
             </span>
           </>
         ) : (
@@ -357,9 +355,12 @@ export function VacPage() {
             value={ctheme}
             onChange={setCtheme}
             extra={
-              <button className="chip rev" type="button" aria-pressed={reverse} title={t("f.rev.hint")} onClick={toggleReverse}>
-                <span aria-hidden="true">↕</span> {t("f.rev.label")}
-              </button>
+              <>
+                <button className="chip rev" type="button" aria-pressed={reverse} title={t("f.rev.hint")} onClick={toggleReverse}>
+                  <span aria-hidden="true">↕</span> {t("f.rev.label")}
+                </button>
+                <OfflineChip slug={SLUG} />
+              </>
             }
           />
         </header>

@@ -417,7 +417,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 
 /* 사진 감싸개는 기본(포토 글라스)에서는 레이아웃에 영향이 없다 */
 .zon .blk .phw{display:contents}
-.zon .blk .ck{display:none}
 
 /* ========== 1 포스터 카드: 사진 위 · 이름·시간 아래 ========== */
 .zon[data-ct="poster"] .blk{--bgc:#10141c;color:#fff;border:1px solid #232a38;border-top:3px solid var(--c);border-radius:10px;box-shadow:none;opacity:.62}
@@ -430,7 +429,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="poster"] .blk.ph .gn{display:none}
 .zon[data-ct="poster"] .blk.ph .tm-top{position:static;order:3;background:none;color:#9aa3b5;padding:2px 0 1px;text-align:center;border-radius:0}
 .zon[data-ct="poster"] .blk .tm{color:#9aa3b5}
-.zon[data-ct="poster"] .blk.on .ck{display:grid;position:absolute;right:9px;top:9px;width:20px;height:20px;border-radius:50%;background:var(--c);color:var(--ci);place-items:center;font:900 12px "Rubik",sans-serif;z-index:5}
 
 .zon[data-ct="minimal"] .blk,.zon[data-ct="lock"] .blk{container-type:size}
 /* ========== 3 미니멀 라이트 / 5 글라스 잠금화면: 동그란 사진 + 이름·시간·장르 (격자 배치) ========== */
@@ -455,7 +453,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="minimal"] .blk.on{--bgc:color-mix(in srgb,var(--c) 30%,var(--panel));color:var(--tx);border-color:var(--c);border-left-color:var(--c);box-shadow:0 4px 14px color-mix(in srgb,var(--c) 35%,transparent)}
 .zon[data-ct="minimal"] .blk.on .phw .ph-img{filter:none;opacity:1}
 .zon[data-ct="minimal"] .blk.on .gn,.zon[data-ct="minimal"] .blk.on .tm,.zon[data-ct="minimal"] .blk.on .tm-top{color:var(--tx)}
-.zon[data-ct="minimal"] .blk.on .ck{display:grid;position:absolute;right:7px;top:7px;width:19px;height:19px;border-radius:50%;background:var(--c);color:var(--ci);place-items:center;font:900 11px "Rubik",sans-serif;z-index:5}
 
 /* ========== 4 듀오톤 블록: 굵은 색 블록 · 큰 글자 · 이중톤 사진(누끼가 있으면 누끼). 이름은 하얀 테두리 글자 ========== */
 .zon[data-ct="duo"] .head{background:var(--c);border-bottom:0;margin:0 2px;padding:5px 0 4px;border-radius:2px}
@@ -465,6 +462,10 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="duo"] .blk.on{--bgc:var(--c);color:var(--ci);box-shadow:3px 3px 0 rgba(255,255,255,.22)}
 .zon[data-ct="duo"] .blk .nm{font-family:"Anton","Noto Sans KR",sans-serif;font-weight:400;letter-spacing:.01em;line-height:.98;font-size:clamp(11px,calc((100cqw - 16px) / (var(--len,8) * .52)),22px)}
 .zon[data-ct="duo"] .blk.on .nm{color:var(--ci);-webkit-text-stroke:.24em #fff;paint-order:stroke fill}
+/* 글자색이 밝으면 검은 테두리, 어두우면 흰 테두리 (글자색 --ci 의 밝기로 자동 판단) */
+@supports (color: oklch(from red calc(1 - l) 0 0)) {
+  .zon[data-ct="duo"] .blk.on .nm{-webkit-text-stroke-color:oklch(from var(--ci) calc((.68 - l) * 1000) 0 0)}
+}
 .zon[data-ct="duo"] .blk .gn{display:none}
 .zon[data-ct="duo"] .blk .tm{color:var(--c)}
 .zon[data-ct="duo"] .blk.on .tm{color:var(--ci)}
@@ -476,7 +477,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="duo"] .blk .phw .ph-img{filter:grayscale(1) contrast(1.15);mix-blend-mode:multiply;opacity:1;object-position:50% 50%}
 .zon[data-ct="duo"] .blk .cut{position:absolute;right:2px;bottom:0;height:min(100%,200px);width:auto;max-width:94%;object-fit:contain;object-position:right bottom;pointer-events:none;filter:grayscale(1) brightness(.8);opacity:.85}
 .zon[data-ct="duo"] .blk.on .cut{filter:drop-shadow(-3px 3px 0 rgba(0,0,0,.25));opacity:1}
-.zon[data-ct="duo"] .blk.on .ck{display:grid;position:absolute;right:6px;top:6px;width:18px;height:18px;background:var(--ci);color:var(--c);place-items:center;font:900 11px "Rubik",sans-serif;z-index:5}
 
 /* ========== 5 글라스 잠금화면: 반투명 유리 카드 ========== */
 .zon[data-ct="lock"] .zon-wrap{background:radial-gradient(120% 40% at 0% 0%,rgba(63,214,255,.32),transparent 60%),radial-gradient(110% 40% at 100% 50%,rgba(255,154,46,.28),transparent 62%),radial-gradient(90% 35% at 0% 100%,rgba(120,70,255,.3),transparent 60%)}
@@ -492,7 +492,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="lock"] .blk.on{--bgc:linear-gradient(160deg,color-mix(in srgb,var(--c) 58%,rgba(255,255,255,.3)),color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.08)));color:#fff;border-color:rgba(255,255,255,.55);box-shadow:0 10px 26px color-mix(in srgb,var(--c) 45%,transparent)}
 .zon[data-ct="lock"] .blk.on .phw .ph-img{filter:none}
 .zon[data-ct="lock"] .blk.on .gn,.zon[data-ct="lock"] .blk.on .tm,.zon[data-ct="lock"] .blk.on .tm-top{color:rgba(255,255,255,.9)}
-.zon[data-ct="lock"] .blk.on .ck{display:grid;position:absolute;right:8px;top:8px;width:20px;height:20px;border-radius:50%;background:#fff;color:#111;place-items:center;font:900 11px "Rubik",sans-serif;z-index:5}
 .zon[data-ct="lock"] .blk{background:var(--bgc)}
 
 /* ========== 6 폴라로이드: 인화지 프레임 · 마스킹테이프 · 손글씨 ========== */
@@ -515,7 +514,6 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="polaroid"] .blk.ph .gn{display:none}
 .zon[data-ct="polaroid"] .blk.ph .tm-top{position:absolute;left:auto;right:8px;top:auto;bottom:10px;background:none;color:#6d675a;padding:0;border-radius:0;font:500 9.5px "DM Mono",monospace;order:3}
 .zon[data-ct="polaroid"] .blk .tm{color:#6d675a}
-.zon[data-ct="polaroid"] .blk.on .ck{display:grid;position:absolute;right:-6px;top:-6px;width:24px;height:24px;border-radius:50%;background:#e8402f;color:#fff;place-items:center;font:900 13px "Rubik",sans-serif;transform:rotate(8deg);box-shadow:0 2px 6px rgba(0,0,0,.5);z-index:7}
 
 /* ========== 7 터미널 레이브: 모노스페이스 · 스캔라인 · [x] ========== */
 .zon[data-ct="term"] .zon-wrap{background:#040604 repeating-linear-gradient(to bottom,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 3px)}
@@ -721,6 +719,12 @@ html[data-fest="vac"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="mono"] .blk.ph .cap{position:absolute;inset:0;padding:4px 5px 14px;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .zon[data-ct="mono"] .blk .nm{color:#e9eaee;text-align:center;text-wrap:balance;text-transform:uppercase;font-weight:800;font-size:clamp(9px,calc((100cqw - 14px) / (var(--len,8) * .62)),17px);line-height:1.08;text-shadow:0 1px 3px rgba(0,0,0,.85)}
 .zon[data-ct="mono"] .blk.on .nm{color:var(--c);text-shadow:0 0 2px #000,0 0 3px #000,0 0 6px rgba(0,0,0,.9),0 1px 2px #000}
+/* 무대색 글자가 어두우면 흰 테두리, 밝으면 검은 테두리 */
+@supports (color: oklch(from red calc(1 - l) 0 0)) {
+  .zon[data-ct="mono"] .blk{--edge:oklch(from var(--c) calc((.68 - l) * 1000) 0 0)}
+  .zon[data-ct="mono"] .blk.on .nm{text-shadow:0 0 2px var(--edge),0 0 3px var(--edge),0 0 6px var(--edge),0 1px 2px var(--edge)}
+  .zon[data-ct="mono"] .blk.on .tm-top{text-shadow:0 0 2px var(--edge),0 0 4px var(--edge)}
+}
 .zon[data-ct="mono"] .blk.on.ph .blk-hit::before{background:radial-gradient(ellipse at center,rgba(0,0,0,.55),rgba(0,0,0,.2) 80%)}
 .zon[data-ct="mono"] .blk .gn{display:none}
 .zon[data-ct="mono"] .blk.ph .tm-top{position:absolute;top:auto;bottom:4px;left:0;right:0;padding:0;background:none;border-radius:0;text-align:center;color:#aeb1b9;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.9)}
@@ -729,7 +733,6 @@ html[data-fest="vac"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="mono"] .blk.on .tm{color:var(--c)}
 .zon[data-ct="mono"] .blk:not(.ph) .blk-hit{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 4px 14px;gap:1px}
 .zon[data-ct="mono"] .blk:not(.ph) .tm{position:absolute;bottom:4px;left:0;right:0;margin:0;text-align:center}
-.zon[data-ct="mono"] .blk.on .ck{display:grid;position:absolute;right:5px;top:5px;width:17px;height:17px;border-radius:50%;background:var(--c);color:var(--ci);place-items:center;font:900 10px "Rubik",sans-serif;z-index:5}
 .zon[data-ct="mono"] .head{border-bottom:3px solid var(--c);background:rgba(255,255,255,.06);margin:0 2px;border-radius:6px 6px 0 0}
 .zon[data-ct="mono"] .head .b{color:#eceef2}
 .zon[data-ct="mono"] .head .h{color:var(--c);opacity:.85}
@@ -823,3 +826,11 @@ html[data-fest="vac"] .sheet .art .g{color:var(--accent);font-weight:800}
 .tut-theme-dots b{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);transition:background-color .25s,transform .25s}
 .tut-theme-dots b.on{background:var(--accent,#fff);transform:scale(1.35)}
 .tut-theme-side .ct-menu{margin:0}
+
+/* B2B 누끼 두 명: 아래쪽 글자(이름·시간)에 가리지 않게 글자 자리(--cap-h)만큼 위로 올리고 크게. 모노 포토는 글자가 가운데라 그대로 둔다 */
+.zon .blk.b2b{--cap-h:58px}
+.zon .blk.b2b.long{--cap-h:72px}
+.zon[data-ct="glass"] .blk.b2b .ph-img.b2b-cut{top:20px;bottom:var(--cap-h);height:auto;width:100%;object-position:50% 100%}
+.zon[data-ct="duo"] .blk.b2b{--cap-h:60px}
+.zon[data-ct="duo"] .blk.b2b.long{--cap-h:72px}
+.zon[data-ct="duo"] .blk.b2b .cut{right:50%;transform:translateX(50%);bottom:var(--cap-h);height:min(calc(100% - var(--cap-h) - 20px),260px);max-width:96%;object-position:center bottom}

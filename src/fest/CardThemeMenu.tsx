@@ -46,7 +46,6 @@ const Preview = memo(function Preview({ id, anim, reduced, s }: { id: CardTheme;
               <span className="nm">{s.name}</span>
               {s.genre && <span className="gn">{s.genre}</span>}
             </span>
-            <span className="ck">✓</span>
           </span>
         </div>
       </div>

@@ -220,7 +220,8 @@ export function wrap(ctx: CanvasRenderingContext2D, text: string, maxW: number, 
 }
 
 /** 사진을 칸에 꽉 채워 그린다 (얼굴이 위쪽이라 위 25% 기준) */
-export function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: number, y: number, w: number, h: number) {
+/** lift: B2B 누끼 두 명(isPair)을 카드 아래 글자 자리만큼 위로 올릴 높이 (글자에 안 가리게) */
+export function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: number, y: number, w: number, h: number, lift = 0) {
   if (img.isPair) {
     // B2B 누끼 두 명: 어두운 바탕 위에 폭에 맞춰 아래쪽 정렬 (세로로 긴 좁은 칸에서도 두 사람이 다 보이게)
     const g = ctx.createLinearGradient(x, y, x + w * 0.4, y + h);
@@ -228,9 +229,10 @@ export function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: n
     g.addColorStop(1, "#0c0e13");
     ctx.fillStyle = g;
     ctx.fillRect(x, y, w, h);
-    const s = Math.min((w * 0.98) / img.w, (h * 0.92) / img.h);
+    const hh = Math.max(20, h - lift);
+    const s = Math.min((w * 0.98) / img.w, (hh * 0.96) / img.h);
     const dw = img.w * s, dh = img.h * s;
-    ctx.drawImage(on ? img.color : img.gray, x + (w - dw) / 2, y + h - dh, dw, dh);
+    ctx.drawImage(on ? img.color : img.gray, x + (w - dw) / 2, y + hh - dh, dw, dh);
     return;
   }
   const s = Math.max(w / img.w, h / img.h), sw = w / s, sh = h / s;

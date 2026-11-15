@@ -1,6 +1,6 @@
 // 새 페스티벌·카드 모양(테마) 자동 검수. 체크리스트: docs/검수-체크리스트.md
 //   npm run build && npx vite preview --port 5201 &   (사진이 보이려면 VITE_FACE_BASE=https://…/artists 로 빌드)
-//   node scripts/qa-all.mjs [--base http://localhost:5201] [--only data,pages,sheet,export,tutorial,lang,logic,home] [--shots <폴더>]
+//   node scripts/qa-all.mjs [--base http://localhost:5201] [--only data,pages,sheet,export,tutorial,lang,logic,home,offline] [--shots <폴더>]
 // 결과: 콘솔 표 + _inbox/qa-report.md
 import fs from "node:fs";
 import path from "node:path";
@@ -13,7 +13,7 @@ import esbuild from "esbuild";
 const args = process.argv.slice(2);
 const val = (f, d) => (args.includes(f) ? args[args.indexOf(f) + 1] : d);
 const BASE = val("--base", "http://localhost:5201");
-const ONLY = new Set((val("--only", "data,pages,sheet,export,tutorial,lang,logic,home") || "").split(","));
+const ONLY = new Set((val("--only", "data,pages,sheet,export,tutorial,lang,logic,home,offline") || "").split(","));
 const SHOTS = val("--shots", "");
 if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
 
@@ -370,7 +370,12 @@ async function logicChecks(browser) {
   await p.locator(".bar .btn.main").first().click();
   await p.waitForSelector(".pv img", { timeout: 20000 });
   await p.locator(".acts .btn.main").first().click();
-  await check("logic", "tml: 인스타 앱 안 브라우저에서 저장 안내가 뜬다", async () => { await p.waitForTimeout(500); return (await p.locator(".evt h2").count()) > 0 || "안내창 없음"; });
+  await check("logic", "tml: 저장을 누르면 먼저 \"곧 앱으로 나와요\" 팝업이 뜨고 인스타 링크가 있다", async () => {
+    await p.waitForSelector(".app-soon-pop", { timeout: 3000 });
+    return (await p.locator(".app-soon-pop a[href*=\"instagram.com/festlock\"]").count()) === 1 || "인스타 링크 없음";
+  });
+  await p.locator(".app-soon-save").click();
+  await check("logic", "tml: 인스타 앱 안 브라우저에서 저장 안내가 뜬다", async () => { await p.waitForTimeout(500); return (await p.locator(".evt h2").count()) > 0 && (await p.locator(".app-soon-pop").count()) === 0 || "안내창 없음"; });
   await ctx.close();
 }
 
@@ -397,6 +402,88 @@ async function homeChecks(browser) {
 }
 
 // ---------------------------------------------------------------- 실행
+// ---------------------------------------------------------------- 8. 오프라인으로 쓰기 (저장 → 비행기 모드). 글꼴을 구글에서 받으므로 인터넷이 되는 PC 에서 돌린다
+async function offlineChecks(browser) {
+  const ctx = await ctxFor(browser, { w: 412, h: 900, locale: "ko-KR" });
+  const p = await ctx.newPage();
+  const errs = [];
+  p.on("pageerror", (e) => errs.push("pageerror: " + e.message));
+  await p.addInitScript(() => { try { localStorage.setItem("fl:tml:tut", "1"); localStorage.setItem("fl:tml:nudge", "1"); } catch {} });
+  await p.goto(BASE + FESTS.tml.path, { waitUntil: "load" });
+  await p.waitForSelector(".blk", { timeout: 15000 });
+  await check("offline", "tml: 카드 모양 줄에 '오프라인으로 쓰기' 칩이 있다", async () => (await p.locator(".off-chip").count()) === 1 || "칩 개수 " + (await p.locator(".off-chip").count()));
+  for (const k of ["zon", "utw", "vac"]) {
+    const q = await ctx.newPage();
+    await q.addInitScript(([key]) => { try { localStorage.setItem(key, "1"); localStorage.setItem(key.replace(":tut", ":nudge"), "1"); } catch {} }, [FESTS[k].tut]);
+    await q.goto(BASE + FESTS[k].path, { waitUntil: "load" });
+    await q.waitForSelector(".blk", { timeout: 15000 });
+    await check("offline", `${k}: 아직 열지 않은 페스티벌에는 칩이 없다 (TML 만 연다)`, async () => (await q.locator(".off-chip").count()) === 0 || "칩이 보임");
+    await q.close();
+  }
+  await p.locator(".off-chip").click();
+  await p.waitForSelector(".ofp-card");
+  await check("offline", "tml: 안내 시트에 설치·저장·삭제 영역이 있다", async () => ((await p.locator(".ofp-step").count()) === 2 && (await p.locator(".ofp-btn").count()) >= 1) || "시트 구성 이상");
+  await check("offline", "tml: 저장하면 '저장됨'이 뜨고 앱 화면·글꼴이 저장된다", async () => {
+    await p.locator(".ofp-step .ofp-btn").last().click();
+    await p.waitForSelector(".ofp-ok", { timeout: 150000 });
+    const st = await p.evaluate(async () => {
+      const o = {};
+      for (const k of await caches.keys()) o[k] = (await (await caches.open(k)).keys()).length;
+      return o;
+    });
+    const shell = Object.entries(st).find(([k]) => k.startsWith("fl-shell-"))?.[1] || 0;
+    return shell >= 4 && (st["fl-fonts-v1"] || 0) >= 10 ? true : "캐시 " + JSON.stringify(st);
+  });
+  await p.keyboard.press("Escape");
+  await p.reload({ waitUntil: "load" });
+  await p.waitForSelector(".blk");
+  await check("offline", "tml: 서비스워커가 페이지를 맡는다", async () => (await p.evaluate(() => !!navigator.serviceWorker.controller)) || "controller 없음");
+
+  await ctx.setOffline(true);
+  await p.reload({ waitUntil: "load" });
+  await p.waitForSelector(".blk", { timeout: 20000 });
+  await p.waitForTimeout(1200);
+  await check("offline", "tml: 비행기 모드로 새로고침해도 시간표가 뜬다 (공연 칸 50개 이상)", async () => ((await p.locator(".blk").count()) >= 50) || "칸 " + (await p.locator(".blk").count()));
+  await check("offline", "tml: 오프라인에서는 DJ 사진이 없고 이름만 나온다", async () => {
+    const r = await p.evaluate(() => ({ ph: document.querySelectorAll(".blk.ph").length, img: document.querySelectorAll(".blk img").length, nm: document.querySelectorAll(".blk .nm").length }));
+    return r.ph === 0 && r.img === 0 && r.nm >= 50 ? true : JSON.stringify(r);
+  });
+  await check("offline", "tml: 오프라인 배지가 뜨고 포스터·랭킹은 숨는다", async () => {
+    const r = await p.evaluate(() => ({ badge: !!document.querySelector(".off-badge"), vis: [...document.querySelectorAll(".fx-thumb,.fx-pbtn,.top-btn")].some((e) => e.offsetParent !== null) }));
+    return r.badge && !r.vis ? true : JSON.stringify(r);
+  });
+  await check("offline", "tml: 오프라인에서 라인업을 담고 배경화면 이미지를 만든다", async () => {
+    await pick(p, ["martin-garrix", "alan-walker"]);
+    if ((await p.locator(".blk.on").count()) < 2) return "담기 실패";
+    await p.locator(".bar .btn.main").first().click();
+    await p.waitForSelector(".pv img", { timeout: 30000 });
+    await p.waitForTimeout(2500);
+    const len = (await p.locator(".pv img").first().getAttribute("src")).length;
+    return len > 100000 ? true : "이미지가 너무 작음 " + len;
+  });
+  await check("offline", "tml: 오프라인에서도 글꼴(Rubik·Noto Sans KR)이 있다", async () => (await p.evaluate(() => document.fonts.check('800 20px "Rubik"') && document.fonts.check('700 20px "Noto Sans KR"', "한글"))) || "글꼴 없음");
+  await p.keyboard.press("Escape");
+  await p.goto(BASE + FESTS.vac.path, { waitUntil: "load" });
+  await check("offline", "vac: 오프라인에서 다른 페스티벌 주소로 열어도 뜬다", async () => {
+    await p.waitForSelector(".blk", { timeout: 20000 });
+    return (await p.locator(".blk").count()) >= 10 || "칸 부족";
+  });
+
+  await ctx.setOffline(false);
+  await p.goto(BASE + FESTS.tml.path, { waitUntil: "load" });
+  await p.waitForSelector(".blk");
+  await p.locator(".off-chip").click();
+  await p.waitForSelector(".ofp-card");
+  await check("offline", "tml: 저장 지우기를 누르면 서비스워커와 저장 파일이 사라진다", async () => {
+    await p.locator(".ofp-btn.ghost", { hasText: /지우기/ }).click();
+    await p.waitForTimeout(1500);
+    const r = await p.evaluate(async () => ({ caches: (await caches.keys()).length, regs: (await navigator.serviceWorker.getRegistrations()).length, saved: localStorage.getItem("fl:offline") }));
+    return r.caches === 0 && r.regs === 0 && !r.saved ? true : JSON.stringify(r);
+  });
+  await check("offline", "tml: 오프라인 쓰기 중 오류 없음", () => (errs.length ? errs.slice(0, 2).join(" | ") : true));
+  await ctx.close();
+}
+
 const t0 = Date.now();
 if (ONLY.has("data")) await dataChecks();
 const browser = await chromium.launch();
@@ -407,6 +494,7 @@ if (ONLY.has("tutorial")) await tutorialChecks(browser);
 if (ONLY.has("lang")) await langChecks(browser);
 if (ONLY.has("logic")) await logicChecks(browser);
 if (ONLY.has("home")) await homeChecks(browser);
+if (ONLY.has("offline")) await offlineChecks(browser);
 await browser.close();
 
 const fail = results.filter((r) => !r.ok);
