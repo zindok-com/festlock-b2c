@@ -94,9 +94,11 @@ interface SheetProps {
   onClose: () => void;
   /** 튜토리얼 시연으로 열린 창이면 뒤로가기는 튜토리얼이 처리한다 */
   inTutorial?: boolean;
+  /** 카드 모양(테마). 주면 창도 그 모양으로 그린다 (듣기 버튼 색은 그대로). 안 주면 기본 */
+  ct?: string;
 }
 
-export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onToggle, onClose, inTutorial = false }: SheetProps) {
+export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onToggle, onClose, inTutorial = false, ct }: SheetProps) {
   const { t, lang } = useI18n();
   const [main, sub] = names(it, lang, koFirst);
   const isAct = !it.kind || it.kind === "act";
@@ -123,6 +125,8 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
   return (
     <div
       className={"sheet slide" + (live ? "" : " hold")}
+      data-ct={ct}
+      style={{ "--c": stage.color, "--ci": stage.ink } as CSSProperties}
       role="dialog"
       aria-modal="true"
       aria-label={main}
@@ -141,7 +145,7 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
             // 두 명이서 하는 공연: 사진 두 장을 나란히 (이름이 "A & B" 형태면 사진 아래에 각각 적는다)
             <div className="fx-duo">
               {it.duo.map((pid, k) => {
-                const who = it.en.split(" & ");
+                const who = it.en.split(/ (?:&|B2B) /i);
                 return (
                   <figure key={pid}>
                     <FFace fest={fest} id={pid} name={who[k] ?? it.ko} className="fx-art-ph fx-duo-ph" initClass="art-init fx-duo-init" />

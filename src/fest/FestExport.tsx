@@ -1,6 +1,8 @@
 // 배경화면 만들기 창 (새 페스티벌 공통). 저장·공유·크게 보기를 누르면 다운로드·선택 집계를 보낸다.
 import { useEffect, useRef, useState } from "react";
 import { IN_APP, externalUrl } from "../inApp";
+import { CardThemeMenu } from "./CardThemeMenu";
+import type { CardTheme } from "./cardTheme";
 import { InAppSaveNotice } from "../components/InAppSaveNotice";
 import { Rich, useI18n } from "../i18n";
 import { useBackClose } from "../backClose";
@@ -21,6 +23,8 @@ export interface RenderOpt {
   noPhoto: boolean;
   /** 보기 탭에서 고른 것 (views 를 주지 않았으면 "") */
   view: string;
+  /** 카드 모양(테마). 안 주면 기본 */
+  theme?: CardTheme;
 }
 
 /** 옵션 버튼 종류. 한 줄에 3개까지 들어간다 */
@@ -56,6 +60,9 @@ interface Props {
   views?: { id: string; label: string }[];
   /** 투표를 받을 페스티벌. 주면 미리보기 아래에 "이 배경화면 어때요? 👍 👎"가 생긴다. render 가 돌려준 캔버스의 dataset(layout·view·picks…)을 함께 기록한다 */
   voteFest?: FestKey;
+  /** 카드 모양(테마). 주면 그 모양으로 이미지를 그리고, onTheme 도 주면 창 안에서 모양을 바꿀 수 있다 */
+  theme?: CardTheme;
+  onTheme?: (t: CardTheme) => void;
 }
 
 const DEFAULT_OPTS: ExportOpt[] = ["lock", "from", "compact"];
@@ -63,7 +70,7 @@ const DEFAULT_OPTS: ExportOpt[] = ["lock", "from", "compact"];
 const PAIR = "__pair";
 
 
-export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, render, hoursFor, firstPick, fileName, onClose, toast, report, onCounted, opts = DEFAULT_OPTS, views, voteFest }: Props) {
+export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, render, hoursFor, firstPick, fileName, onClose, toast, report, onCounted, opts = DEFAULT_OPTS, views, voteFest, theme, onTheme }: Props) {
   const { t, lang } = useI18n();
   const [seg, setSeg] = useState(initial);
   const [ratio, setRatio] = useState<Ratio>("story");
@@ -111,7 +118,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
       setSrc(null);
       return;
     }
-    render(ids, { ratio, lock, compact, from: fromNow, layout, noPhoto, view: tab }).then((cv) => {
+    render(ids, { ratio, lock, compact, from: fromNow, layout, noPhoto, view: tab, theme }).then((cv) => {
       if (!alive) return;
       cvRef.current = cv;
       setMeta({ ...cv.dataset } as Record<string, string>);
@@ -126,7 +133,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
     };
     // ids는 idKey로 대신 비교
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idKey, ratio, lock, compact, fromNow, layout, noPhoto, tab, empty, render]);
+  }, [idKey, ratio, lock, compact, fromNow, layout, noPhoto, tab, empty, render, theme]);
 
   // 모양이 바뀌면 그 모양에 내가 던진 표를 다시 읽는다
   useEffect(() => {
@@ -287,6 +294,7 @@ export function FestExport({ segs, pairLabel, initial, emptyText, isEmpty, rende
               {t("exp.phone")}
             </button>
           </div>
+          {theme && onTheme && <CardThemeMenu value={theme} onChange={onTheme} />}
           {views && (
             <>
               <div className="seg fx-views" role="group" aria-label={t("f.exp.viewAria")}>

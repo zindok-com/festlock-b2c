@@ -9,7 +9,7 @@ function db(): Redis | null {
 }
 
 /** 페스티벌별 집계 날짜 (api/fest-download.ts와 같게) */
-const DAYS: Record<string, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"], utw: ["sat"] };
+const DAYS: Record<string, string[]> = { gmf: ["sat", "sun"], nol: ["sat", "sun"], orl: ["fri", "sat", "sun"], zon: ["sat"], utw: ["sat"], tml: ["fri", "sat", "sun"], vac: ["sat", "sun"] };
 
 export async function GET(request: Request): Promise<Response> {
   const fest = new URL(request.url).searchParams.get("fest") ?? "";

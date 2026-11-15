@@ -1,4 +1,5 @@
 // 새 페스티벌 배경화면 이미지(캔버스). 그날(그 스테이지) 전체를 그리고, 고른 공연만 색으로, 나머지는 흐리게.
+import { b2bOf } from "./b2b";
 import { festFace } from "./faces";
 import { fmt, timeText, type FDay, type FItem, type FStage } from "./types";
 
@@ -9,13 +10,14 @@ export const SANS = '"Rubik","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic
 const KR = '"Noto Sans KR","Rubik","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif';
 const BAGEL = '"Bagel Fat One","Noto Sans KR",system-ui,sans-serif';
 
-export interface Img { color: CanvasImageSource; gray: CanvasImageSource; w: number; h: number }
+/** B2B(b2b.ts): pair = 두 사람의 프로필 사진 (3·5·7번 모양이 두 장을 붙여 그린다). isPair 이면 color/gray 자체가 누끼 두 명을 붙인 투명 이미지라서 cover() 가 잘라 채우지 않고 폭에 맞춰 아래쪽에 놓는다 */
+export interface Img { color: CanvasImageSource; gray: CanvasImageSource; w: number; h: number; pair?: [Img, Img]; isPair?: boolean }
 const cache = new Map<string, Promise<Img | null>>();
 
-function toGray(img: HTMLImageElement): HTMLCanvasElement {
+function toGray(img: HTMLImageElement | HTMLCanvasElement): HTMLCanvasElement {
   const c = document.createElement("canvas");
-  c.width = img.naturalWidth;
-  c.height = img.naturalHeight;
+  c.width = "naturalWidth" in img ? img.naturalWidth : img.width;
+  c.height = "naturalHeight" in img ? img.naturalHeight : img.height;
   const x = c.getContext("2d")!;
   x.drawImage(img, 0, 0);
   const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
@@ -46,10 +48,23 @@ function loadOne(src: string): Promise<Img | null> {
   return p;
 }
 
-/** 사진을 미리 불러온다 (id → 이미지). 최대 4초 */
+/** B2B: 누끼 두 명(투명 이미지)에 프로필 두 장을 붙여 한 개의 Img 로 */
+function composeB2b(cut: Img, a: Img, b: Img): Img {
+  return { color: cut.color, gray: cut.gray, w: cut.w, h: cut.h, pair: [a, b], isPair: true };
+}
+
+/** 사진을 미리 불러온다 (id → 이미지). 최대 4초. 두 사람 사진이 준비된 B2B 칸(b2b.ts)은 합성 이미지 + 프로필 두 장 */
 export async function loadPhotos(fest: string, ids: (string | undefined)[]): Promise<Map<string, Img>> {
   const m = new Map<string, Img>();
   const jobs = ids.map(async (id) => {
+    const bb = id ? b2bOf(fest, id) : null;
+    if (id && bb) {
+      const [cut, a, b] = await Promise.all([loadOne(bb.cut), loadOne(bb.a), loadOne(bb.b)]);
+      if (cut && a && b) {
+        m.set(id, composeB2b(cut, a, b));
+        return;
+      }
+    }
     const src = festFace(fest, id);
     if (!src || !id) return;
     const f = await loadOne(src);
@@ -206,6 +221,18 @@ export function wrap(ctx: CanvasRenderingContext2D, text: string, maxW: number, 
 
 /** 사진을 칸에 꽉 채워 그린다 (얼굴이 위쪽이라 위 25% 기준) */
 export function cover(ctx: CanvasRenderingContext2D, img: Img, on: boolean, x: number, y: number, w: number, h: number) {
+  if (img.isPair) {
+    // B2B 누끼 두 명: 어두운 바탕 위에 폭에 맞춰 아래쪽 정렬 (세로로 긴 좁은 칸에서도 두 사람이 다 보이게)
+    const g = ctx.createLinearGradient(x, y, x + w * 0.4, y + h);
+    g.addColorStop(0, "#2d313c");
+    g.addColorStop(1, "#0c0e13");
+    ctx.fillStyle = g;
+    ctx.fillRect(x, y, w, h);
+    const s = Math.min((w * 0.98) / img.w, (h * 0.92) / img.h);
+    const dw = img.w * s, dh = img.h * s;
+    ctx.drawImage(on ? img.color : img.gray, x + (w - dw) / 2, y + h - dh, dw, dh);
+    return;
+  }
   const s = Math.max(w / img.w, h / img.h), sw = w / s, sh = h / s;
   ctx.drawImage(on ? img.color : img.gray, (img.w - sw) / 2, (img.h - sh) * 0.25, sw, sh, x, y, w, h);
 }

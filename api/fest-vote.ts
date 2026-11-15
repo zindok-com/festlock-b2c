@@ -23,11 +23,11 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
 /** 투표를 받는 페스티벌 (src/fest/festStats.ts FestKey 와 같게) */
-const FESTS = ["gmf", "nol", "orl", "zon", "utw"];
+const FESTS = ["gmf", "nol", "orl", "zon", "utw", "tml", "vac"];
 const VIEWS = ["ai", "all"];
 const LAYOUTS = ["packed", "grid", "text", "all"];
 const RATIOS = ["story", "phone"];
-const LANGS = ["ko", "en", "ja", "zh", "zht"];
+const LANGS = ["ko", "en", "ja", "zh", "zht", "es", "vi", "th", "id"];
 
 /** 투표를 멈추려면 true (DB를 쓰지 않고 바로 거절) */
 const CLOSED = false;

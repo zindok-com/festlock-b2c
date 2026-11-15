@@ -8,6 +8,8 @@
 // 배경·제목만 페스티벌마다 다르게 그린다(MultiLook).
 import { RATIO_H, SANS, canvas, cover, hexA, margins, rr, type Img, type Ratio } from "./festCanvas";
 import { fmt, timeText, type FDay, type FItem, type FStage } from "./types";
+import type { CardTheme } from "./cardTheme";
+import { drawThemedBlock, themedLook, themedPanel, themedStageLabel } from "./festThemeCanvas";
 
 const W = 1080;
 export const MAX_COLS = 5;
@@ -54,6 +56,8 @@ export interface MultiOpt {
   view: MultiView;
   nameOf: (it: FItem) => string;
   photoOf: (it: FItem) => string | undefined;
+  /** 카드 모양(테마). 없거나 "glass"면 기본 모양 */
+  theme?: CardTheme;
 }
 
 export type Plan =
@@ -176,6 +180,26 @@ const PACKED: BlockStyle = { on: true, frame: false, minPhoto: 110 };
  * 사진이 없거나 작은 칸은 이름 아래에 시간을 둔다.
  */
 function drawBlock(ctx: CanvasRenderingContext2D, o: MultiOpt, st: FStage, it: FItem, photo: Img | undefined, x: number, y: number, w: number, h: number, bs: BlockStyle = PACKED) {
+  if (o.theme && o.theme !== "glass") {
+    // 카드 모양(테마)에 맞춰 그린다 (festThemeCanvas.ts)
+    drawThemedBlock(ctx, o.theme, {
+      name: o.nameOf(it),
+      time: it.open ? timeText(it) : fmt(it.s) + "–" + fmt(it.e),
+      genre: it.genre,
+      st,
+      id: it.id,
+      photo,
+      x,
+      y,
+      w,
+      h,
+      on: bs.on,
+      minPhoto: bs.minPhoto,
+      ink: o.look.name,
+      sub: o.look.nameSub,
+    });
+    return;
+  }
   const { on } = bs;
   const r = Math.min(14, h / 3);
   ctx.save();
@@ -255,7 +279,7 @@ function drawBlock(ctx: CanvasRenderingContext2D, o: MultiOpt, st: FStage, it: F
 }
 
 /** 무대 이름 + 무대 색 밑줄. cy = 밑줄 위치. 이름이 두 단어 이상이면 첫 단어를 작게 윗줄에 */
-function stageLabel(ctx: CanvasRenderingContext2D, look: MultiLook, st: FStage, x: number, w: number, cy: number, bg?: string) {
+function stageLabel(ctx: CanvasRenderingContext2D, theme: CardTheme | undefined, look: MultiLook, st: FStage, x: number, w: number, cy: number, bg?: string) {
   const [a, ...rest] = st.name.split(" ");
   const l1 = rest.length ? a : "", l2 = rest.length ? rest.join(" ") : a;
   if (bg) {
@@ -263,6 +287,7 @@ function stageLabel(ctx: CanvasRenderingContext2D, look: MultiLook, st: FStage, 
     rr(ctx, x, cy - 60, w, 68, 10);
     ctx.fill();
   }
+  if (theme && themedStageLabel(ctx, theme, st, x, w, cy)) return;
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   if (l1) {
@@ -350,7 +375,7 @@ function drawPacked(ctx: CanvasRenderingContext2D, o: MultiOpt, picked: FItem[],
   const gy0 = y0 + HEAD;
   const ppm = (y1 - gy0 - BREAK * (segs.length - 1)) / mins;
   const yOf = scale(segs, gy0, ppm);
-  plan.lanes.forEach((st, k) => stageLabel(ctx, o.look, st, xs + k * (colW + GAP), colW, y0 + 58));
+  plan.lanes.forEach((st, k) => stageLabel(ctx, o.theme, o.look, st, xs + k * (colW + GAP), colW, y0 + 58));
   axis(ctx, o.look, segs, yOf, X0, X1);
   // 칸 안에서 무대가 바뀌는 곳에 무대 이름표 (끼워 넣은 무대가 시작될 때, 다시 원래 무대로 돌아올 때)
   const LABEL = 76;
@@ -362,10 +387,10 @@ function drawPacked(ctx: CanvasRenderingContext2D, o: MultiOpt, picked: FItem[],
     const prevStage = before[0]?.stage ?? plan.lanes[k].key;
     if (prevStage !== it.stage) {
       const prevEnd = Math.max(gy0, ...before.map((p) => yOf(p.e)));
-      if (y - prevEnd >= LABEL + 6) stageLabel(ctx, o.look, byKey[it.stage], x, colW, y - 12, o.look.labelBg);
+      if (y - prevEnd >= LABEL + 6) stageLabel(ctx, o.theme, o.look, byKey[it.stage], x, colW, y - 12, o.look.labelBg);
       else {
         // 빈자리가 없으면 칸 위쪽을 이름표로 쓰고 공연 칸은 그만큼 아래로
-        stageLabel(ctx, o.look, byKey[it.stage], x, colW, y + LABEL - 12, o.look.labelBg);
+        stageLabel(ctx, o.theme, o.look, byKey[it.stage], x, colW, y + LABEL - 12, o.look.labelBg);
         y += LABEL;
         h -= LABEL;
       }
@@ -392,7 +417,7 @@ function drawTextBands(ctx: CanvasRenderingContext2D, o: MultiOpt, picked: FItem
     const gy0 = by + HEAD;
     const ppm = (bandH - HEAD - BREAK * (segs.length - 1)) / mins;
     const yOf = scale(segs, gy0, ppm);
-    stages.forEach((st, k) => stageLabel(ctx, o.look, st, xs + k * (colW + GAP), colW, by + 58));
+    stages.forEach((st, k) => stageLabel(ctx, o.theme, o.look, st, xs + k * (colW + GAP), colW, by + 58));
     axis(ctx, o.look, segs, yOf, X0, X1);
     for (const it of list) {
       const k = stages.findIndex((s) => s.key === it.stage);
@@ -419,7 +444,7 @@ function drawFull(ctx: CanvasRenderingContext2D, o: MultiOpt, picked: FItem[], y
   const xs = X0 + (X1 - X0 - (colW * n + GAP * (n - 1))) / 2;
   const gy0 = y0 + HEAD;
   const ppm = (y1 - gy0) / (b - a);
-  stages.forEach((st, k) => stageLabel(ctx, o.look, st, xs + k * (colW + GAP), colW, y0 + 58));
+  stages.forEach((st, k) => stageLabel(ctx, o.theme, o.look, st, xs + k * (colW + GAP), colW, y0 + 58));
   // 시간 줄
   ctx.textBaseline = "middle";
   ctx.textAlign = "right";
@@ -446,7 +471,9 @@ function drawFull(ctx: CanvasRenderingContext2D, o: MultiOpt, picked: FItem[], y
   }
 }
 
-export function renderMulti(o: MultiOpt): HTMLCanvasElement {
+export function renderMulti(o0: MultiOpt): HTMLCanvasElement {
+  // 모양에 따라 글자·선 색을 바꾼다 (배경·제목은 페스티벌 것 그대로)
+  const o: MultiOpt = o0.theme && o0.theme !== "glass" ? { ...o0, look: themedLook(o0.look, o0.theme) } : o0;
   const H = RATIO_H[o.ratio];
   const [cv, ctx] = canvas(H);
   o.look.bg(ctx, H);
@@ -455,6 +482,7 @@ export function renderMulti(o: MultiOpt): HTMLCanvasElement {
   const [top, bottom] = margins(H, o.lock, 70, 96);
   const y0 = o.look.title(ctx, top, o.compact, o.day);
   const y1 = H - bottom;
+  if (o.theme) themedPanel(ctx, o.theme, 28, y0 - 14, W - 56, y1 + 22 - (y0 - 14));
   const layout = layoutOf(o);
   // 투표·기록에 쓸 정보를 캔버스에 붙여 둔다
   cv.dataset.layout = layout;

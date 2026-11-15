@@ -1,4 +1,5 @@
 import raw from "./data/lineup.json";
+import type { Clash } from "./fest/overlap";
 
 export type GenreConf = "verified" | "inferred" | "unknown";
 export interface Stage { key: string; line1: string; line2: string; color: string }
@@ -67,13 +68,17 @@ export function pickOf(sel: Set<string>, d: string): Item[] {
 }
 
 /** 겹침: a.start < b.end && b.start < a.end (끝=시작은 겹침 아님) */
-export function conflicts(sel: Set<string>, d: string): { ids: Set<string>; pairs: number } {
-  const l = pickOf(sel, d), ids = new Set<string>();
-  let pairs = 0;
+export function conflicts(sel: Set<string>, d: string): { pairs: number; clashes: Clash[] } {
+  const l = pickOf(sel, d);
+  const side = (i: Item) => ({ id: i.id, name: i.name, time: fmt(i.s) + "–" + fmt(i.e) });
+  const clashes: Clash[] = [];
   for (let i = 0; i < l.length; i++)
     for (let j = i + 1; j < l.length; j++)
-      if (l[i].s < l[j].e && l[j].s < l[i].e) { pairs++; ids.add(l[i].id); ids.add(l[j].id); }
-  return { ids, pairs };
+      if (l[i].s < l[j].e && l[j].s < l[i].e) {
+        const [p, q] = l[i].s <= l[j].s ? [l[i], l[j]] : [l[j], l[i]];
+        clashes.push({ a: side(p), b: side(q) });
+      }
+  return { pairs: clashes.length, clashes };
 }
 
 export function initials(name: string): string {

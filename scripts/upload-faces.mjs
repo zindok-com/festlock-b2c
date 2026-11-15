@@ -1,5 +1,6 @@
 // faces-src/ 의 사진을 Vercel Blob(공개 스토어)에 올린다. 이미 있는 파일은 같은 이름으로 덮어쓴다.
 //   BLOB_READ_WRITE_TOKEN=... node scripts/upload-faces.mjs      (또는 .env.local 에 넣고 실행)
+// 폴더 이름을 주면 그 폴더의 사진만 올린다 (하위 폴더 cut/·b2b/ 는 scripts/upload-cutouts.mjs):  node scripts/upload-faces.mjs tml
 // 올린 뒤 출력되는 주소 앞부분(…/artists)을 VITE_FACE_BASE 로 설정한다.
 import fs from "node:fs";
 import path from "node:path";
@@ -17,7 +18,15 @@ if (!process.env.BLOB_READ_WRITE_TOKEN) {
 }
 
 const ROOT = "faces-src";
+const only = process.argv.slice(2);
 const files = [];
+if (only.length) {
+  for (const f of only) {
+    const d = path.join(ROOT, f);
+    if (!fs.existsSync(d)) continue;
+    for (const n of fs.readdirSync(d)) if (/\.webp$/i.test(n)) files.push(path.join(d, n));
+  }
+} else
 (function walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);

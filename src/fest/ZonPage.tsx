@@ -4,10 +4,18 @@
 //  - 맨 위 "무대 지도"(색 막대 7칸): 지금 화면에 보이는 무대를 테두리로 알려 주고, 누르면 그 무대로 바로 간다
 //  - 사진·미리보기 영상은 아티스트·주최측이 제공한 자료 (Vercel Blob)
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { OverlapNote } from "./OverlapNote";
+import { calcClashes } from "./overlap";
 import { LangMenu, Rich, useI18n } from "../i18n";
 import { ZON_DAYS, ZON_GENRE, ZON_ITEMS, ZON_STAGES } from "./zon";
 import { firstStart, hourList, isLive, names, useFestTheme, useFont, useNowKst, useSelection } from "./common";
 import { festFace } from "./faces";
+import { cutSrc } from "./cutouts";
+import { THEME_FONTS, useCardTheme, type CardTheme } from "./cardTheme";
+import { CardThemeMenu } from "./CardThemeMenu";
+import { b2bOf } from "./b2b";
+import { makeThemeSample, setThemeSample } from "./themeSample";
+import { useReverse } from "./viewPrefs";
 import { FestSheet, PosterViewer, useLongPress, usePoster } from "./parts";
 import { FestExport, type ExportOpt, type RenderOpt } from "./FestExport";
 import { ensureFonts, loadPhotos } from "./festCanvas";
@@ -60,21 +68,28 @@ const TUT: TutConfig = {
 const hours: number[] = [];
 for (let m = START; m <= END; m += 60) hours.push(m);
 
-function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; warn: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
+function Block({ it, on, live, theme, reverse, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; theme: CardTheme; reverse: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
   const { t } = useI18n();
   const st = STAGE[it.stage];
   const lp = useLongPress(() => onInfo(it.id));
   const time = timeText(it);
   const src = festFace(FACE, it.id);
   const [failed, setFailed] = useState(false);
-  const photo = !!src && !failed && (it.e - it.s) * PPM >= 64;
+  const [cutFailed, setCutFailed] = useState(false);
+  const [b2bFailed, setB2bFailed] = useState(false);
+  // B2B: 두 사람 사진·누끼가 준비된 칸은 3·5·7번 모양에서 프로필 두 장, 나머지 모양에서 누끼 두 명 (b2b.ts)
+  const b2b = b2bFailed ? null : b2bOf(FACE, it.id);
+  const b2bFaces = !!b2b && (theme === "minimal" || theme === "lock" || theme === "term");
+  // 듀오톤 블록: 누끼가 있으면 누끼, 없으면 이중톤 사진
+  const cut = theme === "duo" && !cutFailed ? (b2b ? b2b.cut : cutSrc(FACE, it.id)) : null;
+  const photo = (!!src || !!b2b) && !failed && (it.e - it.s) * PPM >= 64;
   // 가장 긴 단어 글자 수: 긴 이름(MINIMONSTER 등)이 단어 중간에서 끊기지 않게 글자를 줄이는 데 쓴다
   const longest = Math.max(...it.en.split(/\s+/).map((w) => w.length));
   return (
     <div
       data-id={it.id}
-      className={"blk" + (on ? " on" : "") + (photo ? " ph" : "")}
-      style={{ ...toneVars(it.stage), "--len": longest, top: (it.s - START) * PPM + 1 + "px", height: (it.e - it.s) * PPM - 2 + "px" } as CSSProperties}
+      className={"blk" + (on ? " on" : "") + (photo ? " ph" : "") + (photo && b2b ? " b2b" + (b2bFaces ? " b2b-faces" : "") : "") + (it.en.length > 16 ? " long" : "")}
+      style={{ ...toneVars(it.stage), "--len": longest, top: (reverse ? END - it.e : it.s - START) * PPM + 1 + "px", height: (it.e - it.s) * PPM - 2 + "px" } as CSSProperties}
     >
       <button
         type="button"
@@ -90,11 +105,29 @@ function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolea
       >
         {photo ? (
           <>
-            <img className="ph-img" src={src!} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} />
+            {cut ? (
+              <img className="cut" src={cut} alt="" loading="lazy" decoding="async" draggable={false} onError={() => (b2b ? setB2bFailed(true) : setCutFailed(true))} />
+            ) : b2b && b2bFaces ? (
+              <span className="phw phw2">
+                <img className="ph-img" src={b2b.a} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setB2bFailed(true)} />
+                <img className="ph-img" src={b2b.b} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setB2bFailed(true)} />
+              </span>
+            ) : b2b ? (
+              <span className="phw">
+                <img className="ph-img b2b-cut" src={b2b.cut} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setB2bFailed(true)} />
+              </span>
+            ) : (
+              <span className="phw">
+                <img className="ph-img" src={src!} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setFailed(true)} />
+              </span>
+            )}
             <span className="tm tm-top">{time}</span>
             <span className="cap">
               <span className="nm">{it.en}</span>
               {it.genre && <span className="gn">{it.genre}</span>}
+            </span>
+            <span className="ck" aria-hidden="true">
+              ✓
             </span>
           </>
         ) : (
@@ -106,11 +139,6 @@ function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolea
         )}
       </button>
       {live && <span className="fx-live" role="img" aria-label={t("f.live")} />}
-      {warn && (
-        <span className="warn" role="img" aria-label={t("overlap")}>
-          ⚠
-        </span>
-      )}
     </div>
   );
 }
@@ -118,6 +146,9 @@ function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolea
 export function ZonPage() {
   const { t, lang } = useI18n();
   useFestTheme("zon");
+  const [ctheme, setCtheme] = useCardTheme();
+  useMemo(() => setThemeSample(makeThemeSample(FACE, ZON_ITEMS, ZON_STAGES)), []);
+  const [reverse, toggleReverse] = useReverse();
   useFont(ANTON);
   const { sel, setSel, toggle } = useSelection(SLUG, VALID);
   const now = useNowKst();
@@ -139,19 +170,9 @@ export function ZonPage() {
   useBodyLock(!!info || exporting || ranking || tut);
 
   const total = sel.size;
-  const perStage = useMemo(() => Object.fromEntries(ZON_STAGES.map((s) => [s.key, ZON_ITEMS.filter((i) => i.stage === s.key && sel.has(i.id)).length])), [sel]);
   const overlap = useMemo(() => {
     const l = ZON_ITEMS.filter((i) => sel.has(i.id));
-    const ids = new Set<string>();
-    let pairs = 0;
-    for (let i = 0; i < l.length; i++)
-      for (let j = i + 1; j < l.length; j++)
-        if (l[i].s < l[j].e && l[j].s < l[i].e) {
-          pairs++;
-          ids.add(l[i].id);
-          ids.add(l[j].id);
-        }
-    return { ids, pairs };
+    return calcClashes(l);
   }, [sel]);
 
   const { armed, reset } = useArmedReset(() => setSel(new Set()));
@@ -159,7 +180,6 @@ export function ZonPage() {
   // ----- 옆으로 밀기: 시간표(scroller)와 무대 이름 줄(heads)을 같이 움직이고, 무대 지도에 보이는 범위를 표시 -----
   const scroller = useRef<HTMLDivElement>(null);
   const heads = useRef<HTMLDivElement>(null);
-  const map = useRef<HTMLDivElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const raf = useRef(0);
   const root = useRef<HTMLDivElement>(null);
@@ -190,7 +210,6 @@ export function ZonPage() {
     d.range = Math.max(0, g.scrollWidth - g.clientWidth);
     d.vw = track > 0 ? Math.min(1, view / track) : 1;
     root.current?.style.setProperty("--range", d.range + "px");
-    map.current?.style.setProperty("--vw", (d.vw * 100).toFixed(2) + "%");
   }, []);
   // 한 방향 동기화: 시간표(scroller)만 실제로 스크롤하고, 무대 이름 줄은 따라가게 한다
   // (예전엔 두 스크롤러가 서로 scrollLeft 를 덮어써서 천천히 밀 때 어긋나고 버벅였다)
@@ -200,13 +219,11 @@ export function ZonPage() {
     if (!g) return;
     const x = g.scrollLeft;
     if (h && !cssSync) h.style.transform = `translate3d(${-x}px,0,0)`;
-    const d = dims.current;
-    if (d.track > 0 && map.current) map.current.style.setProperty("--vl", ((x / d.track) * 100).toFixed(2) + "%");
     wrap.current?.classList.toggle("at-end", x + g.clientWidth >= g.scrollWidth - 4);
     wrap.current?.classList.toggle("at-start", x <= 4);
   }, [cssSync]);
   const sync = useCallback(() => {
-    // JS 방식일 때 이름 줄은 즉시(같은 프레임) 옮기고, 나머지(지도 테두리 등)는 프레임당 한 번만
+    // JS 방식일 때 이름 줄은 즉시(같은 프레임) 옮기고, 나머지는 프레임당 한 번만
     const g = scroller.current, h = heads.current;
     if (g && h && !cssSync) h.style.transform = `translate3d(${-g.scrollLeft}px,0,0)`;
     if (!raf.current) raf.current = requestAnimationFrame(apply);
@@ -231,15 +248,6 @@ export function ZonPage() {
       ro?.disconnect();
     };
   }, [measure, sync]);
-  /** 무대 지도에서 고른 무대가 시간축 바로 옆에 오게 민다 */
-  const goStage = useCallback((key: string) => {
-    const g = scroller.current;
-    const col = g?.querySelector<HTMLElement>(`.col[data-stage="${key}"]`);
-    const axisEl = g?.querySelector<HTMLElement>(".axis");
-    if (!g || !col || !axisEl) return;
-    const smooth = !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    g.scrollTo({ left: col.offsetLeft - axisEl.offsetWidth - 3, behavior: smooth ? "smooth" : "auto" });
-  }, []);
   // 처음 한 번: 튜토리얼이 끝나면 시간표를 살짝 옆으로 밀었다 돌아와 "옆에 더 있다"를 보여 준다
   useEffect(() => {
     if (tut || !MANY) return;
@@ -272,15 +280,15 @@ export function ZonPage() {
   const nowOn = nowMin >= START && nowMin <= END;
 
   const render = useCallback(
-    async (_ids: string[], { ratio, lock, compact, noPhoto, view: v }: RenderOpt) => {
+    async (_ids: string[], { ratio, lock, compact, noPhoto, view: v, theme }: RenderOpt) => {
       const view = v === "all" ? "all" : "ai";
       const picked = ZON_ITEMS.filter((i) => sel.has(i.id));
       // 사진: 고른 공연만 그리는 모양이면 고른 공연 것만, 전체 표 모양이면 고른 무대의 모든 공연 것
       const layout = layoutOf({ stages: ZON_STAGES, items: ZON_ITEMS, sel, noPhoto, view });
       const stageKeys = new Set(picked.map((i) => i.stage));
       const need = layout === "packed" ? picked : ZON_ITEMS.filter((i) => stageKeys.has(i.stage));
-      const [, photos] = await Promise.all([ensureFonts(['400 40px "Anton"']), noPhoto ? Promise.resolve(new Map()) : loadPhotos(FACE, need.map((i) => i.id))]);
-      return renderMulti({ look: ZON_LOOK, day: DAY, stages: ZON_STAGES, items: ZON_ITEMS, sel, photos, ratio, lock, compact, noPhoto, view, nameOf: (it) => it.en, photoOf: (it) => it.id });
+      const [, photos] = await Promise.all([ensureFonts(['400 40px "Anton"', ...(theme ? THEME_FONTS[theme]?.canvas ?? [] : [])]), noPhoto ? Promise.resolve(new Map()) : loadPhotos(FACE, need.map((i) => i.id))]);
+      return renderMulti({ look: ZON_LOOK, day: DAY, stages: ZON_STAGES, items: ZON_ITEMS, sel, photos, ratio, lock, compact, noPhoto, view, nameOf: (it) => it.en, photoOf: (it) => it.id, theme });
     },
     [sel],
   );
@@ -290,7 +298,7 @@ export function ZonPage() {
   const colStyle = { height: (END - START) * PPM } as CSSProperties;
   return (
     <>
-      <div className={"wrap zon" + (cssSync && MANY ? " css-sync" : "")} style={FIT_STYLE} ref={root}>
+      <div className={"wrap zon" + (cssSync && MANY ? " css-sync" : "")} style={FIT_STYLE} data-ct={ctheme} ref={root}>
         <header className="hero zon-hero">
           <div className="hero-top">
             <a className="fx-back" href="/" aria-label="FestLock">
@@ -336,21 +344,19 @@ export function ZonPage() {
           <p className="legend">
             <Rich text={t("f.zon.legend")} />
           </p>
+          <CardThemeMenu
+            value={ctheme}
+            onChange={setCtheme}
+            extra={
+              <button className="chip rev" type="button" aria-pressed={reverse} title={t("f.rev.hint")} onClick={toggleReverse}>
+                <span aria-hidden="true">↕</span> {t("f.rev.label")}
+              </button>
+            }
+          />
         </header>
 
         <div className="sticky zon-sticky">
           <div className="zon-bar">
-            {MANY && (
-              <div className="zon-map" ref={map} style={{ "--n": ZON_STAGES.length } as CSSProperties} role="group" aria-label={t("f.zon.map")}>
-                {ZON_STAGES.map((st) => (
-                  <button key={st.key} type="button" className="zon-seg" style={toneVars(st.key)} onClick={() => goStage(st.key)} aria-label={t("f.zon.goStage", { s: st.name })}>
-                    <span className="g">{ZON_GENRE[st.key]}</span>
-                    {perStage[st.key] > 0 && <i>{perStage[st.key]}</i>}
-                  </button>
-                ))}
-                <span className="zon-view" aria-hidden="true" />
-              </div>
-            )}
             <button className="chip help" type="button" aria-label={t("help")} onClick={() => setTut(true)}>
               ?
             </button>
@@ -373,7 +379,7 @@ export function ZonPage() {
             <div className="grid zon-track" style={{ "--ppm": PPM + "px", "--n": ZON_STAGES.length } as CSSProperties}>
               <div className="axis" style={colStyle}>
                 {hours.map((m) => (
-                  <span key={m} style={{ top: (m - START) * PPM }}>
+                  <span key={m} style={{ top: (reverse ? END - m : m - START) * PPM }}>
                     {fmt(m)}
                   </span>
                 ))}
@@ -381,12 +387,12 @@ export function ZonPage() {
               {ZON_STAGES.map((st) => (
                 <div key={st.key} className="col" data-stage={st.key} style={colStyle}>
                   {ZON_ITEMS.filter((i) => i.stage === st.key).map((it) => (
-                    <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, DAY, now)} warn={overlap.ids.has(it.id)} onToggle={toggle} onInfo={setInfo} />
+                    <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, DAY, now)} theme={ctheme} reverse={reverse} onToggle={toggle} onInfo={setInfo} />
                   ))}
                 </div>
               ))}
               {nowOn && (
-                <div className="zon-now" style={{ top: (nowMin - START) * PPM }} aria-hidden="true">
+                <div className="zon-now" style={{ top: (reverse ? END - nowMin : nowMin - START) * PPM }} aria-hidden="true">
                   <span>{t("f.zon.now")}</span>
                 </div>
               )}
@@ -403,7 +409,7 @@ export function ZonPage() {
             <div>
               <Rich text={t("sum.sel", { n: total })} />
             </div>
-            {overlap.pairs > 0 && <div>{t("sum.overlap", { n: overlap.pairs })}</div>}
+            {overlap.pairs > 0 && <OverlapNote clashes={overlap.clashes} />}
           </div>
           <button className="btn ghost" type="button" onClick={reset} disabled={total === 0 && !armed}>
             {armed ? t("reset.arm") : t("reset")}
@@ -428,6 +434,7 @@ export function ZonPage() {
           onToggle={() => toggle(infoIt.id)}
           onClose={() => setInfo(null)}
           inTutorial={tut}
+          ct={ctheme}
         />
       )}
       {exporting && (
@@ -449,6 +456,8 @@ export function ZonPage() {
             { id: "ai", label: "✨ " + t("f.exp.viewAi") },
             { id: "all", label: t("f.exp.viewAll") },
           ]}
+          theme={ctheme}
+          onTheme={setCtheme}
           voteFest="zon"
         />
       )}
@@ -471,7 +480,7 @@ export function ZonPage() {
         />
       )}
       {poster.open && <PosterViewer title="ZONNAFE 2026" posters={POSTERS.map((p) => ({ src: p.src, label: t(p.key) }))} onClose={poster.hide} />}
-      {tut && <Tutorial config={TUT} onClose={() => setTut(false)} onInfo={tutInfo} />}
+      {tut && <Tutorial config={TUT} onClose={() => setTut(false)} onInfo={tutInfo} themePick={{ value: ctheme, onChange: setCtheme }} />}
       {toastNode}
     </>
   );

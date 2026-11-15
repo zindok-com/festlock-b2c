@@ -5,6 +5,8 @@ import { findDrop, loadDrops } from "../drops";
 import { findClip, loadClips } from "../clips";
 import { DROP_DEMO } from "./DropPlayer";
 import { IN_APP } from "../inApp";
+import { CardThemeMenu } from "../fest/CardThemeMenu";
+import type { CardTheme } from "../fest/cardTheme";
 
 export const TUT_KEY = "edc26:tut";
 
@@ -18,6 +20,8 @@ interface Step {
   demoDrop?: boolean;
   /** 이 단계 카드에 예시 이미지와 저장 안내를 같이 보일지 */
   save?: boolean;
+  /** 이 단계 카드 안에서 카드 모양(테마)을 고르게 할지 */
+  theme?: boolean;
   /** 번역 키 */
   title: string;
   /** 번역 키 */
@@ -45,7 +49,7 @@ export interface TutConfig {
 }
 const EDC_TUT: TutConfig = { storageKey: TUT_KEY, block: ".col .blk:nth-child(2)", blockFallback: ".blk", sample: "/tutorial/edc.webp" };
 
-function makeSteps(firstBlock: () => Element | null, withDrop: boolean): Step[] {
+function makeSteps(firstBlock: () => Element | null, withDrop: boolean, withTheme = false): Step[] {
   const steps: Step[] = [
   {
     target: firstBlock,
@@ -74,7 +78,9 @@ function makeSteps(firstBlock: () => Element | null, withDrop: boolean): Step[] 
   },
   ];
   // 드랍이 있는 아티스트면: 창 위쪽에 유튜브 플레이어가 열리는 모습 (소리는 내지 않음)
-  if (withDrop) steps.splice(3, 0, { target: () => document.querySelector(".sheet .drop-top"), sheet: true, demoDrop: true, title: "tut.drop.t", body: "tut.drop.b" });
+  // 카드 모양을 고를 수 있는 페이지면 맨 앞에 "카드 모양을 골라요" 단계 (고르면 아래 단계들도 그 모양으로 보인다)
+  if (withTheme) steps.unshift({ target: () => document.querySelector(".zon .ct-menu"), theme: true, title: "tut.theme.t", body: "tut.theme.b" });
+  if (withDrop) steps.splice(withTheme ? 4 : 3, 0, { target: () => document.querySelector(".sheet .drop-top"), sheet: true, demoDrop: true, title: "tut.drop.t", body: "tut.drop.b" });
   return steps;
 }
 
@@ -86,9 +92,11 @@ interface Props {
   /** 아티스트 창 열기/닫기 (시연용) */
   onInfo: (id: string | null, from?: DOMRect) => void;
   config?: TutConfig;
+  /** 카드 모양 고르기를 튜토리얼에 넣는다 (시간표 카드 모양을 고를 수 있는 페이지만) */
+  themePick?: { value: CardTheme; onChange: (t: CardTheme) => void };
 }
 
-export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
+export function Tutorial({ onClose, onInfo, config = EDC_TUT, themePick }: Props) {
   const { t: tr } = useI18n();
   const t = (k: string) => tr(config.text?.[k] ?? k);
   // 드랍이 있는 아티스트를 시연용으로 고른다 (undefined = 아직 찾는 중 → 그동안은 안 그린다)
@@ -115,7 +123,7 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
     () => (dropPick ? document.querySelector(`${config.blockFallback}[data-id="${dropPick}"]`) : null) ?? document.querySelector(config.block) ?? document.querySelector(config.blockFallback),
     [config, dropPick],
   );
-  const STEPS = useMemo(() => makeSteps(firstBlock, !!dropPick), [firstBlock, dropPick]);
+  const STEPS = useMemo(() => makeSteps(firstBlock, !!dropPick, !!themePick), [firstBlock, dropPick, !!themePick]);
   const [i, setI] = useState(0);
   const [r, setR] = useState<Rect | null>(null);
   const demoId = useRef<string | null>(null);
@@ -195,7 +203,7 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
   // 설명 카드는 강조 영역 아래에 공간이 있으면 아래, 없으면 위
   // 아래에도 위에도 카드가 들어갈 자리가 없으면(영상 칸처럼 강조 영역이 화면을 거의 채울 때) 화면 아래쪽에 고정해 강조 영역 위에 겹쳐 보인다 (잘려서 안 보이는 것보다 낫다)
   const showSave = !!step.save;
-  const CARD_H = showSave ? 420 : 200;
+  const CARD_H = showSave ? 420 : step.theme ? 260 : 200;
   const roomBelow = r ? vh - (r.y + r.h) - 14 : vh;
   const roomAbove = r ? r.y - 14 : vh;
   const below = r ? roomBelow >= CARD_H : true;
@@ -235,6 +243,7 @@ export function Tutorial({ onClose, onInfo, config = EDC_TUT }: Props) {
         </div>
         <strong>{t(step.title)}</strong>
         <p>{t(step.body)}</p>
+        {step.theme && themePick && <CardThemeMenu compact value={themePick.value} onChange={themePick.onChange} />}
         {showSave && (
           <div className="tut-save">
             {config.sample && (

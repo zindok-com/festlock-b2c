@@ -1,5 +1,7 @@
 // 그랜드 민트 페스티벌 2026: EDC처럼 무대 4개를 나란히 놓은 타임테이블
 import { useCallback, useMemo, useState, type CSSProperties } from "react";
+import { OverlapNote } from "./OverlapNote";
+import { calcClashes } from "./overlap";
 import { LangMenu, Rich, useI18n } from "../i18n";
 import { GMF_DAYS, GMF_DOORS, GMF_ITEMS, GMF_STAGES, KIND_COLOR } from "./gmf";
 import { firstStart, hourList, isLive, names, useFestTheme, useFont, useNowKst, useSelection } from "./common";
@@ -43,7 +45,7 @@ function colorOf(it: FItem, st: FStage) {
   return it.kind && it.kind !== "act" ? KIND_COLOR[it.kind] : st.color;
 }
 
-function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; warn: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
+function Block({ it, on, live, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
   const { t, lang } = useI18n();
   const st = STAGE[it.stage];
   const [main] = names(it, lang, true);
@@ -81,11 +83,6 @@ function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolea
         </span>
       </button>
       {live && <span className="fx-live" role="img" aria-label={t("f.live")} />}
-      {warn && (
-        <span className="warn" role="img" aria-label={t("overlap")}>
-          ⚠
-        </span>
-      )}
     </div>
   );
 }
@@ -124,16 +121,7 @@ export function GmfPage() {
   const dayObj = GMF_DAYS.find((d) => d.id === day)!;
   const overlap = useMemo(() => {
     const l = GMF_ITEMS.filter((i) => i.day === day && sel.has(i.id));
-    const ids = new Set<string>();
-    let pairs = 0;
-    for (let i = 0; i < l.length; i++)
-      for (let j = i + 1; j < l.length; j++)
-        if (l[i].s < l[j].e && l[j].s < l[i].e) {
-          pairs++;
-          ids.add(l[i].id);
-          ids.add(l[j].id);
-        }
-    return { ids, pairs };
+    return calcClashes(l);
   }, [sel, day]);
 
   const { armed, reset } = useArmedReset(() => setSel(new Set()));
@@ -256,7 +244,7 @@ export function GmfPage() {
           {GMF_STAGES.map((st) => (
             <div key={st.key} className="gmf-col" style={{ height: (END - START) * PPM }}>
               {GMF_ITEMS.filter((i) => i.day === day && i.stage === st.key).map((it) => (
-                <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, dayObj, now)} warn={overlap.ids.has(it.id)} onToggle={toggle} onInfo={setInfo} />
+                <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, dayObj, now)} onToggle={toggle} onInfo={setInfo} />
               ))}
             </div>
           ))}
@@ -271,7 +259,7 @@ export function GmfPage() {
             <div>
               <Rich text={t("sum.sel", { n: counts[day] })} />
             </div>
-            {overlap.pairs > 0 && <div>{t("sum.overlap", { n: overlap.pairs })}</div>}
+            {overlap.pairs > 0 && <OverlapNote clashes={overlap.clashes} />}
           </div>
           <button className="btn ghost" type="button" onClick={reset} disabled={total === 0 && !armed}>
             {armed ? t("reset.arm") : t("reset")}

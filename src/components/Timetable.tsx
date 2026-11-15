@@ -6,7 +6,6 @@ import { useI18n } from "../i18n";
 interface Props {
   day: Day;
   sel: Set<string>;
-  warn: Set<string>;
   showGenre: boolean;
   onToggle: (id: string) => void;
   onInfo: (id: string, from?: DOMRect) => void;
@@ -73,7 +72,7 @@ function useLongPress(cb: () => void, ms = 450) {
   };
 }
 
-function Block({ it, st, on, warn, onToggle, onInfo }: { it: Item; st: Stage; on: boolean; warn: boolean; onToggle: (id: string) => void; onInfo: (id: string, from?: DOMRect) => void }) {
+function Block({ it, st, on, onToggle, onInfo }: { it: Item; st: Stage; on: boolean; onToggle: (id: string) => void; onInfo: (id: string, from?: DOMRect) => void }) {
   const src = SHOW_FACES ? faceSrc(it.id) : null;
   const [failed, setFailed] = useState(false);
   const photo = !!src && !failed;
@@ -121,16 +120,11 @@ function Block({ it, st, on, warn, onToggle, onInfo }: { it: Item; st: Stage; on
           </>
         )}
       </button>
-      {warn && (
-        <span className="warn" role="img" aria-label={t("overlap")}>
-          ⚠
-        </span>
-      )}
     </div>
   );
 }
 
-export function Timetable({ day, sel, warn, showGenre, onToggle, onInfo }: Props) {
+export function Timetable({ day, sel, showGenre, onToggle, onInfo }: Props) {
   const colH = TOTAL * PPM + "px";
   return (
     <div className={"grid" + (showGenre ? "" : " nogenre")} style={{ "--ppm": PPM + "px", "--n": STAGES.length } as CSSProperties}>
@@ -145,7 +139,7 @@ export function Timetable({ day, sel, warn, showGenre, onToggle, onInfo }: Props
         <div key={st.key} className="col" style={{ height: colH }}>
           {ITEMS.filter((it) => it.day === day.id && it.si === si).map((it) => {
             const on = sel.has(it.id);
-            return <Block key={it.id} it={it} st={st} on={on} warn={on && warn.has(it.id)} onToggle={onToggle} onInfo={onInfo} />;
+            return <Block key={it.id} it={it} st={st} on={on} onToggle={onToggle} onInfo={onInfo} />;
           })}
         </div>
       ))}

@@ -7,6 +7,8 @@ import { NolPage } from "./NolPage";
 import { OrlPage } from "./OrlPage";
 import { ZonPage } from "./ZonPage";
 import { UtwPage } from "./UtwPage";
+import { TmlPage } from "./TmlPage";
+import { VacPage } from "./VacPage";
 
 export const PAGES: Record<string, ComponentType> = {
   edc: App,
@@ -15,4 +17,6 @@ export const PAGES: Record<string, ComponentType> = {
   orl: OrlPage,
   zon: ZonPage,
   utw: UtwPage,
+  tml: TmlPage,
+  vac: VacPage,
 };

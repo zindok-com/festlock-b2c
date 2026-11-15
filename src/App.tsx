@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SHOW_FACES } from "./config";
 import { LangMenu, Rich, useI18n } from "./i18n";
+import { OverlapNote } from "./fest/OverlapNote";
 import { BYID, DAYS, conflicts, dayOf, pickOf } from "./data";
 import { StageHeads, Timetable } from "./components/Timetable";
 import { ArtistSheet } from "./components/ArtistSheet";
@@ -188,7 +189,7 @@ export default function App() {
           <StageHeads day={d} />
         </div>
 
-        <Timetable day={d} sel={sel} warn={cf.ids} showGenre={showGenre} onToggle={toggle} onInfo={openInfo} />
+        <Timetable day={d} sel={sel} showGenre={showGenre} onToggle={toggle} onInfo={openInfo} />
 
         <footer className="foot">
           <a className="evt-follow foot-follow" href="https://www.instagram.com/festlock/" target="_blank" rel="noopener noreferrer">
@@ -209,7 +210,7 @@ export default function App() {
             <div>
               <Rich text={t("sum.sel", { n: counts[day] })} />
             </div>
-            {cf.pairs > 0 && <div>{t("sum.overlap", { n: cf.pairs })}</div>}
+            {cf.pairs > 0 && <OverlapNote clashes={cf.clashes} />}
           </div>
           <button className="btn ghost" type="button" onClick={reset} disabled={total === 0 && !armed}>
             {armed ? t("reset.arm") : t("reset")}

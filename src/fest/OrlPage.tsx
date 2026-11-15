@@ -1,6 +1,8 @@
 // EDC Orlando 2026: EDC KOREA처럼 어두운 화면 + 무대 5개(Casa Bacardí 포함)를 나란히 놓은 타임테이블, 장르 표시.
 // 시각은 모두 현지(미국 동부, UTC−5) 기준. 공식 로고·포스터 이미지는 쓰지 않는다(글자만)
 import { useCallback, useMemo, useState, type CSSProperties } from "react";
+import { OverlapNote } from "./OverlapNote";
+import { calcClashes } from "./overlap";
 import { LangMenu, Rich, useI18n } from "../i18n";
 import { ORL_DAYS, ORL_HOSTS, ORL_ITEMS, ORL_STAGES } from "./orl";
 import { firstStart, genreText, hourList, isLive, localToday, names, useFestTheme, useFont, useNowKst, useSelection } from "./common";
@@ -37,7 +39,7 @@ const TUT: TutConfig = { storageKey: "fl:orl:tut", block: ".orl .col .blk:nth-ch
 const hours: number[] = [];
 for (let m = START; m <= END; m += 60) hours.push(m);
 
-function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; warn: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
+function Block({ it, on, live, onToggle, onInfo }: { it: FItem; on: boolean; live: boolean; onToggle: (id: string) => void; onInfo: (id: string) => void }) {
   const { t } = useI18n();
   const st = STAGE[it.stage];
   const lp = useLongPress(() => onInfo(it.id));
@@ -83,11 +85,6 @@ function Block({ it, on, live, warn, onToggle, onInfo }: { it: FItem; on: boolea
         )}
       </button>
       {live && <span className="fx-live" role="img" aria-label={t("f.live")} />}
-      {warn && (
-        <span className="warn" role="img" aria-label={t("overlap")}>
-          ⚠
-        </span>
-      )}
     </div>
   );
 }
@@ -125,16 +122,7 @@ export function OrlPage() {
   const dayObj = ORL_DAYS.find((d) => d.id === day)!;
   const overlap = useMemo(() => {
     const l = ORL_ITEMS.filter((i) => i.day === day && sel.has(i.id));
-    const ids = new Set<string>();
-    let pairs = 0;
-    for (let i = 0; i < l.length; i++)
-      for (let j = i + 1; j < l.length; j++)
-        if (l[i].s < l[j].e && l[j].s < l[i].e) {
-          pairs++;
-          ids.add(l[i].id);
-          ids.add(l[j].id);
-        }
-    return { ids, pairs };
+    return calcClashes(l);
   }, [sel, day]);
 
   const { armed, reset } = useArmedReset(() => setSel(new Set()));
@@ -265,7 +253,7 @@ export function OrlPage() {
           {ORL_STAGES.map((st) => (
             <div key={st.key} className="col" style={{ height: (END - START) * PPM }}>
               {ORL_ITEMS.filter((i) => i.day === day && i.stage === st.key).map((it) => (
-                <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, dayObj, now)} warn={overlap.ids.has(it.id)} onToggle={toggle} onInfo={setInfo} />
+                <Block key={it.id} it={it} on={sel.has(it.id)} live={isLive(it, dayObj, now)} onToggle={toggle} onInfo={setInfo} />
               ))}
             </div>
           ))}
@@ -280,7 +268,7 @@ export function OrlPage() {
             <div>
               <Rich text={t("sum.sel", { n: counts[day] })} />
             </div>
-            {overlap.pairs > 0 && <div>{t("sum.overlap", { n: overlap.pairs })}</div>}
+            {overlap.pairs > 0 && <OverlapNote clashes={overlap.clashes} />}
           </div>
           <button className="btn ghost" type="button" onClick={reset} disabled={total === 0 && !armed}>
             {armed ? t("reset.arm") : t("reset")}
