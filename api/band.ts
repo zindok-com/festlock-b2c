@@ -158,7 +158,7 @@ function igHandle(x: unknown): string | null {
   if (/^(p|reel|reels|explore|accounts|stories|tv|direct|about|developers|legal)$/i.test(s)) return null;
   return s.toLowerCase();
 }
-const igUrl = (handle: string) => `https://www.instagram.com/${handle}/`;
+const igUrl = (handle: string) => (handle ? `https://www.instagram.com/${handle}/` : null); // 인스타가 없는 기록(운영자가 넣은 예시 등)은 버튼을 안 보이게
 
 function webpSize(b: Buffer): { w: number; h: number } | null {
   if (b.length < 30 || b.toString("ascii", 0, 4) !== "RIFF" || b.toString("ascii", 8, 12) !== "WEBP") return null;
@@ -413,9 +413,11 @@ export async function POST(request: Request): Promise<Response> {
   // ---- 프로필 만들기 / 고치기
   if (a === "profile") {
     const name = cleanText(b.name, NAME_MAX);
-    const handle = igHandle(b.ig);
+    // 인스타는 비워 둘 수 있다 (화면에서는 받지만, 운영자가 넣는 예시 기록 등). 적었는데 형식이 틀리면 거절
+    const noIg = b.ig === undefined || b.ig === null || (typeof b.ig === "string" && !b.ig.trim());
+    const handle = noIg ? "" : igHandle(b.ig);
     if (!name) return json({ error: "bad-name" }, 400);
-    if (!handle) return json({ error: "bad-ig" }, 400);
+    if (handle === null) return json({ error: "bad-ig" }, 400);
     if (b.id !== undefined) {
       const au = await authorize(r, request, b.id, b.cred);
       if (!au.ok) return au.res;
