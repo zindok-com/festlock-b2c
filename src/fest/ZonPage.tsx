@@ -8,7 +8,7 @@ import { OverlapNote } from "./OverlapNote";
 import { calcClashes } from "./overlap";
 import { LangMenu, Rich, useI18n } from "../i18n";
 import { ZON_DAYS, ZON_GENRE, ZON_ITEMS, ZON_STAGES } from "./zon";
-import { firstStart, hourList, isLive, names, useFestTheme, useFont, useNowKst, useSelection } from "./common";
+import { firstStart, hourList, isLive, markAr, names, useFestTheme, useFont, useNowKst, useSelection } from "./common";
 import { festFace } from "./faces";
 import { cutSrc } from "./cutouts";
 import { THEME_FONTS, useCardTheme, type CardTheme } from "./cardTheme";
@@ -107,7 +107,7 @@ function Block({ it, on, live, theme, reverse, onToggle, onInfo }: { it: FItem; 
         {photo ? (
           <>
             {cut ? (
-              <img className="cut" src={cut} alt="" loading="lazy" decoding="async" draggable={false} onError={() => (b2b ? setB2bFailed(true) : setCutFailed(true))} />
+              <img className="cut" ref={(el) => markAr(el, it.id, FACE)} onLoad={(e) => markAr(e.currentTarget, it.id, FACE)} src={cut} alt="" loading="lazy" decoding="async" draggable={false} onError={() => (b2b ? setB2bFailed(true) : setCutFailed(true))} />
             ) : b2b && b2bFaces ? (
               <span className="phw phw2">
                 <img className="ph-img" src={b2b.a} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setB2bFailed(true)} />

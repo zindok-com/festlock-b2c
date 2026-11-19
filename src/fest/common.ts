@@ -1,5 +1,6 @@
 // 새 페스티벌 페이지 공통: 선택 저장, 지금 시각(KST), 이름 표시, 듣기 링크
 import { useCallback, useEffect, useState } from "react";
+import { CUT_FOCUS } from "./cutFocus";
 import type { Lang } from "../i18n";
 import type { FDay, FItem } from "./types";
 
@@ -127,4 +128,58 @@ export function useFont(href: string) {
     l.href = href;
     document.head.appendChild(l);
   }, [href]);
+}
+
+/** 라인업의 2인조 — 사진을 위로 키우며 옆을 잘라 내면 한 명이 사라지므로 전체가 보이게 둔다 */
+const DUO_ACTS = new Set(["rave-republic", "goldfish", "vini-vici", "bassjackers", "cosmic-gate", "aly-and-fila", "pegassi", "da-tweekaz", "xy", "tripical-note", "luna-and-lenthe", "lucas-and-steve", "matisse-and-sadko", "yellow-claw", "camelphat", "solardo", "funk-tribu", "eli-and-fur", "dimitri-vegas-and-like-mike"]);
+
+/**
+ * 듀오톤 카드의 누끼 크기를 정한다. 열이 좁아서(약 80px) 그대로 두면 사진이 작으므로, 세로로 큰 사진은 높이를 키우고 옆을 최대 35%까지만 잘라 낸다
+ * (자를 때는 머리 위치 cutFocus 를 기준으로 해서 얼굴이 잘리지 않게). 가로로 넓거나 2인조인 사진은 전체가 보이게 그대로 둔다. 이름은 카드 아래쪽에 있으므로 사진은 위쪽 얼굴 기준.
+ */
+export function markAr(el: HTMLImageElement | null, id: string, fest: string) {
+  const box = el?.parentElement;
+  if (!el || !box || !el.naturalWidth) return;
+  const ar = el.naturalWidth / el.naturalHeight;
+  el.style.bottom = "";
+  if (DUO_ACTS.has(id)) {
+    el.dataset.ar = "wide";
+    el.style.height = "";
+    el.style.objectPosition = "";
+    return;
+  }
+  const bw = box.clientWidth - 4;
+  const avail = box.clientHeight - 26; // 위쪽 시간 표시 자리
+  if (bw <= 0 || avail <= 20) return;
+  const fx = (CUT_FOCUS[fest]?.[id] ?? 50) / 100;
+  // 가로로 넓은데 얼굴이 가운데 있는 사진(얼굴 클로즈업)은 자르면 얼굴이 잘리므로 그대로 두고, 이름 글자 바로 위로 올려서 가리지 않게 한다
+  if (ar > 1.12 && Math.abs(fx - 0.5) <= 0.2) {
+    const capH = box.querySelector<HTMLElement>(".cap")?.offsetHeight ?? 30;
+    const room = avail - capH;
+    if (room < 24) {
+      el.dataset.ar = "wide";
+      el.style.height = "";
+      el.style.bottom = "";
+      el.style.objectPosition = "";
+      return;
+    }
+    el.dataset.ar = "lift";
+    el.style.bottom = capH + 2 + "px";
+    el.style.height = Math.min(room, bw / ar) + "px";
+    el.style.objectPosition = "";
+    return;
+  }
+  // 가로로 넓은 사진(한 명이 비스듬히 찍힌 경우 등)은 열 너비에 막혀 아주 작아지므로 더 많이 자르되 머리 위치 기준으로 자른다
+  const keep = ar > 1.12 ? 0.5 : Math.abs(fx - 0.5) > 0.2 ? 0.85 : 0.65;
+  const capH = box.querySelector<HTMLElement>(".cap")?.offsetHeight ?? 30;
+  let h = Math.max(20, Math.min(avail, 320, bw / (keep * ar)));
+  // 이름이 여러 줄이라 사진 아래 40%보다 높으면, 모자란 만큼 사진을 위로 올려 얼굴을 가리지 않게 한다
+  const lift = Math.max(0, Math.round(capH - h * 0.4));
+  h = Math.max(20, Math.min(h, avail - lift));
+  const k = Math.min(1, bw / (h * ar)); // 가로로 보이는 비율
+  const pos = k >= 1 ? 0.5 : Math.min(1, Math.max(0, (fx - k / 2) / (1 - k)));
+  el.dataset.ar = "tall";
+  el.style.bottom = lift ? lift + "px" : "";
+  el.style.height = h + "px";
+  el.style.objectPosition = pos * 100 + "% 4%";
 }
