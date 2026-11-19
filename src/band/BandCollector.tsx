@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { BandStage } from "./BandStage";
 import { useI18n } from "../i18n";
 import { useOnline } from "../offline";
-import { BandDialog, BandTop, BrowseButton, FullLogo, ShareIcon, useBandLabel } from "./common";
+import { BandDialog, BandTop, BrowseButton, HomeBack, ShareIcon, useBandLabel } from "./common";
 import type { Engine } from "./BandStage";
 import { ShareSheet } from "./MineParts";
 import { YearChips, useYearFilter, type YearPick } from "./years";
@@ -167,8 +167,8 @@ export default function BandCollector({ id }: { id: string }) {
         items={c ? items : []}
         emptyText={st.kind === "loading" ? t("band.loading") : t("band.c.empty")}
         toast={toast}
-        topCenter={years.length ? <YearChips years={years} value={yr} onChange={setYear} /> : null}
-        topLeft={<FullLogo />}
+        side={years.length ? <YearChips years={years} value={yr} onChange={setYear} /> : null}
+        topLeft={<HomeBack />}
         topRight={
           // 오른쪽 위: 구경하기, 그 아래 신고
           <div className="band-full-stack">
@@ -185,10 +185,8 @@ export default function BandCollector({ id }: { id: string }) {
         caption={
           c && (
             <>
-              <span className="band-c-cap">
-                <b className="band-c-name">{c.name}</b>
-                <span className="band-c-n">{t("band.count", { n: c.count })}</span>
-              </span>
+              <b className="band-t-name">{c.name}</b>
+              <span className="band-t-sub">{t("band.count", { n: yr === "all" ? c.count : items.length })}</span>
               {st.kind === "ok" && st.demo && <span className="band-demo">{t("band.demo")}</span>}
             </>
           )

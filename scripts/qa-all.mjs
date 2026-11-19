@@ -536,19 +536,19 @@ async function bandChecks(browser) {
     await p.waitForSelector(".band-3d.full .band-stage canvas", { timeout: 20000 });
     return true;
   });
-  await check("band", "전체 화면: 화면을 꽉 채우고(스크롤 없음) 왼쪽 위 로고·오른쪽 위 구경하기·진열 바꾸기·아래 공유/추가·DEMO", async () => {
+  await check("band", "전체 화면: 화면을 꽉 채우고(스크롤 없음) 왼쪽 위 ‹ 홈·가운데 제목·오른쪽 위 구경하기·진열 바꾸기·아래 공유/추가·DEMO", async () => {
     const r = await p.evaluate(() => {
       const st = document.querySelector(".band-3d.full").getBoundingClientRect();
       return {
         fill: Math.round(st.width) === innerWidth && Math.round(st.height) === innerHeight,
         scroll: document.documentElement.scrollHeight <= innerHeight + 1,
         browse: document.querySelector(".band-full-tr .band-browse-btn")?.getAttribute("href"),
-        logo: !!document.querySelector(".band-full-tl .band-full-logo"),
+        logo: !!document.querySelector(".band-full-tl .band-back-btn"),
         sw: document.querySelector(".band-switch:not(.band-years) .band-switch-name")?.textContent,
         share: !!document.querySelector(".band-full-bottom .band-share"),
         add: !!document.querySelector(".band-full-bottom .band-add-btn"),
         featured: document.querySelector(".band-featured")?.getAttribute("href"),
-        demo: !!document.querySelector(".band-full-caption .band-demo"),
+        demo: !!document.querySelector(".band-full-title .band-demo"),
       };
     });
     return r.fill && r.scroll && r.logo && r.browse === "/collection/browse" && /걸기|손목|모빌|액자/.test(r.sw || "") && /1\/4|2\/4|3\/4|4\/4/.test(r.sw || "") && r.share && r.add && /^\/c\/c[a-z0-9]{9}$/.test(r.featured || "") && r.demo ? true : JSON.stringify(r);
@@ -600,7 +600,7 @@ async function bandChecks(browser) {
     await p.waitForSelector(".band-code-v", { timeout: 30000 });
     const code = await p.locator(".band-code-v").textContent();
     await p.locator(".band-code .band-close").last().dispatchEvent("click");
-    await p.waitForFunction(() => /내 컬렉션/.test(document.querySelector(".band-full-caption")?.textContent || "") && /팔찌 1개/.test(document.querySelector(".band-full-caption")?.textContent || ""), null, { timeout: 60000 });
+    await p.waitForFunction(() => /내 컬렉션/.test(document.querySelector(".band-full-title")?.textContent || "") && /팔찌 1개/.test(document.querySelector(".band-full-title")?.textContent || ""), null, { timeout: 60000 });
     return /^\S+-\S+-\S+-\S+$/.test(code || "") || "관리 코드 " + code;
   });
   await check("band", "공유: 9:16(1080×1920) 스토리 이미지가 만들어지고 이미지 저장·링크 복사(/c/내id)가 된다", async () => {

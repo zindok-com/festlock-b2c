@@ -5,6 +5,7 @@ import type { Lang } from "../i18n";
 export const BAND_T: Record<Lang, Record<string, string>> = {
   ko: {
     "band.title": "나만의 페스티벌 팔찌 컬렉션",
+    "band.toHome": "홈으로",
     "band.y.label": "연도별로 보기",
     "band.y.n": "{y}년",
     "band.brag": "🎉 {y}년, 내가 간 페스티벌 자랑하기",
@@ -120,6 +121,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   en: {
     "band.title": "My festival wristband collection",
+    "band.toHome": "Home",
     "band.y.label": "View by year",
     "band.y.n": "{y}",
     "band.brag": "🎉 Show off my {y} festivals",
@@ -235,6 +237,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   ja: {
     "band.title": "フェスのリストバンドコレクション",
+    "band.toHome": "ホームへ",
     "band.y.label": "年ごとに見る",
     "band.y.n": "{y}年",
     "band.brag": "🎉 {y}年に行ったフェスを自慢しよう",
@@ -350,6 +353,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   zh: {
     "band.title": "我的音乐节手环收藏",
+    "band.toHome": "返回首页",
     "band.y.label": "按年份查看",
     "band.y.n": "{y}年",
     "band.brag": "🎉 晒出我 {y} 年去过的音乐节",
@@ -465,6 +469,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   zht: {
     "band.title": "我的音樂節手環收藏",
+    "band.toHome": "返回首頁",
     "band.y.label": "依年份查看",
     "band.y.n": "{y}年",
     "band.brag": "🎉 曬出我 {y} 年去過的音樂節",
@@ -580,6 +585,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   es: {
     "band.title": "Mi colección de pulseras de festival",
+    "band.toHome": "Inicio",
     "band.y.label": "Ver por año",
     "band.y.n": "{y}",
     "band.brag": "🎉 Presume los festivales de mi {y}",
@@ -695,6 +701,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   vi: {
     "band.title": "Bộ sưu tập vòng tay lễ hội của tôi",
+    "band.toHome": "Trang chủ",
     "band.y.label": "Xem theo năm",
     "band.y.n": "Năm {y}",
     "band.brag": "🎉 Khoe các lễ hội tôi đã đi năm {y}",
@@ -810,6 +817,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   th: {
     "band.title": "คอลเลกชันริสต์แบนด์เฟสติวัลของฉัน",
+    "band.toHome": "หน้าแรก",
     "band.y.label": "ดูตามปี",
     "band.y.n": "ปี {y}",
     "band.brag": "🎉 อวดเทศกาลที่ฉันไปในปี {y}",
@@ -925,6 +933,7 @@ export const BAND_T: Record<Lang, Record<string, string>> = {
   },
   id: {
     "band.title": "Koleksi gelang festivalku",
+    "band.toHome": "Beranda",
     "band.y.label": "Lihat per tahun",
     "band.y.n": "{y}",
     "band.brag": "🎉 Pamerkan festival yang kudatangi di {y}",

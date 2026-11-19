@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useI18n } from "../i18n";
 import { useOnline } from "../offline";
 import { FESTIVALS } from "../festivals";
-import { BrowseButton, FullLogo, ShareIcon, festName } from "./common";
+import { BrowseButton, HomeBack, ShareIcon, festName } from "./common";
 import { loadCollector, loadCollectors, type BandDesign, type Collector } from "./api";
 import { BandStage, type Engine } from "./BandStage";
 import { SCAN_T } from "./scanStrings";
@@ -200,23 +200,22 @@ export default function BandHub() {
         onCount={setCount}
         emptyText={emptyText}
         toast={toast}
-        topLeft={<FullLogo />}
-        topCenter={years.length ? <YearChips years={years} value={yr} onChange={setYear} /> : null}
+        topLeft={<HomeBack />}
+        side={years.length ? <YearChips years={years} value={yr} onChange={setYear} /> : null}
         topRight={<BrowseButton />}
         caption={
           view.kind === "mine" ? (
             <>
-              <span className="band-c-cap band-mine-cap">
-                <b className="band-c-name">{t("band.mine")}</b>
-                <span className="band-c-n">{t("band.count", { n: shown })}</span>
-              </span>
+              <b className="band-t-name">{t("band.mine")}</b>
+              <span className="band-t-sub">{t("band.count", { n: shown })}</span>
               {view.demo && <span className="band-demo">{t("band.demo")}</span>}
             </>
           ) : view.kind === "featured" ? (
             <>
-              <a className="band-featured" href={"/c/" + view.c.id}>
+              <a className="band-featured band-t-name" href={"/c/" + view.c.id}>
                 {t("band.open", { name: view.c.name })} <span aria-hidden="true">›</span>
               </a>
+              <span className="band-t-sub">{t("band.count", { n: items.length })}</span>
               {view.demo && <span className="band-demo">{t("band.demo")}</span>}
             </>
           ) : view.kind === "error" ? (

@@ -99,7 +99,19 @@ export function BrowseButton() {
   );
 }
 
-/** 오른쪽 위: FestLock 로고 → 홈 */
+/** 왼쪽 위: 동그란 ‹ 버튼 → 홈 */
+export function HomeBack() {
+  const { t } = useI18n();
+  return (
+    <a className="band-back-btn" href="/" aria-label={t("band.toHome")}>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </a>
+  );
+}
+
+/** FestLock 로고 → 홈 */
 export function FullLogo() {
   return (
     <a className="band-full-logo" href="/" aria-label="FestLock">

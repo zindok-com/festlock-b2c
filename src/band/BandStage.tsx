@@ -86,7 +86,7 @@ interface Props {
   full?: boolean;
   topLeft?: ReactNode;
   topRight?: ReactNode;
-  /** 진열 바꾸기 아래 줄 (예: "○○님의 컬렉션") */
+  /** 위 가운데 제목 (예: "내 컬렉션 / 팔찌 3개") */
   caption?: ReactNode;
   /** 아래 가운데 버튼들 (예: 공유 · 추가) */
   bottom?: ReactNode;
@@ -94,9 +94,9 @@ interface Props {
   emptyText?: string;
   /** 무대 위에 잠깐 띄울 안내 (공유 결과 등) */
   toast?: string | null;
+  /** 전체 화면 오른쪽 세로 목록 (연도) */
+  side?: ReactNode;
   /** 이 값이 바뀔 때만 3D 를 새로 만든다 (없으면 팔찌 목록이 바뀔 때) */
-  /** 전체 화면 위 가운데 (연도 칩). 있으면 진열 바꾸기는 이름 아래로 내려간다 */
-  topCenter?: ReactNode;
   stageKey?: string;
   /** 엔진이 준비되면 받는다 (스캔 열기·공유 그림) */
   onEngine?: (e: Engine | null) => void;
@@ -106,7 +106,7 @@ interface Props {
   onCount?: (n: number) => void;
 }
 
-export function BandStage({ items, full = false, topLeft, topRight, topCenter, caption, bottom, emptyText, toast, stageKey, onEngine, scan, onCount }: Props) {
+export function BandStage({ items, full = false, topLeft, topRight, side, caption, bottom, emptyText, toast, stageKey, onEngine, scan, onCount }: Props) {
   const { t } = useI18n();
   const label = useBandLabel();
   const box = useRef<HTMLDivElement>(null);
@@ -254,18 +254,14 @@ export function BandStage({ items, full = false, topLeft, topRight, topCenter, c
 
       {full ? (
         <>
+          {/* 위: ‹ 홈 · 가운데 제목 · 구경하기 / 그 아래 진열 바꾸기 / 오른쪽 연도 목록 */}
           <div className="band-full-top">
             <div className="band-full-tl">{topLeft}</div>
-            {/* 연도 칩이 있으면 위 가운데는 연도, 진열 바꾸기(‹ 걸기 1/4 ›)는 이름 아래로 */}
-            {topCenter ? <div className="band-full-tc">{topCenter}</div> : switcher}
+            <div className="band-full-title">{caption}</div>
             <div className="band-full-tr">{topRight}</div>
           </div>
-          {(caption || topCenter) && (
-            <div className="band-full-caption">
-              {caption}
-              {topCenter && switcher}
-            </div>
-          )}
+          <div className="band-full-switchrow">{switcher}</div>
+          {side && <div className="band-full-side">{side}</div>}
           {/* 진열 이름 탭 (화면 읽기·키보드용으로도 남겨 둔다) */}
           <div className="band-sr" role="tablist" aria-label={t("band.theme.label")}>
             {THEME_IDS.map((id) => (
@@ -312,10 +308,14 @@ export function BandStage({ items, full = false, topLeft, topRight, topCenter, c
             </svg>
           </button>
           <button type="button" aria-label={t("band.z.fit")} onClick={() => eng.current?.fit()}>
-            ⤢
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
           <button type="button" className="band-replay" aria-label={t("band.replay")} onClick={() => eng.current?.replay()}>
-            ↻
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
       )}

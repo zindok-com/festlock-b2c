@@ -485,7 +485,7 @@ function goldTag(spec){   // 금사 스타일 태그: 천과 같은 색 + 금테
 function makeRibbonTheme(mode = 'fest'){
   const isScan = mode === 'scan';
   const root = new THREE.Group(); world.add(root);
-  const COLS = 10, RW = .62, GX = .08, SEG = 40;
+  const COLS = camera.aspect < .9 ? 6 : 10, RW = .62, GX = .08, SEG = 40;
   const railMat = new THREE.MeshStandardMaterial({ color:0x2a1f57, roughness:.55, metalness:.2 });
   const lineMat = new THREE.MeshStandardMaterial({ color:0xff4fa0, emissive:0xff4fa0, emissiveIntensity:.6, roughness:.4 });
   /* 코르크 띠 (양쪽 공 대신) — 결이 보이게 점을 흩뿌린 그림을 띠 길이만큼 반복 */

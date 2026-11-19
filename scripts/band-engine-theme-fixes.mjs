@@ -85,6 +85,8 @@ export const THEME_FIXES = [
   ],
   ["  function kill(it){\n    root.remove(it.mesh); it.mesh.geometry.dispose();", "  function kill(it){\n    if (it.pin){ root.remove(it.pin); it.pin.userData.mat.dispose(); }\n    root.remove(it.mesh); it.mesh.geometry.dispose();"],
 
+  // 세로 화면(휴대폰)에서는 한 줄 6개 — 확대 버튼·연도 목록 사이 좁은 영역에서도 팔찌가 너무 작아지지 않게
+  ["  const COLS = 10, RW = .62, GX = .08, SEG = 40;", "  const COLS = camera.aspect < .9 ? 6 : 10, RW = .62, GX = .08, SEG = 40;"],
   // 걸기도 손목·모빌처럼 360도 돌려 볼 수 있게 (대표 요청)
   ["    root, rotLimit:.75,\n", "    root, rotLimit:.75, free360:true,\n"],
 

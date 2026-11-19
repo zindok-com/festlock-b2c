@@ -29,28 +29,18 @@ export function bragYear(now = new Date()): number | null {
   return null;
 }
 
-/** ‹ 2026년 2/3 › — 진열 바꾸기와 같은 모양. 전체 → 최근 해 → 지난 해 … 순서로 돌아간다 */
+/** 오른쪽 세로 목록: 전체 · 2026 · 2025 … (고른 칸만 밝은 바탕) */
 export function YearChips({ years, value, onChange }: { years: number[]; value: YearPick; onChange: (y: YearPick) => void }) {
   const { t } = useI18n();
   if (!years.length) return null;
   const opts: YearPick[] = ["all", ...years];
-  const i = Math.max(0, opts.indexOf(value));
-  const go = (d: number) => onChange(opts[(i + d + opts.length) % opts.length]);
-  const name = (y: YearPick) => (y === "all" ? t("band.fest.all") : t("band.y.n", { y }));
   return (
-    <div className="band-switch band-years" role="group" aria-label={t("band.y.label")}>
-      <button type="button" className="band-switch-btn band-year-prev" aria-label={t("band.y.label") + " ‹"} onClick={() => go(-1)}>
-        ‹
-      </button>
-      <span className="band-switch-name band-year-name" aria-live="polite" data-year={value}>
-        {name(opts[i])}
-        <small>
-          {i + 1}/{opts.length}
-        </small>
-      </span>
-      <button type="button" className="band-switch-btn band-year-next" aria-label={t("band.y.label") + " ›"} onClick={() => go(1)}>
-        ›
-      </button>
+    <div className="band-years" role="radiogroup" aria-label={t("band.y.label")}>
+      {opts.map((y) => (
+        <button key={y} type="button" role="radio" aria-checked={value === y} className="band-year" onClick={() => onChange(y)}>
+          {y === "all" ? t("band.fest.all") : String(y)}
+        </button>
+      ))}
     </div>
   );
 }
