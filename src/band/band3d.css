@@ -75,8 +75,9 @@ html.band-full-on,html.band-full-on body{overflow:hidden;overscroll-behavior:non
 .band-3d.full:has(.band-full-caption .band-switch) .band-stage{top:calc(env(safe-area-inset-top,0px) + 156px)}
 .band-3d.full:has(.band-full-caption .band-switch) .band-nav{top:calc(env(safe-area-inset-top,0px) + 160px)}
 /* 연말 자랑하기: 아래 버튼 위에 한 줄 전체로, 눈에 띄게 */
-.band-full-bottom:has(.band-brag){flex-wrap:wrap}
-.band-full-bottom .band-brag{flex:0 0 100%;max-width:420px;height:52px;margin:0 auto;padding:0 18px;border:0;color:#fff;font:800 15px "Pretendard","Noto Sans KR",sans-serif;background:linear-gradient(100deg,#FF4FA0,#7B4BFF 55%,#FF8A3D);background-size:200% 100%;box-shadow:0 8px 26px rgba(255,79,160,.45);animation:bandBrag 4s ease-in-out infinite;overflow:hidden;text-overflow:ellipsis}
+/* 자랑하기가 있으면 위아래 두 줄(자랑하기 → 독)로, 둘 다 가운데 — 넓은 화면에서 독이 오른쪽 끝으로 밀리지 않게 */
+.band-full-bottom:has(.band-brag){flex-direction:column;align-items:center;gap:12px}
+.band-full-bottom .band-brag{flex:none;width:min(100%,420px);max-width:none;height:52px;margin:0;padding:0 18px;border:0;color:#fff;font:800 15px "Pretendard","Noto Sans KR",sans-serif;background:linear-gradient(100deg,#FF4FA0,#7B4BFF 55%,#FF8A3D);background-size:200% 100%;box-shadow:0 8px 26px rgba(255,79,160,.45);animation:bandBrag 4s ease-in-out infinite;overflow:hidden;text-overflow:ellipsis}
 @keyframes bandBrag{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .band-3d.full:has(.band-brag) .band-stage{bottom:calc(env(safe-area-inset-bottom,0px) + 148px)}
 .band-3d.full:has(.band-brag) .band-zoom,.band-3d.full:has(.band-brag) .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 158px)}
@@ -96,6 +97,12 @@ html.band-full-on,html.band-full-on body{overflow:hidden;overscroll-behavior:non
 .band-3d.full .band-zoom,.band-3d.full .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 112px)}
 .band-3d.full:has(.band-brag) .band-stage{bottom:calc(env(safe-area-inset-bottom,0px) + 170px)}
 .band-3d.full:has(.band-brag) .band-zoom,.band-3d.full:has(.band-brag) .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 180px)}
+/* FestLock 웹은 휴대폰 화면 기준 — 넓은 화면(PC)에서도 가운데에 휴대폰 폭(480px)으로 보여 준다. 바깥은 더 어두운 바탕 */
+@media (min-width:600px){
+  html.band-full-on,html.band-full-on body{background:#05030f}
+  .band-3d.full{left:calc(50% - 240px);right:auto;width:480px;box-shadow:0 0 0 1px rgba(246,241,255,.08),0 30px 90px rgba(0,0,0,.65)}
+  .band-3d-fallback.full{max-width:480px;margin:0 auto}
+}
 /* 안내 창(곧 열려요·신고)이 전체 화면 위로 오게 */
 html.band-full-on .band-dialog{z-index:60}
 @media (max-width:400px){
