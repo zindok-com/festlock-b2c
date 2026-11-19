@@ -2,6 +2,18 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/collection",
+      "destination": "/"
+    },
+    {
+      "source": "/collection/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/c/:id",
+      "destination": "/"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
