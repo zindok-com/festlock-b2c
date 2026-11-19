@@ -1,0 +1,78 @@
+/* 팔찌 만들기(스캔) 화면 — 시안 sample-source.html 의 스타일을 그대로, 앱의 다른 스타일과 섞이지 않게 .band-scan 안으로만 */
+.band-scan{--ink:#F6F1FF;--mute:#B7AED6;--pink:#FF4FA0;--card:#332A58;--bg:#0B0620;color:var(--ink);font-family:"Pretendard","Noto Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.band-scan *{box-sizing:border-box}
+/* 사이트 공용 .sheet(아래에서 올라오는 창: flex·가운데 정렬)·.row 규칙과 이름이 같아서 여기서 되돌린다 — 안 그러면 내용이 화면보다 넓어져 왼쪽이 잘림 */
+.band-scan .sheet{position:fixed;inset:0;z-index:70;display:block;align-items:initial;justify-content:initial;padding:0;background:rgba(11,6,32,.97);overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.band-scan .sheet-in{width:100%}
+.band-scan .sheet[hidden]{display:none}
+.band-scan .sheet-in{max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 28px);display:flex;flex-direction:column;gap:10px}
+.band-scan .sheet-head{display:flex;align-items:center;justify-content:space-between}
+.band-scan .sheet-head h2{margin:0;font-size:20px;font-weight:800;color:var(--ink)}
+.band-scan .x{width:44px;height:44px;border-radius:50%;border:0;background:var(--card);color:var(--ink);font-size:22px;cursor:pointer;padding:0}
+.band-scan p.s{margin:0;font-size:13px;color:var(--mute);line-height:1.55;word-break:keep-all}
+.band-scan p.s b{color:var(--pink)}
+.band-scan .photo{position:relative;border-radius:16px;overflow:hidden;background:#150d33;border:1px solid rgba(246,241,255,.14);min-height:180px}
+.band-scan .photo canvas{display:block;width:100%;touch-action:none;cursor:crosshair}
+.band-scan .photo .empty{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--mute);font-size:14px;pointer-events:none}
+.band-scan .photo .empty[hidden]{display:none}
+.band-scan .row{display:flex;gap:8px;justify-content:flex-start;align-items:stretch;margin:0}
+.band-scan .btn{flex:1;height:48px;min-height:0;margin:0;border-radius:999px;font:700 15px "Pretendard","Noto Sans KR",sans-serif;border:1px solid rgba(246,241,255,.22);background:var(--card);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:none;padding:0 12px;text-decoration:none;white-space:nowrap}
+.band-scan .btn:active{transform:scale(.96)}
+.band-scan .btn.primary{background:var(--pink);border-color:var(--pink);color:#fff}
+.band-scan .btn:disabled{opacity:.35}
+.band-scan .presets{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.band-scan .presets::-webkit-scrollbar{display:none}
+.band-scan .presets[hidden]{display:none}
+.band-scan .presets button{flex-shrink:0;height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(246,241,255,.25);background:transparent;color:var(--ink);font:700 12px "Pretendard","Noto Sans KR",sans-serif;cursor:pointer}
+.band-scan .presets button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.band-scan .prev{display:block;width:100%;border-radius:10px;background:#150d33;touch-action:none;cursor:crosshair}
+.band-scan input[type=text],.band-scan input[type=number],.band-scan select{width:100%;height:48px;border-radius:12px;border:1px solid rgba(246,241,255,.22);background:#150d33;color:var(--ink);padding:0 14px;font:500 15px "Pretendard","Noto Sans KR",sans-serif}
+.band-scan input[type=text][hidden]{display:none}
+.band-scan input::placeholder{color:#8f86b5}
+.band-scan .seg{display:flex;background:#150d33;border:1px solid rgba(246,241,255,.18);border-radius:999px;padding:4px;gap:4px;margin:0;box-shadow:none}
+.band-scan .seg button{flex:1;height:40px;border:0;border-radius:999px;background:transparent;color:var(--mute);font:700 14px "Pretendard","Noto Sans KR",sans-serif;cursor:pointer}
+.band-scan .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.band-scan .design[hidden]{display:none}
+.band-scan .design{display:flex;flex-direction:column;gap:10px}
+.band-scan .sw{display:flex;align-items:center;gap:8px}
+.band-scan .sw i{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.25);display:block}
+.band-scan .sw button{margin-left:auto;height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(246,241,255,.25);background:transparent;color:var(--ink);font:700 12px "Pretendard","Noto Sans KR",sans-serif;cursor:pointer}
+.band-scan .soon{position:fixed;inset:0;z-index:80;background:rgba(11,6,32,.72);display:grid;place-items:center;padding:24px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.band-scan .soon[hidden]{display:none}
+.band-scan .soon-card{width:100%;max-width:340px;background:#1C1440;border:1px solid rgba(246,241,255,.18);border-radius:24px;padding:24px 20px 18px;text-align:center}
+.band-scan .soon-card .lk{width:56px;height:56px;border-radius:16px;background:#FF4FA0;display:grid;place-items:center;margin:0 auto 12px;font-size:28px}
+.band-scan .soon-card h3{margin:0;font-size:19px;font-weight:800;line-height:1.35;word-break:keep-all}
+.band-scan .soon-card p{font-size:14px;color:var(--mute);line-height:1.6;margin:8px 0 0;word-break:keep-all}
+.band-scan .soon-card a,.band-scan .soon-card button{display:flex;align-items:center;justify-content:center;width:100%;height:50px;border-radius:999px;font:700 15px "Pretendard","Noto Sans KR",sans-serif;margin-top:12px;text-decoration:none;cursor:pointer}
+.band-scan .soon-card a{background:var(--pink);color:#fff;margin-top:18px}
+.band-scan .soon-card button{background:transparent;color:var(--ink);border:1px solid rgba(246,241,255,.25)}
+.band-scan button:focus-visible,.band-scan select:focus-visible,.band-scan input:focus-visible,.band-scan label.btn:focus-within{outline:2px solid var(--ink);outline-offset:3px}
+/* 앱에서 더한 것: 티켓 정보 · 첫 디자인 · 확인란 */
+.band-scan .tk{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:#150d33;border:1px solid rgba(246,241,255,.12)}
+.band-scan .tk-h{color:var(--ink)!important;font-weight:800;font-size:15px!important}
+.band-scan .tk-l{margin-top:2px!important}
+.band-scan .tk-year{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute)}
+.band-scan .tk-year span{flex:none;min-width:40px}
+.band-scan .tk-chips button{height:40px;min-width:56px}
+.band-scan .tk-note{color:var(--ink)!important;font-weight:700}
+.band-scan .tk-note:empty{display:none}
+.band-scan .tk-exist{display:flex;flex-direction:column;gap:8px}
+.band-scan .tk-exist[hidden]{display:none}
+.band-scan .tk-exist img{display:block;width:100%;max-height:120px;object-fit:cover;border-radius:10px;background:#0B0620}
+.band-scan .tk-agree{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;font-size:13px;line-height:1.5;color:var(--mute);cursor:pointer;word-break:keep-all}
+.band-scan .tk-agree input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--pink)}
+/* 시안의 .btn{flex:1} 은 가로로 나란한 두 버튼용 — 세로로 쌓이는 곳에서는 높이를 0 으로 눌러 버튼이 20px 로 얇아졌다 → 풀어 준다 */
+.band-scan .sheet-in > .btn,.band-scan .tk-exist > .btn{flex:none}
+/* 리본으로 걸기: 가로는 줄이고 높이는 키워서 가운데 */
+.band-scan #scanDone{align-self:center;width:min(82%,320px);height:58px;margin:6px 0 4px;font-size:17px;font-weight:800;box-shadow:0 8px 22px rgba(255,79,160,.35)}
+.band-scan #tkUse{height:50px}
+
+/* 팔찌 만들기 화면 위 안내 메시지 (사진을 골라 주세요 · 빨간 곳을 채워 주세요 등) */
+.band-scan .scan-toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translate(-50%,8px);z-index:85;margin:0;max-width:calc(100% - 32px);padding:12px 18px;border-radius:999px;background:#F6F1FF;color:#0B0620;font:800 14px/1.4 "Pretendard","Noto Sans KR",sans-serif;text-align:center;word-break:keep-all;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.band-scan .scan-toast.show{opacity:1;transform:translate(-50%,0)}
+/* 못 채운 곳: 리본으로 걸기를 눌렀을 때 빨간 테두리로 깜빡여서 알려 준다 (채우면 바로 꺼짐) */
+.band-scan .need{border-color:#FF4D5E!important;box-shadow:0 0 0 2px #FF4D5E,0 0 0 6px rgba(255,77,94,.28)!important;animation:bandNeed .9s ease-in-out 3}
+.band-scan .tk-chips.need{border-radius:999px;padding:3px}
+.band-scan .tk-agree.need{border-radius:12px;padding:10px 8px;color:#FFD3D8}
+@keyframes bandNeed{0%,100%{box-shadow:0 0 0 2px #FF4D5E,0 0 0 6px rgba(255,77,94,.28)}50%{box-shadow:0 0 0 2px #FF4D5E,0 0 0 12px rgba(255,77,94,0)}}
+@media (prefers-reduced-motion:reduce){.band-scan .btn:active{transform:none}.band-scan .need{animation:none}}

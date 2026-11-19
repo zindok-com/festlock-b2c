@@ -461,3 +461,12 @@ html[data-offline] .fc-thumb{visibility:hidden}
 .app-soon-txt > span{font-size:12px;line-height:1.5;color:var(--tx2)}
 .app-soon-txt em{font-style:normal;font-size:12px;font-weight:800;color:var(--accent)}
 .app-soon-logo{width:56px;height:56px;border-radius:15px;margin:0 auto 6px;display:block}
+
+/* 나만의 컬렉션(팔찌 기록) — 홈 버튼. 컬렉션 화면 스타일은 src/band/band.css (지연 로딩) */
+.band-home-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:min(100%,340px);min-height:60px;margin:14px auto 2px;padding:12px 18px;border-radius:18px;background:linear-gradient(90deg,var(--accent),#a86bff);color:#fff;text-decoration:none;box-shadow:0 8px 24px rgba(255,79,160,.28);word-break:keep-all;transition:transform .12s}
+.band-home-btn b{font:900 17px/1.3 "Noto Sans KR","Rubik",sans-serif;letter-spacing:-.01em}
+.band-home-btn span{font-size:12.5px;font-weight:500;line-height:1.4;opacity:.95}
+.band-home-btn:active{transform:scale(.98)}
+.band-home-btn:focus-visible{outline:2px solid var(--tx);outline-offset:3px}
+.band-boot{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;color:var(--tx2);word-break:keep-all;padding-left:16px;padding-right:16px}
+@media (prefers-reduced-motion:reduce){.band-home-btn{transition:none}}

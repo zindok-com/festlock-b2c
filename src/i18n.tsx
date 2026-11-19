@@ -3,6 +3,7 @@ import { Fragment, createContext, useCallback, useContext, useEffect, useMemo, u
 import type { Item } from "./data";
 import { useBackClose } from "./backClose";
 import { FEST_T } from "./fest/strings";
+import { BAND_CORE_T } from "./band/coreStrings";
 import { useOnline } from "./offline";
 
 export type Lang = "ko" | "en" | "ja" | "zh" | "zht" | "es" | "vi" | "th" | "id";
@@ -996,6 +997,13 @@ const T: Record<Lang, Dict> = {
 
 // 새 페스티벌 페이지 문구 합치기
 for (const l of Object.keys(FEST_T) as Lang[]) Object.assign(T[l], FEST_T[l]);
+// 나만의 컬렉션: 홈 버튼·탭 제목만 여기서 합치고, 나머지는 컬렉션 화면을 열 때 addDict 로 더한다
+for (const l of Object.keys(BAND_CORE_T) as Lang[]) Object.assign(T[l], BAND_CORE_T[l]);
+
+/** 나중에 불러온 화면(지연 로딩)의 문구를 사전에 더한다. 화면 코드가 실행되기 전(모듈을 읽을 때) 부른다 */
+export function addDict(d: Partial<Record<Lang, Dict>>): void {
+  for (const l of Object.keys(d) as Lang[]) Object.assign(T[l], d[l]);
+}
 
 // 데이터(장르)에 들어 있는 한국어 조각 번역
 const GENRE_PARTS: [string, Record<Lang, string>][] = [

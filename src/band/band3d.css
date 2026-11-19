@@ -1,0 +1,109 @@
+/* 팔찌 3D 진열 (BandStage.tsx) — 시안 sample.html 과 같은 어두운 무대. 라이트/다크 모드와 상관없이 항상 어둡게 */
+.band-3d{--b-ink:#F6F1FF;--b-mute:#B7AED6;--b-pink:#FF4FA0;--b-bg:#0B0620;
+  position:relative;margin:16px 0 0;padding:12px 0 10px;border-radius:24px;overflow:hidden;color:var(--b-ink);
+  background:radial-gradient(55% 38% at 8% 6%,rgba(123,75,255,.55),transparent 70%),radial-gradient(48% 34% at 100% 48%,rgba(255,79,160,.38),transparent 70%),radial-gradient(60% 40% at 0% 96%,rgba(91,59,208,.5),transparent 70%),var(--b-bg)}
+.band-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 12px}
+.band-tabs::-webkit-scrollbar{display:none}
+.band-tabs .band-tab:first-child{margin-left:auto}
+.band-tabs .band-tab:last-child{margin-right:auto}
+.band-tab{flex-shrink:0;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(246,241,255,.22);background:transparent;color:var(--b-mute);font:700 14px "Pretendard","Noto Sans KR",sans-serif;cursor:pointer}
+.band-tab[aria-selected="true"]{background:var(--b-ink);color:var(--b-bg);border-color:var(--b-ink)}
+.band-stage{position:relative;height:min(68vh,560px);min-height:360px;margin-top:8px}
+.band-stage canvas{display:block;width:100%;height:100%;cursor:grab}
+.band-stage canvas.grabbing{cursor:grabbing}
+.band-stage-msg{position:absolute;inset:0;display:grid;place-items:center;margin:0;padding:24px;color:var(--b-mute);font-size:14px;text-align:center;word-break:keep-all}
+.band-nav{position:absolute;left:50%;top:12px;transform:translateX(-50%);display:flex;align-items:center;gap:2px;background:rgba(11,6,32,.6);border:1px solid rgba(246,241,255,.18);border-radius:999px;padding:0 4px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);z-index:3}
+.band-nav button{width:44px;height:40px;border:0;background:transparent;color:var(--b-ink);font-size:20px;cursor:pointer;border-radius:999px}
+.band-nav button:disabled{opacity:.3;cursor:default}
+.band-nav span{font:700 12px "Space Mono",monospace;min-width:92px;text-align:center;color:var(--b-ink)}
+.band-zoom{position:absolute;left:12px;bottom:12px;display:flex;gap:8px;z-index:3}
+.band-zoom button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.55);color:#fff;font-size:17px;cursor:pointer;display:grid;place-items:center;padding:0}
+.band-zoom button:active,.band-full-bottom a:active,.band-full-bottom button:active,.band-switch-btn:active{transform:scale(.93)}
+.band-pick{position:absolute;left:50%;bottom:76px;transform:translate(-50%,8px);margin:0;background:var(--b-ink);color:var(--b-bg);font-size:13px;font-weight:700;padding:10px 16px;border-radius:999px;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis;z-index:4}
+.band-pick.show{opacity:1;transform:translate(-50%,0)}
+.band-3d-hint{margin:6px 16px 0;font-size:12px;line-height:1.55;color:var(--b-mute);text-align:center;word-break:keep-all}
+.band-3d button:focus-visible,.band-3d a:focus-visible{outline:2px solid var(--b-ink);outline-offset:3px}
+.band-3d-fallback{margin-top:16px}
+
+/* ---------- 전체 화면 컬렉션 (/collection, /c/{id}) — 무대가 화면을 다 채우고 버튼이 위에 뜬다 ---------- */
+html.band-full-on,html.band-full-on body{overflow:hidden;overscroll-behavior:none}
+.band-3d.full{position:fixed;inset:0;margin:0;padding:0;border-radius:0;box-shadow:none;z-index:40;
+  background:radial-gradient(55% 38% at 8% 6%,rgba(123,75,255,.5),transparent 70%),radial-gradient(48% 34% at 100% 48%,rgba(255,79,160,.32),transparent 70%),radial-gradient(60% 40% at 0% 96%,rgba(91,59,208,.45),transparent 70%),var(--b-bg)}
+.band-3d.full::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* 배경은 화면 전체, 3D 가 맞춰 보이는 영역은 위 버튼 줄·이름 아래 ~ 아래 버튼 위 (진열이 버튼에 가리지 않게) */
+.band-3d.full .band-stage{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 104px);bottom:calc(env(safe-area-inset-bottom,0px) + 86px);height:auto;min-height:0;margin:0}
+.band-full-top{position:absolute;left:0;right:0;top:0;z-index:5;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 0;pointer-events:none}
+.band-full-top > *{pointer-events:auto}
+.band-full-tl{justify-self:start;min-width:0}
+.band-full-tr{justify-self:end;min-width:0}
+.band-full-btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 10px;border-radius:999px;border:1px solid rgba(246,241,255,.2);background:rgba(11,6,32,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--b-ink);font:700 14px "Pretendard","Noto Sans KR",sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.band-full-btn svg{flex:none}
+.band-full-btn.icon{padding:0;width:44px;justify-content:center}
+.band-full-logo{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 4px;color:var(--b-ink);text-decoration:none;font:800 15px "Rubik",sans-serif;letter-spacing:-.01em}
+.band-full-logo img{width:22px;height:22px;border-radius:6px}
+.band-full-logo b{color:var(--b-pink)}
+.band-switch{display:flex;align-items:center;justify-self:center;gap:2px}
+.band-switch-btn{width:40px;height:44px;border:0;background:transparent;color:var(--b-mute);font-size:24px;line-height:1;cursor:pointer;border-radius:999px}
+.band-switch-name{display:inline-flex;align-items:baseline;gap:6px;min-width:84px;justify-content:center;font:800 15px "Pretendard","Noto Sans KR",sans-serif;color:var(--b-ink);white-space:nowrap}
+.band-switch-name small{font:700 12px "Space Mono",monospace;color:var(--b-mute)}
+.band-full-caption{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 58px);z-index:5;max-width:calc(100% - 24px);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.band-full-caption a,.band-full-caption > span{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:999px;background:rgba(11,6,32,.45);color:var(--b-ink);font:700 13px "Pretendard","Noto Sans KR",sans-serif;text-decoration:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.band-full-caption .band-demo{min-height:0;padding:3px 8px;border-radius:6px;background:#ffe14d;color:#3a1606;font:800 11px "Rubik","Noto Sans KR",sans-serif}
+.band-3d.full .band-nav{top:calc(env(safe-area-inset-top,0px) + 110px)}
+.band-3d.full .band-zoom{left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);flex-direction:column}
+.band-3d.full .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
+.band-full-bottom{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:5;display:flex;justify-content:center;gap:12px;padding:0 16px;pointer-events:none}
+.band-full-bottom > *{pointer-events:auto}
+.band-full-bottom a,.band-full-bottom button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:128px;height:58px;padding:0 24px;border-radius:999px;font:800 16px "Pretendard","Noto Sans KR",sans-serif;cursor:pointer;text-decoration:none;white-space:nowrap}
+.band-full-bottom .ghost{background:rgba(11,6,32,.45);color:var(--b-ink);border:1px solid rgba(246,241,255,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.band-full-bottom .solid{background:#F4F1EA;color:#141018;border:0}
+.band-full-bottom.static{position:static;margin:16px 0}
+.band-3d-fallback.full{padding:12px 6px 24px}
+.band-3d-fallback.full .band-full-top{position:static;padding-top:6px}
+.band-3d-fallback.full .band-full-caption{position:static;transform:none;margin:8px auto 0}
+.band-full-caption .band-c-cap{gap:8px}
+.band-full-caption .band-c-name{margin:0;font:800 15px "Pretendard","Noto Sans KR",sans-serif;color:var(--b-ink);overflow:hidden;text-overflow:ellipsis}
+.band-full-caption .band-c-n{margin:0;font:700 12px "Space Mono","Noto Sans KR",monospace;color:var(--b-mute);white-space:nowrap}
+/* 연도별로 보기: 위 가운데 ‹ 2026년 2/3 › (진열 바꾸기와 같은 모양) */
+.band-full-top:has(.band-full-tc){grid-template-columns:auto minmax(0,1fr) auto}
+.band-full-tc{min-width:0;display:flex;justify-content:center}
+.band-years .band-switch-name{min-width:72px}
+.band-switch-btn:focus-visible,.band-brag:focus-visible{outline:2px solid #F6F1FF;outline-offset:3px}
+/* 이름 아래로 내려온 진열 바꾸기 */
+.band-full-caption .band-switch{background:rgba(11,6,32,.45);border-radius:999px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.band-3d.full:has(.band-full-caption .band-switch) .band-stage{top:calc(env(safe-area-inset-top,0px) + 156px)}
+.band-3d.full:has(.band-full-caption .band-switch) .band-nav{top:calc(env(safe-area-inset-top,0px) + 160px)}
+/* 연말 자랑하기: 아래 버튼 위에 한 줄 전체로, 눈에 띄게 */
+.band-full-bottom:has(.band-brag){flex-wrap:wrap}
+.band-full-bottom .band-brag{flex:0 0 100%;max-width:420px;height:52px;margin:0 auto;padding:0 18px;border:0;color:#fff;font:800 15px "Pretendard","Noto Sans KR",sans-serif;background:linear-gradient(100deg,#FF4FA0,#7B4BFF 55%,#FF8A3D);background-size:200% 100%;box-shadow:0 8px 26px rgba(255,79,160,.45);animation:bandBrag 4s ease-in-out infinite;overflow:hidden;text-overflow:ellipsis}
+@keyframes bandBrag{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.band-3d.full:has(.band-brag) .band-stage{bottom:calc(env(safe-area-inset-bottom,0px) + 148px)}
+.band-3d.full:has(.band-brag) .band-zoom,.band-3d.full:has(.band-brag) .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 158px)}
+@media (prefers-reduced-motion:reduce){.band-full-bottom .band-brag{animation:none}}
+/* 아래 독 (참고 앱의 두 알약 버튼과 다르게): 유리 느낌 막대 하나에 아이콘 위·글자 아래 칸 두 개, 주 동작은 분홍 원 아이콘 */
+.band-dock{display:flex;align-items:stretch;gap:4px;padding:6px;border-radius:24px;background:rgba(18,10,44,.74);border:1px solid rgba(246,241,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.band-full-bottom .band-dock-btn{position:relative;flex-direction:column;gap:4px;min-width:96px;height:64px;padding:0 16px;border:0;border-radius:18px;background:transparent;color:var(--b-ink);font:700 12.5px "Pretendard","Noto Sans KR",sans-serif}
+.band-dock-btn + .band-dock-btn::before{content:"";position:absolute;left:-3px;top:14px;bottom:14px;width:1px;background:rgba(246,241,255,.16)}
+.band-dock-ic{display:grid;place-items:center;width:32px;height:32px;font-size:20px;line-height:1}
+.band-dock-btn.main .band-dock-ic{border-radius:50%;background:#FF4FA0;color:#fff;font-size:21px;font-weight:800;box-shadow:0 4px 14px rgba(255,79,160,.5)}
+.band-dock-btn.main .band-dock-ic svg{width:18px;height:18px}
+.band-full-bottom .band-dock-btn:active{transform:scale(.95);background:rgba(246,241,255,.08)}
+.band-full-bottom .band-dock-btn:disabled{opacity:.4;cursor:default}
+.band-dock-btn:focus-visible{outline:2px solid #F6F1FF;outline-offset:2px}
+/* 독 높이(78px)에 맞춰 3D 영역·확대 버튼 위치 */
+.band-3d.full .band-stage{bottom:calc(env(safe-area-inset-bottom,0px) + 108px)}
+.band-3d.full .band-zoom,.band-3d.full .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 112px)}
+.band-3d.full:has(.band-brag) .band-stage{bottom:calc(env(safe-area-inset-bottom,0px) + 170px)}
+.band-3d.full:has(.band-brag) .band-zoom,.band-3d.full:has(.band-brag) .band-pick{bottom:calc(env(safe-area-inset-bottom,0px) + 180px)}
+/* 안내 창(곧 열려요·신고)이 전체 화면 위로 오게 */
+html.band-full-on .band-dialog{z-index:60}
+@media (max-width:400px){
+  .band-full-logo span{display:none}
+}
+@media (max-width:370px){
+  .band-full-btn{padding:0 10px 0 8px;font-size:13px}
+  .band-switch-name{min-width:70px;font-size:14px}
+  .band-full-bottom a,.band-full-bottom button{min-width:112px;padding:0 18px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.band-pick{transition:none}}

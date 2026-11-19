@@ -13,7 +13,7 @@ import esbuild from "esbuild";
 const args = process.argv.slice(2);
 const val = (f, d) => (args.includes(f) ? args[args.indexOf(f) + 1] : d);
 const BASE = val("--base", "http://localhost:5201");
-const ONLY = new Set((val("--only", "data,pages,sheet,export,tutorial,lang,logic,home,offline") || "").split(","));
+const ONLY = new Set((val("--only", "data,pages,sheet,export,tutorial,lang,logic,home,offline,band") || "").split(","));
 const SHOTS = val("--shots", "");
 if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
 
@@ -119,6 +119,8 @@ function watch(p) {
     if (m.type() !== "error") return;
     const t = m.text();
     if (/Failed to load resource/.test(t) && /(favicon|fonts\.g|googleapis|gstatic|youtube|ytimg|vercel-storage|_vercel)/.test(t + m.location()?.url)) return;
+    // 로컬 미리보기(vite preview)에는 서버 함수가 없어 /api/band 가 404 → 컬렉션 화면이 예시 데이터(DEMO)로 바꾸는 것이 정상
+    if (/Failed to load resource/.test(t) && /\/api\/band\?/.test(m.location()?.url || "")) return;
     if (/pagead|Permissions policy|compute-pressure|youtube|doubleclick/i.test(t + (m.location()?.url || ""))) return; // 유튜브 플레이어·구글 광고 추적 픽셀(외부)이 내는 메시지
     errs.push("console: " + t.slice(0, 140));
   });
@@ -484,6 +486,416 @@ async function offlineChecks(browser) {
   await ctx.close();
 }
 
+// ---------------------------------------------------------------- 9. 나만의 컬렉션 (/collection, /c/{id}) — 로컬에서는 서버가 없어 예시 데이터(DEMO)로 돈다
+async function bandChecks(browser) {
+  const LANGS9 = ["ko", "en", "ja", "zh", "zht", "es", "vi", "th", "id"];
+  // 문구 사전: 9개 언어가 한국어와 같은 키를 모두 갖고 있다
+  await check("band", "문구 사전: 9개 언어 모두 같은 키(빠진 문구 없음)", async () => {
+    const dir = path.resolve(".cache-qa");
+    fs.mkdirSync(dir, { recursive: true });
+    const bad = [];
+    for (const [file, name] of [["src/band/strings.ts", "BAND_T"], ["src/band/coreStrings.ts", "BAND_CORE_T"]]) {
+      const out = path.join(dir, name + ".mjs");
+      esbuild.buildSync({ entryPoints: [file], bundle: true, format: "esm", platform: "node", outfile: out, logLevel: "silent" });
+      const d = (await import(pathToFileURL(out).href + "?" + Date.now()))[name];
+      const ko = Object.keys(d.ko);
+      for (const l of LANGS9) {
+        if (!d[l]) bad.push(`${name}.${l} 없음`);
+        else for (const k of ko) if (!d[l][k] || !String(d[l][k]).trim()) bad.push(`${name}.${l}.${k}`);
+      }
+    }
+    fs.rmSync(dir, { recursive: true, force: true });
+    return bad.length ? bad.slice(0, 6).join(", ") : true;
+  });
+
+  const ctx = await ctxFor(browser);
+  const p = await ctx.newPage();
+  const errs = watch(p);
+  const reqs = [];
+  p.on("request", (r) => reqs.push(r.url()));
+  await p.addInitScript(() => { try { localStorage.setItem("edc26:lang", "ko"); } catch {} });
+
+  // 1. 홈 버튼
+  await p.goto(BASE + "/", { waitUntil: "load" });
+  await p.waitForSelector(".band-home-btn");
+  await check("band", "홈: 로고 바로 아래·제목 위에 '나만의 컬렉션을 만들자' 버튼 (44px 이상)", async () => {
+    const r = await p.evaluate(() => {
+      const b = document.querySelector(".band-home-btn"), logo = document.querySelector(".home-logo"), h1 = document.querySelector(".home-title");
+      const bb = b.getBoundingClientRect(), lb = logo.getBoundingClientRect(), hb = h1.getBoundingClientRect();
+      return { text: b.textContent, href: b.getAttribute("href"), h: bb.height, below: bb.top >= lb.bottom - 1, above: bb.bottom <= hb.top + 1, prev: b.previousElementSibling === logo };
+    });
+    return r.text.includes("나만의 컬렉션을 만들자") && r.href === "/collection" && r.h >= 44 && r.below && r.above && r.prev ? true : JSON.stringify(r);
+  });
+  await check("band", "홈: 컬렉션 화면 파일(BandHub·예시 데이터)을 미리 받지 않는다 (지연 로딩)", () => {
+    const hit = reqs.filter((u) => /\/assets\/(BandHub|BandBrowse|BandCollector|BandStage|engine|demo)-/.test(u));
+    return hit.length ? hit.join(",") : true;
+  });
+  await check("band", "홈: 버튼을 누르면 /collection 전체 화면 3D 컬렉션으로 이동", async () => {
+    await p.locator(".band-home-btn").click();
+    await p.waitForURL(/\/collection$/);
+    await p.waitForSelector(".band-3d.full .band-stage canvas", { timeout: 20000 });
+    return true;
+  });
+  await check("band", "전체 화면: 화면을 꽉 채우고(스크롤 없음) 왼쪽 위 로고·오른쪽 위 구경하기·진열 바꾸기·아래 공유/추가·DEMO", async () => {
+    const r = await p.evaluate(() => {
+      const st = document.querySelector(".band-3d.full").getBoundingClientRect();
+      return {
+        fill: Math.round(st.width) === innerWidth && Math.round(st.height) === innerHeight,
+        scroll: document.documentElement.scrollHeight <= innerHeight + 1,
+        browse: document.querySelector(".band-full-tr .band-browse-btn")?.getAttribute("href"),
+        logo: !!document.querySelector(".band-full-tl .band-full-logo"),
+        sw: document.querySelector(".band-switch:not(.band-years) .band-switch-name")?.textContent,
+        share: !!document.querySelector(".band-full-bottom .band-share"),
+        add: !!document.querySelector(".band-full-bottom .band-add-btn"),
+        featured: document.querySelector(".band-featured")?.getAttribute("href"),
+        demo: !!document.querySelector(".band-full-caption .band-demo"),
+      };
+    });
+    return r.fill && r.scroll && r.logo && r.browse === "/collection/browse" && /걸기|손목|모빌|액자/.test(r.sw || "") && /1\/4|2\/4|3\/4|4\/4/.test(r.sw || "") && r.share && r.add && /^\/c\/c[a-z0-9]{9}$/.test(r.featured || "") && r.demo ? true : JSON.stringify(r);
+  });
+  await check("band", "전체 화면: 가운데 위 ‹ › 로 진열 4종을 돌아가며 바꾼다", async () => {
+    const names = [];
+    for (let i = 0; i < 4; i++) {
+      names.push((await p.locator(".band-switch:not(.band-years) .band-switch-name").textContent()).replace(/\d\/4/, "").trim());
+      await p.locator(".band-switch:not(.band-years) .band-switch-btn").last().dispatchEvent("click");
+      await p.waitForTimeout(300);
+    }
+    return new Set(names).size === 4 || names.join(",");
+  });
+
+  // 3. ＋ 추가 → 팔찌 만들기(시안의 스캔 화면). AI 디자인만 앱 출시 안내
+  await check("band", "전체 화면: '＋ 추가' → 팔찌 스캔 화면(티켓 정보·사진·가리기·만들 방식·리본으로 걸기)이 화면 폭에 맞게 열린다", async () => {
+    await p.locator(".band-add-btn").dispatchEvent("click");
+    await p.waitForSelector("#scanSheet:not([hidden])", { timeout: 20000 });
+    const r = await p.evaluate(() => {
+      const sh = document.getElementById("scanSheet");
+      return { fest: !!document.getElementById("tkFest"), photo: !!document.getElementById("photoCv"), mk: document.querySelectorAll("[data-mk]").length, done: document.getElementById("scanDone")?.textContent, fit: sh.scrollWidth <= innerWidth + 1 };
+    });
+    return r.fest && r.photo && r.mk === 2 && r.done === "리본으로 걸기" && r.fit ? true : JSON.stringify(r);
+  });
+  await check("band", "스캔: AI 디자인 버튼은 AI 를 부르지 않고 '앱에서 만나요' 안내 + 인스타 팔로우(새 탭)만", async () => {
+    await p.locator('[data-mk="band"]').dispatchEvent("click");
+    await p.locator("#styleChips button").first().dispatchEvent("click");
+    await p.waitForSelector("#aiSoon:not([hidden])");
+    const r = await p.evaluate(() => { const a = document.querySelector("#aiSoon a"); return { h: document.getElementById("aiSoonTitle")?.textContent, href: a?.getAttribute("href"), target: a?.getAttribute("target"), rel: a?.getAttribute("rel") }; });
+    await p.locator("#aiSoonClose").dispatchEvent("click");
+    await p.locator('[data-mk="photo"]').dispatchEvent("click");
+    return /AI 디자인은.*앱에서 만나요/.test(r.h || "") && r.href === "https://www.instagram.com/festlock/" && r.target === "_blank" && /noopener/.test(r.rel) ? true : JSON.stringify(r);
+  });
+  await check("band", "스캔: 예시 사진 → 티켓 정보 → 리본으로 걸기 → 프로필(이름·인스타·동의) → 관리 코드 → 내 컬렉션 팔찌 1개 (로컬 시연 저장)", async () => {
+    await p.locator("#useSample").dispatchEvent("click");
+    await p.waitForSelector("#presets:not([hidden]) button", { timeout: 20000 });
+    await p.selectOption("#tkFest", "nol-festival");
+    await p.fill("#tkYear", "2024");
+    await p.locator("#tkYear").dispatchEvent("input");
+    await p.locator('#tkGrade button[data-v="vip"]').dispatchEvent("click");
+    await p.waitForFunction(() => /처음 등록/.test(document.getElementById("tkNote")?.textContent || ""), null, { timeout: 10000 });
+    await p.locator("#tkAgree").check();
+    await p.locator("#scanDone").dispatchEvent("click");
+    await p.waitForSelector(".band-profile", { timeout: 15000 });
+    await p.fill(".band-profile input >> nth=0", "QA");
+    await p.fill(".band-profile input >> nth=1", "@festlock");
+    await p.locator(".band-profile .band-check input").check();
+    await p.locator(".band-profile-go").dispatchEvent("click");
+    await p.waitForSelector(".band-code-v", { timeout: 30000 });
+    const code = await p.locator(".band-code-v").textContent();
+    await p.locator(".band-code .band-close").last().dispatchEvent("click");
+    await p.waitForFunction(() => /내 컬렉션/.test(document.querySelector(".band-full-caption")?.textContent || "") && /팔찌 1개/.test(document.querySelector(".band-full-caption")?.textContent || ""), null, { timeout: 60000 });
+    return /^\S+-\S+-\S+-\S+$/.test(code || "") || "관리 코드 " + code;
+  });
+  await check("band", "공유: 9:16(1080×1920) 스토리 이미지가 만들어지고 이미지 저장·링크 복사(/c/내id)가 된다", async () => {
+    await p.waitForFunction(() => document.querySelector(".band-stage canvas"), null, { timeout: 60000 });
+    await p.locator(".band-share").dispatchEvent("click");
+    await p.waitForSelector(".band-share-pv img", { timeout: 60000 });
+    const size = await p.locator(".band-share-pv img").evaluate((i) => i.naturalWidth + "x" + i.naturalHeight);
+    const link = await p.locator(".band-share-link").textContent();
+    const id = await p.evaluate(() => JSON.parse(localStorage.getItem("fl:band:me") || "{}").id);
+    const save = !(await p.locator(".band-s-save").isDisabled());
+    await p.locator(".band-share-sheet").locator("xpath=..").locator(".band-x").dispatchEvent("click");
+    return size === "1080x1920" && link.endsWith("/c/" + id) && save ? true : JSON.stringify({ size, link, id, save });
+  });
+  // 뒤 검사들은 "프로필 없는 기기"를 기준으로 하므로 이 기기에 저장한 내 컬렉션을 지운다
+  await p.evaluate(() => { localStorage.removeItem("fl:band:me"); localStorage.removeItem("fl:band:demo:v1"); });
+  await p.goto(BASE + "/collection", { waitUntil: "load" });
+  await p.waitForSelector(".band-featured", { timeout: 60000 });
+  await check("band", "전체 화면: 왼쪽 위 '구경하기' → /collection/browse 목록 페이지", async () => {
+    await p.locator(".band-browse-btn").dispatchEvent("click");
+    await p.waitForURL(/\/collection\/browse/);
+    await p.waitForSelector(".band-card", { timeout: 15000 });
+    return true;
+  });
+
+  // 2. 구경하기 목록 (/collection/browse)
+  await check("band", "목록: 제목·소개·DEMO 배지·목록 카드(8개 이상)·내 컬렉션으로 돌아가기", async () => {
+    const r = await p.evaluate(() => ({ title: document.querySelector(".band-title")?.textContent, demo: document.querySelector(".band-demo")?.textContent, n: document.querySelectorAll(".band-card").length, doc: document.title, back: document.querySelector(".band-back")?.getAttribute("href") }));
+    return r.title === "구경하기" && /DEMO/.test(r.demo || "") && r.n >= 8 && /팔찌 컬렉션/.test(r.doc) && r.back === "/collection" ? true : JSON.stringify(r);
+  });
+  await check("band", "허브: 카드에 이름·'팔찌 N개'·썸네일 1~3개", async () => {
+    const cards = await p.$$eval(".band-card", (cs) => cs.map((c) => ({ name: c.querySelector(".band-card-name")?.textContent, n: c.querySelector(".band-card-n")?.textContent, th: c.querySelectorAll(".band-thumbs img").length, href: c.getAttribute("href") })));
+    const bad = cards.filter((c) => !c.name || !/^팔찌 \d+개$/.test(c.n || "") || c.th < 1 || c.th > 3 || !/^\/c\/c[a-z0-9]{9}$/.test(c.href || ""));
+    return bad.length ? JSON.stringify(bad[0]) : true;
+  });
+  const counts = () => p.$$eval(".band-card-n", (xs) => xs.map((x) => Number(x.textContent.replace(/\D/g, ""))));
+  await check("band", "허브: '많이 다닌 순'을 누르면 팔찌 수가 많은 순서", async () => {
+    await p.locator(".band-sort button", { hasText: "많이 다닌 순" }).click();
+    await p.waitForTimeout(400);
+    const c = await counts();
+    const sorted = [...c].sort((a, b) => b - a);
+    const pressed = await p.locator(".band-sort button", { hasText: "많이 다닌 순" }).getAttribute("aria-pressed");
+    return pressed === "true" && c.length >= 8 && c.join() === sorted.join() && /sort=most/.test(p.url()) ? true : `${pressed} ${c.join()}`;
+  });
+  await check("band", "허브: 페스티벌 칩을 고르면 그 페스티벌 사람만, 정렬은 최근순으로 고정", async () => {
+    const all = await p.locator(".band-card").count();
+    await p.locator(".band-chip[data-fest='zonnafe-2026']").click();
+    await p.waitForTimeout(400);
+    const n = await p.locator(".band-card").count();
+    const most = p.locator(".band-sort button", { hasText: "많이 다닌 순" });
+    const r = { n, all, url: p.url(), disabled: await most.isDisabled(), recent: await p.locator(".band-sort button", { hasText: "최근 등록순" }).getAttribute("aria-pressed"), chip: await p.locator(".band-chip[data-fest='zonnafe-2026']").getAttribute("aria-pressed"), hint: await p.locator(".band-hint").count() };
+    return n >= 1 && n <= all && /fest=zonnafe-2026/.test(r.url) && r.disabled && r.recent === "true" && r.chip === "true" && r.hint === 1 ? true : JSON.stringify(r);
+  });
+  await check("band", "허브: 고른 페스티벌의 카드 → 그 사람 페이지에 그 페스티벌 팔찌가 있다", async () => {
+    const href = await p.locator(".band-card").first().getAttribute("href");
+    const p2 = await ctx.newPage();
+    await p2.goto(BASE + href, { waitUntil: "load" });
+    await p2.waitForSelector(".band-3d .band-stage");
+    const alts = await p2.$$eval("ul.band-sr li", (xs) => xs.map((x) => x.textContent)); // 3D 와 함께 있는 화면 읽기용 목록
+    await p2.close();
+    return alts.some((a) => /ZONNAFE/.test(a)) || alts.join(" | ");
+  });
+  await check("band", "허브: [전체]를 누르면 다시 전체 목록", async () => {
+    await p.locator(".band-chip", { hasText: "전체" }).click();
+    await p.waitForTimeout(400);
+    return (await p.locator(".band-card").count()) >= 8 && !/fest=/.test(p.url()) ? true : p.url();
+  });
+
+  // 4. 카드 → 컬렉터 페이지
+  await check("band", "허브: 카드를 누르면 /c/{id} 로 이동하고 같은 이름·팔찌 수", async () => {
+    const card = p.locator(".band-card").first();
+    const name = await card.locator(".band-card-name").textContent();
+    const n = await card.locator(".band-card-n").textContent();
+    await card.click();
+    await p.waitForURL(/\/c\/c[a-z0-9]{9}$/);
+    await p.waitForSelector(".band-c-name");
+    const r = { name: await p.locator(".band-c-name").textContent(), n: await p.locator(".band-c-n").textContent(), items: await p.locator("ul.band-sr li").count() };
+    return r.name === name && r.n === n && r.items === Number(n.replace(/\D/g, "")) ? true : JSON.stringify({ name, n, ...r });
+  });
+  await check("band", "컬렉터: 인스타그램 구경 가기 버튼 (instagram.com · 새 탭 · noopener noreferrer)", async () => {
+    const a = p.locator(".band-ig-btn");
+    const r = { text: await a.getAttribute("aria-label"), href: await a.getAttribute("href"), target: await a.getAttribute("target"), rel: await a.getAttribute("rel") };
+    return /인스타그램 구경 가기/.test(r.text) && /^https:\/\/www\.instagram\.com\/[A-Za-z0-9._]+\/$/.test(r.href) && r.target === "_blank" && /noopener/.test(r.rel) && /noreferrer/.test(r.rel) ? true : JSON.stringify(r);
+  });
+  await check("band", "컬렉터: 전체 화면 3D 진열(진열 4종: 걸기·손목·모빌·액자)·화면 읽기용 팔찌 목록·구경하기 버튼·DEMO 배지", async () => {
+    await p.waitForSelector(".band-stage canvas", { timeout: 20000 });
+    const r = await p.evaluate(() => ({
+      tabs: [...document.querySelectorAll(".band-tab")].map((b) => b.textContent),
+      sel: document.querySelectorAll('.band-tab[aria-selected="true"]').length,
+      alts: [...document.querySelectorAll("ul.band-sr li")].map((i) => i.textContent),
+      back: document.querySelector(".band-browse-btn")?.getAttribute("href"),
+      demo: !!document.querySelector(".band-demo"),
+      zoom: document.querySelectorAll(".band-zoom button").length,
+    }));
+    const badAlt = r.alts.filter((a) => !/ 20\d\d (GA|PGA|VIP) .+ 팔찌$/.test(a));
+    return r.tabs.join() === "🎀 걸기,⭕ 손목,🎠 모빌,🖼 액자" && r.sel === 1 && r.alts.length > 0 && !badAlt.length && r.back === "/collection/browse" && r.demo && r.zoom === 4 ? true : JSON.stringify({ ...r, alts: badAlt.slice(0, 2) });
+  });
+  await check("band", "컬렉터: 탭 4종 모두 3D 가 실제로 그려지고(무대가 비어 있지 않음) 오류가 없다", async () => {
+    const out = [];
+    for (const th of ["scan", "wrist", "mobile", "frame"]) {
+      await p.locator(`.band-tab[data-theme="${th}"]`).dispatchEvent("click");
+      await p.waitForTimeout(2500);
+      const box = await p.locator(".band-stage").boundingBox();
+      const shot = await p.screenshot({ clip: box });
+      const { channels } = await sharp(shot).stats();
+      const spread = channels.slice(0, 3).reduce((a, c) => a + c.stdev, 0);
+      const on = await p.locator(`.band-tab[data-theme="${th}"]`).getAttribute("aria-selected");
+      if (spread < 30 || on !== "true") out.push(`${th}:${Math.round(spread)}/${on}`);
+    }
+    return out.length ? out.join(" ") : true;
+  });
+  await check("band", "컬렉터: 끌면 돌아가고(화면이 바뀜) 고른 탭은 다시 열어도 기억된다", async () => {
+    await p.locator('.band-tab[data-theme="wrist"]').dispatchEvent("click");
+    await p.waitForTimeout(1500);
+    const box = await p.locator(".band-stage").boundingBox();
+    const a = await p.screenshot({ clip: box });
+    await p.mouse.move(box.x + box.width * 0.25, box.y + box.height * 0.5);
+    await p.mouse.down();
+    await p.mouse.move(box.x + box.width * 0.85, box.y + box.height * 0.5, { steps: 8 });
+    await p.mouse.up();
+    await p.waitForTimeout(700);
+    const b = await p.screenshot({ clip: box });
+    const saved = await p.evaluate(() => localStorage.getItem("fl:band:theme"));
+    return !a.equals(b) && saved === "wrist" ? true : `바뀜 ${!a.equals(b)} 저장 ${saved}`;
+  });
+  await check("band", "컬렉터: 신고 → 이유를 골라야 보내기가 켜지고, 보내면 접수 안내", async () => {
+    await p.locator(".band-flag-btn").click();
+    await p.waitForSelector(".band-report");
+    const off = await p.locator(".band-report-send").isDisabled();
+    await p.locator(".band-reasons label").nth(0).click();
+    const on = !(await p.locator(".band-report-send").isDisabled());
+    await p.locator(".band-report-send").click();
+    await p.waitForSelector(".band-report-msg");
+    const msg = await p.locator(".band-report-msg").textContent();
+    await p.locator(".band-dialog .band-close").click();
+    await p.waitForTimeout(300);
+    return off && on && /접수/.test(msg) && (await p.locator(".band-dialog").count()) === 0 ? true : JSON.stringify({ off, on, msg });
+  });
+  await check("band", "컬렉터: 왼쪽 위 '구경하기'를 누르면 /collection/browse 목록으로", async () => {
+    await p.locator(".band-browse-btn").dispatchEvent("click");
+    await p.waitForURL(/\/collection\/browse/);
+    await p.waitForSelector(".band-card");
+    return true;
+  });
+
+  // 5. 없는 기록
+  for (const bad of ["/c/czzzzzzzzz", "/c/NOT-AN-ID"]) {
+    await check("band", `컬렉터: ${bad} → '없는 기록이에요' + 구경하기로 돌아가기`, async () => {
+      await p.goto(BASE + bad, { waitUntil: "load" });
+      await p.waitForSelector(".band-none");
+      const r = { h: await p.locator(".band-none .band-title").textContent(), href: await p.locator(".band-none-back").getAttribute("href") };
+      return r.h === "없는 기록이에요" && r.href === "/collection/browse" ? true : JSON.stringify(r);
+    });
+  }
+
+  // 6. 서버가 진짜로 응답할 때(예시 데이터 아님): DEMO 배지 없음, 이상한 인스타 주소는 버튼을 숨김, 오류·다시 시도
+  await check("band", "서버 응답: 실제 목록 모양이면 DEMO 배지 없이 그린다", async () => {
+    const p3 = await ctx.newPage();
+    await p3.route("**/api/band?*", (route) => {
+      const u = new URL(route.request().url());
+      if (u.searchParams.get("a") === "collectors") return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ list: [{ id: "cabc123def", name: "테스트", count: 2, thumbs: ["https://example.com/a.webp", "javascript:alert(1)"] }], next: null }) });
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ id: "cabc123def", name: "테스트", ig: "javascript:alert(1)", count: 1, items: [{ key: "zonnafe-2026:2026:ga:day1", design: { key: "zonnafe-2026:2026:ga:day1", fest: "zonnafe-2026", year: 2026, grade: "ga", day: "day1", style: "photo", img: "https://example.com/a.webp", w: 600, h: 100 } }] }) });
+    });
+    await p3.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p3.waitForSelector(".band-card");
+    const hub = { demo: await p3.locator(".band-demo").count(), n: await p3.locator(".band-card").count(), th: await p3.locator(".band-thumbs img").count() };
+    await p3.goto(BASE + "/c/cabc123def", { waitUntil: "load" });
+    await p3.waitForSelector(".band-c-name");
+    const c = { demo: await p3.locator(".band-demo").count(), ig: await p3.locator(".band-ig-btn").count(), alt: await p3.locator("ul.band-sr li").first().textContent() };
+    await p3.close();
+    return hub.demo === 0 && hub.n === 1 && hub.th === 1 && c.demo === 0 && c.ig === 0 && c.alt === "ZONNAFE 2026 GA Day 1 팔찌" ? true : JSON.stringify({ hub, c });
+  });
+  await check("band", "WebGL 을 못 쓰는 기기: 3D 대신 사진 격자 + 안내 한 줄", async () => {
+    const p3 = await ctx.newPage();
+    await p3.addInitScript(() => {
+      const orig = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (type, ...a) {
+        return /webgl/i.test(String(type)) ? null : orig.call(this, type, ...a);
+      };
+    });
+    await p3.goto(BASE + "/c/cdemo00001", { waitUntil: "load" });
+    await p3.waitForSelector(".band-3d-fallback .band-item", { timeout: 20000 });
+    const r = { items: await p3.locator(".band-3d-fallback .band-item").count(), note: await p3.locator(".band-3d-fallback .band-note").textContent(), canvas: await p3.locator(".band-stage canvas").count() };
+    await p3.close();
+    return r.items === 12 && /3D/.test(r.note) && r.canvas === 0 ? true : JSON.stringify(r);
+  });
+  await check("band", "전체 화면: 등록이 열리기 전에는 목록 맨 앞(최근) 사람의 컬렉션을 보여 주고 그 페이지로 이어 준다", async () => {
+    const p3 = await ctx.newPage();
+    await p3.goto(BASE + "/collection", { waitUntil: "load" });
+    // 소프트웨어 WebGL(초당 몇 장)로 다른 3D 페이지와 CPU 를 나눠 쓰면 느려서 넉넉히 기다린다 (실제 기기에서는 금방 뜸)
+    await p.goto("about:blank"); // 앞 검사에서 열려 있던 페이지를 비워 CPU 를 덜 쓰게
+    await p3.waitForSelector(".band-featured", { timeout: 60000 });
+    const go = await p3.locator(".band-featured").getAttribute("href");
+    await p3.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p3.waitForSelector(".band-card");
+    const first = await p3.locator(".band-card").first().getAttribute("href");
+    await p3.close();
+    return go === first || JSON.stringify({ go, first });
+  });
+  await check("band", "서버 오류(400)면 '목록을 불러오지 못했어요' + 다시 시도", async () => {
+    const p3 = await ctx.newPage();
+    await p3.route("**/api/band?*", (route) => route.fulfill({ status: 400, contentType: "application/json", body: '{"error":"bad"}' }));
+    await p3.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p3.waitForSelector(".band-error");
+    const msg = await p3.locator(".band-error p").textContent();
+    await p3.unroute("**/api/band?*");
+    await p3.locator(".band-retry").click();
+    await p3.waitForSelector(".band-card");
+    await p3.close();
+    return msg === "목록을 불러오지 못했어요" ? true : msg;
+  });
+  await check("band", "서버 응답: 빈 목록이면 '아직 올린 사람이 없어요' 안내", async () => {
+    const p3 = await ctx.newPage();
+    await p3.route("**/api/band?*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: '{"list":[],"next":null}' }));
+    await p3.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p3.waitForSelector(".band-empty");
+    const msg = await p3.locator(".band-empty").textContent();
+    await p3.close();
+    return /첫 번째가 되어 보세요/.test(msg) || msg;
+  });
+  await check("band", "서버 응답: 다음 쪽(next)이 있으면 '더 보기'로 이어 붙인다", async () => {
+    const p3 = await ctx.newPage();
+    await p3.route("**/api/band?*", (route) => {
+      const cur = Number(new URL(route.request().url()).searchParams.get("cursor") || 0);
+      const list = Array.from({ length: cur ? 3 : 24 }, (_, i) => ({ id: "c" + String(cur + i).padStart(9, "0"), name: "사람" + (cur + i), count: 1, thumbs: ["https://example.com/a.webp"] }));
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ list, next: cur ? null : 24 }) });
+    });
+    await p3.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p3.waitForSelector(".band-more");
+    await p3.locator(".band-more").click();
+    await p3.waitForFunction(() => document.querySelectorAll(".band-card").length === 27);
+    const left = await p3.locator(".band-more").count();
+    await p3.close();
+    return left === 0 || "더 보기가 남아 있음";
+  });
+  // 오프라인: 인터넷이 끊긴 채로 다시 불러오면 안내, 연결되면 저절로 다시 불러온다
+  await check("band", "오프라인: '인터넷이 연결되면 볼 수 있어요' → 연결되면 목록", async () => {
+    await p.goto(BASE + "/collection/browse", { waitUntil: "load" });
+    await p.waitForSelector(".band-card");
+    await ctx.setOffline(true);
+    await p.locator(".band-chip[data-fest='vac-2026']").click();
+    await p.waitForSelector(".band-offline");
+    const msg = await p.locator(".band-offline").textContent();
+    await ctx.setOffline(false);
+    await p.waitForSelector(".band-card", { timeout: 10000 });
+    return msg === "인터넷이 연결되면 볼 수 있어요" || msg;
+  });
+
+  // 7. 9개 언어: 문구 키 이름이 화면에 그대로 보이지 않는다
+  for (const l of LANGS9) {
+    await check("band", `${l}: 허브·안내 창·컬렉터·없는 기록에 문구 키가 보이지 않는다`, async () => {
+      const c2 = await ctxFor(browser, { locale: LOCALES[l] });
+      // 중간에 실패해도 창을 닫는다 (안 닫으면 3D 창이 쌓여 다음 언어 검사가 느려져 줄줄이 실패함)
+      try {
+      const q = await c2.newPage();
+      const e2 = watch(q);
+      await q.addInitScript((lang) => { try { localStorage.setItem("edc26:lang", lang); } catch {} }, l);
+      const texts = [];
+      await q.goto(BASE + "/", { waitUntil: "load" });
+      await q.waitForSelector(".band-home-btn");
+      texts.push(await q.locator(".band-home-btn").innerText());
+      await q.goto(BASE + "/collection/browse", { waitUntil: "load" });
+      await q.waitForSelector(".band-card");
+      await q.locator(".band-chip[data-fest='zonnafe-2026']").click();
+      await q.waitForTimeout(300);
+      texts.push(await q.evaluate(() => document.body.innerText + " " + document.title));
+      await q.goto(BASE + "/collection", { waitUntil: "load" });
+      await q.waitForSelector(".band-add-btn");
+      texts.push(await q.evaluate(() => document.body.innerText + " " + [...document.querySelectorAll("[aria-label]")].map((x) => x.getAttribute("aria-label")).join(" ")));
+      await q.locator(".band-add-btn").dispatchEvent("click");
+      await q.waitForSelector("#scanSheet:not([hidden])", { timeout: 30000 });
+      texts.push(await q.locator("#scanSheet").innerText());
+      await q.locator("#scanClose").dispatchEvent("click");
+      await q.goto(BASE + "/c/cdemo00001", { waitUntil: "load" });
+      await q.waitForSelector(".band-switch:not(.band-years)");
+      texts.push(await q.evaluate(() => document.body.innerText + " " + document.title + " " + [...document.querySelectorAll("[alt],[aria-label]")].map((x) => (x.getAttribute("alt") || "") + " " + (x.getAttribute("aria-label") || "")).join(" ")));
+      await q.locator(".band-flag-btn").dispatchEvent("click");
+      await q.waitForSelector(".band-report");
+      texts.push(await q.locator(".band-report").innerText());
+      await q.goto(BASE + "/c/czzzzzzzzz", { waitUntil: "load" });
+      await q.waitForSelector(".band-none");
+      texts.push(await q.evaluate(() => document.body.innerText));
+      const all = texts.join("\n");
+      const keys = all.match(/\b(band|home|scan)\.[a-zA-Z.]+/g);
+      if (keys) return "키 노출: " + [...new Set(keys)].slice(0, 4).join(", ");
+      if (l !== "ko" && /나만의|구경하기|팔찌 \d|리본으로|전일권/.test(all)) return "한국어가 섞임";
+      return e2.length ? e2.slice(0, 2).join(" | ") : true;
+      } finally {
+        await c2.close();
+      }
+    });
+  }
+  await check("band", "컬렉션 화면 이동 중 콘솔 오류 없음", () => (errs.length ? errs.slice(0, 2).join(" | ") : true));
+  await ctx.close();
+}
+
 const t0 = Date.now();
 if (ONLY.has("data")) await dataChecks();
 const browser = await chromium.launch();
@@ -495,6 +907,15 @@ if (ONLY.has("lang")) await langChecks(browser);
 if (ONLY.has("logic")) await logicChecks(browser);
 if (ONLY.has("home")) await homeChecks(browser);
 if (ONLY.has("offline")) await offlineChecks(browser);
+// 컬렉션 3D 진열은 소프트웨어 WebGL 을 켠 브라우저로만 (다른 화면까지 켜 두면 느려져서 시간 초과가 남)
+if (ONLY.has("band")) {
+  const gl = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
+  try {
+    await bandChecks(gl);
+  } finally {
+    await gl.close();
+  }
+}
 await browser.close();
 
 const fail = results.filter((r) => !r.ok);

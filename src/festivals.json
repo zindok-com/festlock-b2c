@@ -1,51 +1,5 @@
 [
   {
-    "slug": "zonnafe-2026",
-    "aliases": ["zonnafe"],
-    "page": "zon",
-    "titleKey": "f.doc.zon",
-    "name": { "ko": "ZONNAFE 2026", "en": "ZONNAFE 2026", "ja": "ZONNAFE 2026", "zh": "ZONNAFE 2026", "zht": "ZONNAFE 2026", "es": "ZONNAFE 2026", "vi": "ZONNAFE 2026", "th": "ZONNAFE 2026", "id": "ZONNAFE 2026" },
-    "dates": "2026.11.14",
-    "start": "2026-11-14",
-    "end": "2026-11-15",
-    "venue": { "ko": "이태원 JACKS BAR 일대", "en": "JACKS BAR area, Itaewon", "ja": "梨泰院 JACKS BAR 周辺", "zh": "梨泰院 JACKS BAR 一带", "zht": "梨泰院 JACKS BAR 一帶", "es": "Zona de JACKS BAR, Itaewon", "vi": "Khu vực JACKS BAR, Itaewon", "th": "ย่าน JACKS BAR อิแทวอน", "id": "Area JACKS BAR, Itaewon" },
-    "ready": true,
-    "color": "#ff7a2e",
-    "color2": "#e2361c",
-    "thumb": "/poster/zon-key.webp",
-    "posters": [
-      { "src": "/poster/zon-key.webp", "key": "f.posterKey" },
-      { "src": "/poster/zon-timetable.webp", "key": "f.posterTimetable" }
-    ],
-    "og": {
-      "title": "ZONNAFE 2026 타임테이블 | FestLock",
-      "desc": "무대 7곳 · 100여 팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고, 아티스트가 보낸 영상도 미리 보세요. 11.14 토 15:00 – 05:00 이태원",
-      "img": "/og/zon.jpg"
-    }
-  },
-  {
-    "slug": "ultra-taiwan-2026",
-    "aliases": ["ultra-taiwan", "utw"],
-    "page": "utw",
-    "titleKey": "f.doc.utw",
-    "name": { "ko": "ULTRA TAIWAN 2026", "en": "ULTRA TAIWAN 2026", "ja": "ULTRA TAIWAN 2026", "zh": "ULTRA TAIWAN 2026", "zht": "ULTRA TAIWAN 2026", "es": "ULTRA TAIWAN 2026", "vi": "ULTRA TAIWAN 2026", "th": "ULTRA TAIWAN 2026", "id": "ULTRA TAIWAN 2026" },
-    "dates": "2026.11.14",
-    "start": "2026-11-14",
-    "end": "2026-11-14",
-    "utc": 8,
-    "venue": { "ko": "타이베이 다자 리버사이드 파크", "en": "Dajia Riverside Park, Taipei", "ja": "台北 大佳河濱公園", "zh": "台北大佳河滨公园", "zht": "臺北大佳河濱公園", "es": "Parque Ribereño Dajia, Taipéi", "vi": "Công viên ven sông Dajia, Đài Bắc", "th": "สวนริมแม่น้ำต้าเจีย ไทเป", "id": "Taman Tepi Sungai Dajia, Taipei" },
-    "ready": true,
-    "color": "#3fd6ff",
-    "color2": "#ff9a2e",
-    "thumb": "/poster/utw-key.webp",
-    "posters": [{ "src": "/poster/utw-key.webp", "key": "f.posterKey" }],
-    "og": {
-      "title": "ULTRA TAIWAN 2026 타임테이블 | FestLock",
-      "desc": "무대 2곳 · 15팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고 장르도 확인하세요. 11.14 토 12:00 – 22:00 타이베이",
-      "img": "/og/utw.jpg"
-    }
-  },
-  {
     "slug": "tomorrowland-thailand-2026",
     "aliases": [
       "tomorrowland-thailand",
@@ -94,6 +48,52 @@
       "title": "VAC · Vision & Colour 2026 타임테이블 | FestLock",
       "desc": "무대 3곳 · 2일 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하세요. 11.28 – 29 중국 헝친",
       "img": "/og/vac.jpg"
+    }
+  },
+  {
+    "slug": "zonnafe-2026",
+    "aliases": ["zonnafe"],
+    "page": "zon",
+    "titleKey": "f.doc.zon",
+    "name": { "ko": "ZONNAFE 2026", "en": "ZONNAFE 2026", "ja": "ZONNAFE 2026", "zh": "ZONNAFE 2026", "zht": "ZONNAFE 2026", "es": "ZONNAFE 2026", "vi": "ZONNAFE 2026", "th": "ZONNAFE 2026", "id": "ZONNAFE 2026" },
+    "dates": "2026.11.14",
+    "start": "2026-11-14",
+    "end": "2026-11-15",
+    "venue": { "ko": "이태원 JACKS BAR 일대", "en": "JACKS BAR area, Itaewon", "ja": "梨泰院 JACKS BAR 周辺", "zh": "梨泰院 JACKS BAR 一带", "zht": "梨泰院 JACKS BAR 一帶", "es": "Zona de JACKS BAR, Itaewon", "vi": "Khu vực JACKS BAR, Itaewon", "th": "ย่าน JACKS BAR อิแทวอน", "id": "Area JACKS BAR, Itaewon" },
+    "ready": true,
+    "color": "#ff7a2e",
+    "color2": "#e2361c",
+    "thumb": "/poster/zon-key.webp",
+    "posters": [
+      { "src": "/poster/zon-key.webp", "key": "f.posterKey" },
+      { "src": "/poster/zon-timetable.webp", "key": "f.posterTimetable" }
+    ],
+    "og": {
+      "title": "ZONNAFE 2026 타임테이블 | FestLock",
+      "desc": "무대 7곳 · 100여 팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고, 아티스트가 보낸 영상도 미리 보세요. 11.14 토 15:00 – 05:00 이태원",
+      "img": "/og/zon.jpg"
+    }
+  },
+  {
+    "slug": "ultra-taiwan-2026",
+    "aliases": ["ultra-taiwan", "utw"],
+    "page": "utw",
+    "titleKey": "f.doc.utw",
+    "name": { "ko": "ULTRA TAIWAN 2026", "en": "ULTRA TAIWAN 2026", "ja": "ULTRA TAIWAN 2026", "zh": "ULTRA TAIWAN 2026", "zht": "ULTRA TAIWAN 2026", "es": "ULTRA TAIWAN 2026", "vi": "ULTRA TAIWAN 2026", "th": "ULTRA TAIWAN 2026", "id": "ULTRA TAIWAN 2026" },
+    "dates": "2026.11.14",
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "utc": 8,
+    "venue": { "ko": "타이베이 다자 리버사이드 파크", "en": "Dajia Riverside Park, Taipei", "ja": "台北 大佳河濱公園", "zh": "台北大佳河滨公园", "zht": "臺北大佳河濱公園", "es": "Parque Ribereño Dajia, Taipéi", "vi": "Công viên ven sông Dajia, Đài Bắc", "th": "สวนริมแม่น้ำต้าเจีย ไทเป", "id": "Taman Tepi Sungai Dajia, Taipei" },
+    "ready": true,
+    "color": "#3fd6ff",
+    "color2": "#ff9a2e",
+    "thumb": "/poster/utw-key.webp",
+    "posters": [{ "src": "/poster/utw-key.webp", "key": "f.posterKey" }],
+    "og": {
+      "title": "ULTRA TAIWAN 2026 타임테이블 | FestLock",
+      "desc": "무대 2곳 · 15팀 타임테이블을 한눈에. 보고 싶은 DJ를 골라 잠금화면 배경화면으로 저장하고 장르도 확인하세요. 11.14 토 12:00 – 22:00 타이베이",
+      "img": "/og/utw.jpg"
     }
   },
   {

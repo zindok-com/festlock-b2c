@@ -30,6 +30,11 @@ export function Home() {
 
       <section className="home-hero">
         <img className="home-logo" src="/brand/festlock-logo.webp" alt="FestLock" width={180} height={180} />
+        {/* 나만의 컬렉션(페스티벌 팔찌 기록) — 화면은 /collection (src/band/) */}
+        <a className="band-home-btn" href="/collection">
+          <b>{t("home.band")}</b>
+          <span>{t("home.bandSub")}</span>
+        </a>
         <h1 className="home-title">{t("home.title")}</h1>
         <p className="home-sub">{t("home.sub")}</p>
       </section>

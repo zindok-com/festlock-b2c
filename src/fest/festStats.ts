@@ -93,7 +93,7 @@ function demoReport(fest: FestKey, newDay: boolean, fresh: string[]) {
 
 /** 기기 무작위 ID (EDC와 같은 값을 쓴다. 개인정보 없음, 브라우저에만 저장) */
 const DID_KEY = "edc26:did";
-function deviceId(): string {
+export function deviceId(): string {
   const make = () =>
     typeof crypto !== "undefined" && "randomUUID" in crypto
       ? crypto.randomUUID()

@@ -7,3 +7,6 @@ clips-src/
 .env.*
 *.log
 .vercel
+
+# 팔찌 컬렉션 작업 캡처 원본(크다, 로컬에만). 문서용 작은 캡처는 docs/band-collection/shots/
+docs/band-collection/screens/
