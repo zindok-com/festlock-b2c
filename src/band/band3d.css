@@ -66,7 +66,13 @@ html.band-full-on,html.band-full-on body{overflow:hidden;overscroll-behavior:non
 .band-full-caption .band-c-name{margin:0;font:800 15px "Pretendard","Noto Sans KR",sans-serif;color:var(--b-ink);overflow:hidden;text-overflow:ellipsis}
 .band-full-caption .band-c-n{margin:0;font:700 12px "Space Mono","Noto Sans KR",monospace;color:var(--b-mute);white-space:nowrap}
 /* 연도별로 보기: 위 가운데 ‹ 2026년 2/3 › (진열 바꾸기와 같은 모양) */
-.band-full-top:has(.band-full-tc){grid-template-columns:auto minmax(0,1fr) auto}
+/* 왼쪽·오른쪽 칸을 같은 폭으로 → 가운데(연도)가 화면 정가운데에 온다 (양쪽 버튼 폭이 달라도) */
+.band-full-top:has(.band-full-tc){grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.band-full-stack{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+/* 오른쪽 칸이 두 줄(구경하기·신고)이어도 가운데·왼쪽은 맨 위 줄에 맞춤 */
+.band-full-top{align-items:start}
+/* 좁은 휴대폰: 연도 화살표 칸을 줄여 오른쪽 구경하기와 겹치지 않게 */
+@media (max-width:400px){.band-full-tc .band-switch-btn{width:28px}.band-full-tc .band-switch-name{min-width:62px}}
 .band-full-tc{min-width:0;display:flex;justify-content:center}
 .band-years .band-switch-name{min-width:72px}
 .band-switch-btn:focus-visible,.band-brag:focus-visible{outline:2px solid #F6F1FF;outline-offset:3px}
@@ -106,9 +112,10 @@ html.band-full-on,html.band-full-on body{overflow:hidden;overscroll-behavior:non
 /* 안내 창(곧 열려요·신고)이 전체 화면 위로 오게 */
 html.band-full-on .band-dialog{z-index:60}
 @media (max-width:400px){
-  .band-full-logo span{display:none}
+  .band-full-logo{font-size:14px;gap:5px}
 }
 @media (max-width:370px){
+  .band-full-logo{font-size:12.5px;gap:4px;padding:0 2px}.band-full-logo img{width:18px;height:18px}
   .band-full-btn{padding:0 10px 0 8px;font-size:13px}
   .band-switch-name{min-width:70px;font-size:14px}
   .band-full-bottom a,.band-full-bottom button{min-width:112px;padding:0 18px;font-size:15px}

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { BandStage } from "./BandStage";
 import { useI18n } from "../i18n";
 import { useOnline } from "../offline";
-import { BandDialog, BandTop, BrowseButton, ShareIcon, useBandLabel } from "./common";
+import { BandDialog, BandTop, BrowseButton, FullLogo, ShareIcon, useBandLabel } from "./common";
 import type { Engine } from "./BandStage";
 import { ShareSheet } from "./MineParts";
 import { YearChips, useYearFilter, type YearPick } from "./years";
@@ -168,16 +168,20 @@ export default function BandCollector({ id }: { id: string }) {
         emptyText={st.kind === "loading" ? t("band.loading") : t("band.c.empty")}
         toast={toast}
         topCenter={years.length ? <YearChips years={years} value={yr} onChange={setYear} /> : null}
-        topLeft={
-          c && (
-            <button type="button" className="band-full-btn icon band-flag-btn" aria-label={t("band.report")} onClick={() => setReport(true)}>
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M5 21V4M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          )
+        topLeft={<FullLogo />}
+        topRight={
+          // 오른쪽 위: 구경하기, 그 아래 신고
+          <div className="band-full-stack">
+            <BrowseButton />
+            {c && (
+              <button type="button" className="band-full-btn icon band-flag-btn" aria-label={t("band.report")} onClick={() => setReport(true)}>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M5 21V4M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+          </div>
         }
-        topRight={<BrowseButton />}
         caption={
           c && (
             <>
