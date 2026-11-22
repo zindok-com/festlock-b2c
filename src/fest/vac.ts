@@ -1,6 +1,6 @@
 // VAC · Vision & Colour Music Festival 2026 · 중국 광둥 헝친 (长隆横琴湾酒店 5号停车场) · 11/28(토) – 11/29(일) (중국 현지 시각, UTC+8)
 // 출처: 주최측 공식 헤드라이너 라인업 포스터 + SET TIMES 이미지 (2026-11-15 기준). 시각은 표에 적힌 그대로다 (TBD = 아직 미발표).
-// 사진은 아직 없다 (이니셜 아이콘으로 나온다). 영상은 없다. 장르는 vacGenres.ts (추정, 모르는 아티스트는 비워 둔다).
+// 사진: faces-src/vac → Blob artists/vac/<id>.webp (ownPhotos.ts, 2026-11-22). BELTRAN·PARDON MY FRENCH·TBD 는 사진 없음, LEVITY 는 다른 페스티벌 사진(faceAlias). 영상은 없다. 장르는 vacGenres.ts (추정, 모르는 아티스트는 비워 둔다).
 import { withB2bDuo } from "./b2b";
 import { rows, type FDay, type FItem, type FStage } from "./types";
 import { VAC_GENRES } from "./vacGenres";
