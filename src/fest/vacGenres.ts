@@ -7,7 +7,6 @@ export interface VacGenre {
 export const VAC_GENRES: Record<string, VacGenre> = {
   "dj-snake": { g: "TRAP · HOUSE", conf: "inferred" },
   "dj-snake-b2b-knock2": { g: "BASS HOUSE · TRAP", conf: "inferred" },
-  "pardon-my-french-finale": { g: "HOUSE · TRAP", conf: "inferred" },
   "above-and-beyond": { g: "TRANCE · PROGRESSIVE", conf: "inferred" },
   "isoxo-b2b-boys-noize": { g: "BASS HOUSE · ELECTRO", conf: "inferred" },
   "chris-lorenzo": { g: "TECH HOUSE · BASS HOUSE", conf: "inferred" },
