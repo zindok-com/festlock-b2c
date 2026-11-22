@@ -12,7 +12,7 @@
 //  alyshia             electronic / dance (타이완)               Viberate, Amsterdam Dance Event
 //  ashleybaby          house / tech house (타이완)               Viberate 한 곳만 → 추정
 //  omara-212           (검색 결과 없음 → 표시 안 함)
-//  lynne               techno / experimental (Tokyo의 Lynne 프로필과 일치 여부 미확인) → 추정
+//  lynne               melodic techno / melodic house          LYNNE 본인이 알려 줌 (2026-11-22, 대표 전달)
 //  veena               big room / progressive house (타이완)      EDM House Network 한 곳만 → 추정
 //  chris-avantgarde    melodic techno                           When We Dip, 다수 프로필
 //  camelphat           tech house / melodic house & techno      EDM Encyclopedia 등
@@ -32,7 +32,7 @@ export const UTW_GENRES: Record<string, UtwGenre> = {
   mykris: { g: "EDM" },
   alyshia: { g: "ELECTRONIC · DANCE" },
   ashleybaby: { g: "HOUSE · TECH HOUSE", conf: "inferred" },
-  lynne: { g: "TECHNO · EXPERIMENTAL", conf: "inferred" },
+  lynne: { g: "MELODIC TECHNO · MELODIC HOUSE" },
   veena: { g: "BIG ROOM · PROGRESSIVE HOUSE", conf: "inferred" },
   "chris-avantgarde": { g: "MELODIC TECHNO" },
   camelphat: { g: "TECH HOUSE · MELODIC HOUSE & TECHNO" },

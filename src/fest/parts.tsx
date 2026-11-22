@@ -102,7 +102,7 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
   const { t, lang } = useI18n();
   const [main, sub] = names(it, lang, koFirst);
   const isAct = !it.kind || it.kind === "act";
-  const links = listenLinks(it, koFirst);
+  const links = listenLinks(it, koFirst, fest);
   useBackClose(!inTutorial, onClose);
   useEffect(() => {
     const k = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -190,6 +190,11 @@ export function FestSheet({ fest, slug, it, stage, day, koFirst, nameOf, on, onT
                 {lang === "ko" ? t("link.am") : "Apple Music"}
               </a>
             </div>
+            {links.instagram && (
+              <a className="link ig wide" href={links.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                Instagram
+              </a>
+            )}
             <p className="hint search-note">
               <Rich text={t("search.note")} />
             </p>

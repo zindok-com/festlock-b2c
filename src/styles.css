@@ -154,6 +154,9 @@ h1{
 .link.sp{background:#1db954;color:#0b1f12}
 .link.yt{background:#ff0033}
 .link.am{background:linear-gradient(90deg,#fa2d48,#fc5c7d)}
+/* 아티스트가 인스타그램을 알려 준 경우만 (artistLinks.ts) — 듣기 버튼 아래 한 줄 */
+.link.ig{background:linear-gradient(90deg,#f58529,#dd2a7b 55%,#8134af)}
+.link.wide{margin-top:8px}
 .toggle{margin-top:12px;width:100%}
 .search-note{margin-top:10px}
 .app-box{margin-top:14px;padding:12px;border-radius:14px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}

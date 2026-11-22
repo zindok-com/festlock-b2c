@@ -1,6 +1,7 @@
 // 새 페스티벌 페이지 공통: 선택 저장, 지금 시각(KST), 이름 표시, 듣기 링크
 import { useCallback, useEffect, useState } from "react";
 import { CUT_FOCUS } from "./cutFocus";
+import { artistLinks } from "./artistLinks";
 import type { Lang } from "../i18n";
 import type { FDay, FItem } from "./types";
 
@@ -97,12 +98,15 @@ export function initialsOf(name: string): string {
 }
 
 const q = encodeURIComponent;
-export function listenLinks(it: FItem, koFirst: boolean) {
+export function listenLinks(it: FItem, koFirst: boolean, fest?: string) {
   const main = koFirst ? it.ko : it.en;
   const both = it.ko === it.en ? it.en : it.en + " " + it.ko;
+  // 아티스트가 알려 준 바로 가기 링크가 있으면 검색 대신 그 주소 (artistLinks.ts)
+  const own = fest ? artistLinks(fest, it.id) : null;
   return {
-    spotify: "https://open.spotify.com/search/" + q(main),
-    youtube: "https://www.youtube.com/results?search_query=" + q(both),
+    spotify: own?.spotify ?? "https://open.spotify.com/search/" + q(main),
+    youtube: own?.youtube ?? "https://www.youtube.com/results?search_query=" + q(both),
+    instagram: own?.instagram,
     melon: "https://www.melon.com/search/total/index.htm?q=" + q(main),
     apple: "https://music.apple.com/kr/search?term=" + q(main),
   };
