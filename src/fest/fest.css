@@ -472,9 +472,13 @@ html[data-fest="zon"] .sheet .art .g{color:var(--accent);font-weight:800}
 .zon[data-ct="duo"] .blk.ph .cap{background:none;padding:0 6px 6px;z-index:3}
 .zon[data-ct="duo"] .blk.ph .tm-top{z-index:4;background:rgba(0,0,0,.74);color:var(--c);border-radius:3px;font-weight:700}
 .zon[data-ct="duo"] .blk.ph.on .tm-top{background:var(--ci);color:var(--c)}
-.zon[data-ct="duo"] .blk .phw{display:block;position:absolute;top:0;right:0;width:74%;aspect-ratio:1/1;background:var(--c);opacity:.7;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 38%),linear-gradient(180deg,#000 62%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 38%),linear-gradient(180deg,#000 62%,transparent);mask-composite:intersect}
-.zon[data-ct="duo"] .blk.on .phw{opacity:1}
-.zon[data-ct="duo"] .blk .phw .ph-img{filter:grayscale(1) contrast(1.15);mix-blend-mode:multiply;opacity:1;object-position:50% 50%}
+/* 누끼가 없는 칸: 사진을 카드 전체에 (얼굴이 있는 위쪽 기준). 평소엔 흑백, 고르면 컬러 — 누끼 칸과 같은 규칙. 이름이 읽히게 아래만 어둡게
+   (예전: 오른쪽 위에 작게 흐린 이중톤 사진 → "누끼가 안 따지고 오른쪽 위에 고정·골라도 컬러가 안 됨"으로 보여서 바꿈, 2026-11-23) */
+.zon[data-ct="duo"] .blk .phw{display:block;position:absolute;inset:0;width:auto;height:auto;aspect-ratio:auto;background:none;opacity:1;pointer-events:none;overflow:hidden;border-radius:inherit;-webkit-mask-image:none;mask-image:none}
+.zon[data-ct="duo"] .blk .phw::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(0,0,0,.6))}
+.zon[data-ct="duo"] .blk.on .phw::after{background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.4))}
+.zon[data-ct="duo"] .blk .phw .ph-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:grayscale(1) brightness(.8);mix-blend-mode:normal;opacity:.85}
+.zon[data-ct="duo"] .blk.on .phw .ph-img{filter:none;opacity:1}
 .zon[data-ct="duo"] .blk .cut{position:absolute;right:2px;bottom:0;height:min(100%,200px);width:auto;max-width:94%;object-fit:contain;object-position:right bottom;pointer-events:none;filter:grayscale(1) brightness(.8);opacity:.85}
 /* 누끼는 세로로 큰 사진이면 카드 높이를 거의 다 써서 크게(얼굴 쪽 기준으로 위를 보여 줌), 가로로 넓은 2인 사진은 전체가 보이게 둔다 — 이름은 아래쪽 */
 .zon[data-ct="duo"] .blk:not(.b2b) .cut[data-ar="tall"]{left:2px;right:2px;width:auto;max-width:none;max-height:320px;object-fit:cover}
