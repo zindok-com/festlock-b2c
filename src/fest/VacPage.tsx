@@ -385,7 +385,7 @@ export function VacPage() {
               {VAC_STAGES.map((st) => (
                 <div key={st.key} className="head" style={toneVars(st.key)}>
                   <div className="b">{st.name}</div>
-                  <div className="h">{VAC_GENRE[st.key]}</div>
+                  <div className="h">{VAC_GENRE[dayId]?.[st.key]}</div>
                 </div>
               ))}
             </div>
